@@ -1,14 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>PersonApp</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>personAPP - Soluciones para emprendedores</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        h1 { color: #2c3e50; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            text-align: center;
+            padding: 50px 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .apps-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 40px 0;
+        }
+        .app-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+        .app-logo:hover {
+            transform: scale(1.1);
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .cta-button:hover {
+            background-color: #2980b9;
+        }
+        .clickable-image {
+            display: block;
+            margin: 30px auto;
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body>
-    <h1>¡Bienvenido a mi sitio!</h1>
-    <p></p>
+    <div class="container">
+        <h1>personAPP</h1>
+        <p class="subtitle">La solución todo en uno para emprendedores</p>
+        
+        <div class="apps-grid">
+            <img src="https://via.placeholder.com/80?text=BUSHO" alt="BUSHO" class="app-logo">
+            <img src="https://via.placeholder.com/80?text=CANVA" alt="CANVA" class="app-logo">
+            <img src="https://via.placeholder.com/80?text=ZOOM" alt="ZOOM" class="app-logo">
+            <img src="https://via.placeholder.com/80?text=SHOPIFY" alt="SHOPIFY" class="app-logo">
+            <img src="https://via.placeholder.com/80?text=MercadoPago" alt="Mercado Pago" class="app-logo">
+        </div>
+
+        <!-- Imagen clickeable -->
+        <a href="https://tusitio.com" target="_blank">
+            <img src="https://via.placeholder.com/300x150?text=CLICK+AQUÍ" alt="Ir al sitio" class="clickable-image">
+        </a>
+
+        <!-- Botón alternativo -->
+        <a href="https://tusitio.com" class="cta-button">Ir al sitio oficial</a>
+    </div>
 </body>
 </html>
