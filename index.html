@@ -4,67 +4,93 @@
   <meta charset="UTF-8">
   <title>PersonAPP</title>
   <style>
-    .titulo-principal {
-  text-align: center;
-  color: #fff;
-  margin-top: 30px;
-  font-size: 2.5em;
-  letter-spacing: 2px;
-}
-    .marca-personapp {
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-  color: #fff;
-  font-size: 1.5em;
-  font-weight: bold;
-  opacity: 0.85;
-  letter-spacing: 1px;
-  z-index: 100;
-}
     body {
       background: #000;
       color: #fff;
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .titulo-principal {
+      text-align: center;
+      color: #fff;
+      margin-top: 48px;
+      margin-bottom: 48px;
+      font-size: 2.8em;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .marca-personapp {
+      position: fixed;
+      left: 32px;
+      bottom: 24px;
+      color: #fff;
+      font-size: 1.6em;
+      font-weight: 700;
+      opacity: 0.92;
+      letter-spacing: 2px;
+      z-index: 100;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      user-select: none;
     }
     .logo-grid {
       display: flex;
       justify-content: center;
       align-items: flex-start;
       gap: 40px;
-      padding: 60px 0;
+      padding: 0 0 60px 0;
     }
     .logo-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       background: #111;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      border-radius: 14px;
+      padding: 24px 20px 20px 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.45);
+      min-width: 140px;
+      max-width: 160px;
+      transition: transform 0.18s;
+    }
+    .logo-item:hover {
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 6px 24px rgba(255,152,0,0.18);
     }
     .logo-item img {
       width: 100px;
       height: 100px;
       object-fit: contain;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       background: #222;
       border-radius: 8px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.25);
     }
     .logo-item a {
       display: inline-block;
-      padding: 8px 18px;
+      padding: 10px 20px;
       background: #fff;
-      color: #000;
-      border-radius: 6px;
+      color: #111;
+      border-radius: 7px;
       text-decoration: none;
-      font-weight: bold;
-      transition: background 0.2s, color 0.2s;
+      font-weight: 600;
+      font-size: 1em;
+      letter-spacing: 1px;
+      margin-top: 8px;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
     }
     .logo-item a:hover {
       background: #ff9800;
       color: #fff;
+      box-shadow: 0 2px 12px rgba(255,152,0,0.18);
+    }
+    @media (max-width: 1100px) {
+      .logo-grid {
+        flex-wrap: wrap;
+        gap: 28px;
+      }
     }
     @media (max-width: 900px) {
       .logo-grid {
@@ -72,36 +98,38 @@
         align-items: center;
         gap: 30px;
       }
+      .titulo-principal {
+        font-size: 2em;
+        margin-top: 32px;
+        margin-bottom: 32px;
+      }
     }
   </style>
 </head>
 <body>
-    <div class="marca-personapp">PersonAPP</div>
+  <h1 class="titulo-principal">APP para emprendedores</h1>
   <div class="logo-grid">
     <div class="logo-item">
-      <img src="logo1.png" alt="Logo 1">
+      <img src="Img/logo.busho.png" alt="Logo 1">
       <a href="https://sitio1.com" target="_blank">Ir al sitio web</a>
     </div>
     <div class="logo-item">
-      <img src="logo2.png" alt="Logo 2">
+      <img src="Img/logo.canva.png" alt="Logo 2">
       <a href="https://sitio2.com" target="_blank">Ir al sitio web</a>
     </div>
     <div class="logo-item">
-      <img src="logo3.png" alt="Logo 3">
+      <img src="Img/logo.zoom.png" alt="Logo 3">
       <a href="https://sitio3.com" target="_blank">Ir al sitio web</a>
     </div>
     <div class="logo-item">
-      <img src="logo4.png" alt="Logo 4">
+      <img src="Img/Logo.shopify.png" alt="Logo 4">
       <a href="https://sitio4.com" target="_blank">Ir al sitio web</a>
     </div>
     <div class="logo-item">
-      <img src="logo5.png" alt="Logo 5">
+      <img src="Img/logo.mercadopago.png" alt="Logo 5">
       <a href="https://sitio5.com" target="_blank">Ir al sitio web</a>
     </div>
-    <div class="logo-item">
-      <img src="logo6.png" alt="Logo 6">
-      <a href="https://sitio6.com" target="_blank">Ir al sitio web</a>
-    </div>
+    
   </div>
   <div class="marca-personapp">PersonAPP</div>
 </body>
