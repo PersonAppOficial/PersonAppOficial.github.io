@@ -1,96 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>personAPP - Soluciones para emprendedores</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f7fa;
-            text-align: center;
-            padding: 50px 20px;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #7f8c8d;
-            margin-bottom: 30px;
-        }
-        .apps-grid {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 25px;
-            margin: 40px 0;
-        }
-        .app-logo {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            transition: transform 0.3s;
-        }
-        .app-logo:hover {
-            transform: scale(1.1);
-        }
-        .cta-button {
-            display: inline-block;
-            background-color: #3498db;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-top: 20px;
-            transition: background-color 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        .cta-button:hover {
-            background-color: #2980b9;
-        }
-        .clickable-image {
-            display: block;
-            margin: 30px auto;
-            max-width: 300px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Galería de Logos</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .logo-grid {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      padding: 60px 0;
+    }
+    .logo-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #111;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .logo-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 16px;
+      background: #222;
+      border-radius: 8px;
+    }
+    .logo-item a {
+      display: inline-block;
+      padding: 8px 18px;
+      background: #fff;
+      color: #000;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.2s, color 0.2s;
+    }
+    .logo-item a:hover {
+      background: #ff9800;
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .logo-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>personAPP</h1>
-        <p class="subtitle">La solución todo en uno para emprendedores</p>
-        
-        <div class="apps-grid">
-            <img src="https://via.placeholder.com/80?text=BUSHO" alt="BUSHO" class="app-logo">
-            <img src="https://via.placeholder.com/80?text=CANVA" alt="CANVA" class="app-logo">
-            <img src="https://via.placeholder.com/80?text=ZOOM" alt="ZOOM" class="app-logo">
-            <img src="https://via.placeholder.com/80?text=SHOPIFY" alt="SHOPIFY" class="app-logo">
-            <img src="https://via.placeholder.com/80?text=MercadoPago" alt="Mercado Pago" class="app-logo">
-        </div>
-
-        <!-- Imagen clickeable -->
-        <a href="https://tusitio.com" target="_blank">
-            <img src="https://via.placeholder.com/300x150?text=CLICK+AQUÍ" alt="Ir al sitio" class="clickable-image">
-        </a>
-
-        <!-- Botón alternativo -->
-        <a href="https://tusitio.com" class="cta-button">Ir al sitio oficial</a>
+  <div class="logo-grid">
+    <div class="logo-item">
+      <img src="logo1.png" alt="Logo 1">
+      <a href="https://sitio1.com" target="_blank">Ir al sitio web</a>
     </div>
+    <div class="logo-item">
+      <img src="logo2.png" alt="Logo 2">
+      <a href="https://sitio2.com" target="_blank">Ir al sitio web</a>
+    </div>
+    <div class="logo-item">
+      <img src="logo3.png" alt="Logo 3">
+      <a href="https://sitio3.com" target="_blank">Ir al sitio web</a>
+    </div>
+    <div class="logo-item">
+      <img src="logo4.png" alt="Logo 4">
+      <a href="https://sitio4.com" target="_blank">Ir al sitio web</a>
+    </div>
+    <div class="logo-item">
+      <img src="logo5.png" alt="Logo 5">
+      <a href="https://sitio5.com" target="_blank">Ir al sitio web</a>
+    </div>
+    <div class="logo-item">
+      <img src="logo6.png" alt="Logo 6">
+      <a href="https://sitio6.com" target="_blank">Ir al sitio web</a>
+    </div>
+  </div>
 </body>
 </html>
