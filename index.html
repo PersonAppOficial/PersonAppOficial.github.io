@@ -78,7 +78,7 @@
       background: linear-gradient(135deg, #181818 60%, #232526 100%);
       border-radius: 18px;
       padding: 28px 22px 22px 22px;
-      box-shadow: 0 2px 18px 0 rgba(0,0,0,0.45), 0 1.5px 0 #ff9800 inset;
+      box-shadow: 0 2px 18px 0 rgba(0,0,0,0.45);
       min-width: 150px;
       max-width: 170px;
       transition: transform 0.25s cubic-bezier(.77,0,.18,1), box-shadow 0.25s, background 0.25s;
@@ -102,14 +102,14 @@
       position: absolute;
       top: -60px; left: -60px;
       width: 120px; height: 120px;
-      background: radial-gradient(circle, #ff9800 0%, transparent 70%);
+      background: radial-gradient(circle, #333 0%, transparent 70%);
       opacity: 0.08;
       z-index: 0;
       pointer-events: none;
     }
     .logo-item:hover {
       transform: translateY(-10px) scale(1.06) rotate(-1deg);
-      box-shadow: 0 8px 32px 0 rgba(255,152,0,0.18), 0 2px 18px 0 rgba(0,0,0,0.45);
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3), 0 2px 18px 0 rgba(0,0,0,0.45);
       background: linear-gradient(135deg, #232526 60%, #181818 100%);
     }
     .logo-item img {
@@ -124,13 +124,13 @@
       z-index: 1;
     }
     .logo-item:hover img {
-      box-shadow: 0 4px 24px 0 #ff9800, 0 1px 8px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 24px 0 rgba(0,0,0,0.3), 0 1px 8px rgba(0,0,0,0.25);
       transform: scale(1.08) rotate(2deg);
     }
     .logo-item a {
       display: inline-block;
       padding: 12px 24px;
-      background: linear-gradient(90deg, #ff9800 0%, #ffb347 100%);
+      background: linear-gradient(90deg, #010101 0%, #000000 100%);
       color: #181818;
       border-radius: 8px;
       text-decoration: none;
@@ -144,8 +144,8 @@
       z-index: 1;
     }
     .logo-item a:hover {
-      background: linear-gradient(90deg, #fff 0%, #ff9800 100%);
-      color: #ff9800;
+      background: linear-gradient(90deg, #fff 0%, #000000 100%);
+      color: #010101;
       box-shadow: 0 2px 16px rgba(255,152,0,0.18);
       transform: scale(1.07);
     }
@@ -155,7 +155,7 @@
       gap: 8px;
       margin-top: 18px;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: center;
       width: 100%;
       flex-wrap: wrap;
     }
@@ -166,19 +166,19 @@
       gap: 8px;
       padding: 10px 20px;
       background: linear-gradient(90deg, #232526 0%, #4CAF50 100%);
-      color: #fff;
-      border-radius: 7px;
+      color: #ffffff !important;
+      border-radius: 8px !important;
       text-decoration: none;
       font-weight: 600;
       font-size: 1em;
       letter-spacing: 1px;
-      box-shadow: 0 1px 6px rgba(76,175,80,0.10);
+      box-shadow: 0 1px 6px rgba(255, 255, 255, 0.1);
       transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s;
       margin: 0;
     }
     .store-btn:hover {
-      background: linear-gradient(90deg, #4CAF50 0%, #fff 100%);
-      color: #4CAF50;
+      background: linear-gradient(90deg, #f7f7f7 0%, #fff 100%);
+      color: #000000 !important;
       box-shadow: 0 2px 12px rgba(76,175,80,0.18);
       transform: scale(1.04);
     }
@@ -187,6 +187,27 @@
       height: 24px;
       object-fit: contain;
       margin-right: 4px;
+    }
+    .logo-link {
+      display: block;
+      text-decoration: none;
+      transition: transform 0.25s;
+    }
+    .logo-link:hover {
+      transform: scale(1.05);
+    }
+    .logo-description {
+      color: #ccc;
+      font-size: 0.75em;
+      text-align: center;
+      margin: 8px 0 0 0;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      line-height: 1.4;
+      max-width: 140px;
+      padding: 0 4px;
+      word-wrap: break-word;
+      hyphens: auto;
     }
     @media (max-width: 1100px) {
       .logo-grid {
@@ -212,8 +233,10 @@
   <h1 class="titulo-principal">APP para emprendedores</h1>
   <div class="logo-grid">
     <div class="logo-item">
-      <img src="Img/logo.busho.png" alt="Logo 1">
-      <a href="https://busho.cl/" target="_blank">Ir al sitio web</a>
+      <a href="https://busho.cl/" target="_blank" class="logo-link">
+        <img src="Img/logo.busho.png" alt="Logo 1">
+      </a>
+      <p class="logo-description">BUSHO es la plataforma líder de arriendo flexible de espacios comerciales, como un “Airbnb para tiendas”, que conecta emprendedores con puntos de venta en Chile y el extranjero.</p>
       <div class="store-buttons">
         <a href="https://apps.apple.com/cl/app/busho/id1665748711" target="_blank" class="store-btn">
           <img src="Img/logo.ios.png" alt="App Store" class="store-icon"> iOS Store
@@ -227,20 +250,28 @@
       </div>
     </div>
     <div class="logo-item">
-      <img src="Img/logo.canva.png" alt="Logo 2">
-      <a href="https://www.canva.com/" target="_blank">Ir al sitio web</a>
+      <a href="https://www.canva.com/" target="_blank" class="logo-link">
+        <img src="Img/logo.canva.png" alt="Logo 2">
+      </a>
+      <p class="logo-description">Canva Diseños rápidos para redes sociales, logos, flyers y más. Muy fácil de usar.</p>
     </div>
     <div class="logo-item">
-      <img src="Img/logo.zoom.png" alt="Logo 3">
-      <a href="https://www.zoom.com/" target="_blank">Ir al sitio web</a>
+      <a href="https://www.shopify.com/" target="_blank" class="logo-link">
+        <img src="Img/logo.shopify.png" alt="Logo 3">
+      </a>
+      <p class="logo-description">Shopify Para montar una tienda online en minutos. Tiendanube y Jumpseller son top en Chile. </p>
     </div>
     <div class="logo-item">
-      <img src="Img/Logo.shopify.png" alt="Logo 4">
-      <a href="https://www.shopify.com/" target="_blank">Ir al sitio web</a>
+      <a href="https://www.zoom.com/" target="_blank" class="logo-link">
+        <img src="Img/logo.zoom.png" alt="Logo 4">
+      </a>
+      <p class="logo-description"> Zoom Para reuniones con clientes, proveedores o inversionistas.</p>
     </div>
     <div class="logo-item">
-      <img src="Img/logo.mercadopago.png" alt="Logo 5">
-      <a href="https://www.mercadopago.cl/"" target="_blank">Ir al sitio web</a>
+      <a href="https://www.mercadopago.cl/" target="_blank" class="logo-link">
+        <img src="Img/logo.mercadopago.png" alt="Logo 5">
+      </a>
+      <p class="logo-description">Mercado pago Cobros con tarjeta desde el celular, sin necesidad de boleta electrónica inmediata.</p>
     </div>
     
   </div>
