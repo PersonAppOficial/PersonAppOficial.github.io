@@ -19,11 +19,38 @@
   <title>PersonAPP</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    @keyframes waveEmoji {
+
+  0% { transform: rotate(0deg); }
+
+  25% { transform: rotate(20deg); }
+
+  50% { transform: rotate(0deg); }
+
+  75% { transform: rotate(-20deg); }
+
+  100% { transform: rotate(0deg); }
+
+  .emoji-wave {
+
+  position: fixed;
+
+  bottom: 20px;
+
+  right: 20px;
+
+  font-size: 3em;
+
+  animation: waveEmoji 2s infinite;
+
+
+
     body {
       background: #000000;
       color: #000000fb;
       margin: 0;
       font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+      <div class="emoji-wave">👋</div>
     }
     .titulo-principal {
       text-align: center;
