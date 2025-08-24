@@ -314,25 +314,25 @@
       /* === Emoji que saluda === */
 .emoji-wave {
 position: fixed;
-bottom: 20px; /* posición en la esquina inferior derecha */
-right: 20px;
-font-size: 56px; /* tamaño del emoji */
+bottom: 40px; /* un poco mas arriba que no choque */
+right: 40px;
+font-size: 90px; /* mas grande */
 line-height: 1;
 z-index: 9999; /* por encima de otros elementos fijos */
 animation: waveEmoji 1.6s ease-in-out infinite;
 user-select: none; /* que no se seleccione con el mouse */
 pointer-events: none; /* no bloquea clics en links debajo */
-filter: drop-shadow(0 2px 6px rgba(0,0,0,.5));
+filter: drop-shadow(0 3px 6px rgba(0,0,0,.5));
 }
 
 /* Animación de saludo (como moviendo la manito) */
 @keyframes waveEmoji {
 0%, 100% { transform: rotate(0deg); }
-15% { transform: rotate(18deg); }
+15% { transform: rotate(20deg); }
 30% { transform: rotate(-10deg); }
 45% { transform: rotate(12deg); }
 60% { transform: rotate(-6deg); }
-75% { transform: rotate(3deg); }
+75% { transform: rotate(4deg); }
 }
     }
   </style>
