@@ -311,6 +311,29 @@
       background: rgba(0,0,0,0.3);
       padding: 6px 16px;
       border-radius: 8px;
+      /* === Emoji que saluda === */
+.emoji-wave {
+position: fixed;
+bottom: 20px; /* posición en la esquina inferior derecha */
+right: 20px;
+font-size: 56px; /* tamaño del emoji */
+line-height: 1;
+z-index: 9999; /* por encima de otros elementos fijos */
+animation: waveEmoji 1.6s ease-in-out infinite;
+user-select: none; /* que no se seleccione con el mouse */
+pointer-events: none; /* no bloquea clics en links debajo */
+filter: drop-shadow(0 2px 6px rgba(0,0,0,.5));
+}
+
+/* Animación de saludo (como moviendo la manito) */
+@keyframes waveEmoji {
+0%, 100% { transform: rotate(0deg); }
+15% { transform: rotate(18deg); }
+30% { transform: rotate(-10deg); }
+45% { transform: rotate(12deg); }
+60% { transform: rotate(-6deg); }
+75% { transform: rotate(3deg); }
+}
     }
   </style>
 </head>
@@ -363,5 +386,9 @@
 </div>
   <div class="marca-personapp">PersonAPP</div>
   <div class="contacto-personapp">contacto: personappoficial@gmail.com</div>
+
+  <!-- Emoji que saluda -->
+<div class="emoji-wave" aria-hidden="true">👋</div>
+
 </body>
 </html>
