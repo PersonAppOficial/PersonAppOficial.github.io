@@ -12,7 +12,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:'Montserrat'
 a{color:inherit; text-decoration:none}
 .wrap{max-width:1200px; margin:0 auto; padding:20px}
 header{display:flex; align-items:center; justify-content:center; text-align:center; padding:40px 10px 10px}
-h1{font-size:2.4rem; margin:0 0 8px; text-shadow:0 2px 16px rgba(18,255,65,.7)}
+h1{font-size:2.2rem; margin:0 0 8px; text-shadow:0 2px 16px rgba(18,255,65,.7)}
 p.lead{margin:0; opacity:.9}
 
 /* Grilla Apps */
@@ -21,7 +21,7 @@ p.lead{margin:0; opacity:.9}
 border-radius:16px; padding:18px; box-shadow:0 2px 16px rgba(0,0,0,.25); transition:transform .2s, box-shadow .2s;}
 .card:hover{transform:translateY(-6px); box-shadow:0 10px 24px rgba(0,0,0,.35)}
 .card img.logo{width:64px; height:64px; object-fit:contain; background:#111; border-radius:12px; box-shadow:0 1px 8px rgba(0,0,0,.3)}
-.card h3{margin:12px 0 8px; font-size:1.15rem}
+.card h3{margin:12px 0 8px; font-size:1.05rem}
 .card p{margin:0 0 12px; color:#dfe5ea}
 .stores{display:flex; gap:8px; flex-wrap:wrap}
 .btn{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:none; cursor:pointer;
@@ -36,39 +36,30 @@ background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; fo
 input, select, textarea{width:100%; border:1px solid rgba(255,255,255,.15); background:#141516; color:#fff;
 border-radius:10px; padding:10px 12px; font-family:inherit; font-size:1rem}
 textarea{min-height:100px; resize:vertical}
-.actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
 .progress{height:8px; background:#111; border-radius:6px; overflow:hidden; width:220px; display:none}
 .bar{height:100%; width:0%; background:var(--accent); transition:width .1s linear}
+.actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+
+.filters{display:flex; gap:8px; margin:8px 0 12px; align-items:center; flex-wrap:wrap}
 .feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:14px}
+
 .post{background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%); border:1px solid rgba(255,255,255,.08);
 border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 .meta{font-size:.85rem; color:#c7ced6}
-.stars{color:var(--warn)}
+.title{margin:6px 0 6px; font-weight:700}
 .media{margin-top:8px}
 .media img, .media video{width:100%; border-radius:10px; display:block}
 .toolbar{display:flex; gap:10px; margin-top:8px; align-items:center}
-.vote{display:inline-flex; gap:6px; align-items:center}
-.vote button{background:#1f2023; color:#fff; border:1px solid #2b2d31; border-radius:8px; padding:4px 8px; cursor:pointer}
-.tag{font-size:.85rem; background:#1e1f22; border:1px solid #2b2d31; padding:4px 8px; border-radius:999px}
+.comment-toggle{background:#1f2023; color:#fff; border:1px solid #2b2d31; border-radius:8px; padding:4px 8px; cursor:pointer}
 
-.comments{margin-top:10px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px}
+.comments{margin-top:10px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px; display:none}
 .comment{font-size:.95rem; margin:6px 0}
 .comment .by{color:#cbd2d9; font-size:.85rem}
-.comment-form{display:flex; gap:6px; margin-top:8px}
-.comment-form input{flex:1}
-.comment-form button{white-space:nowrap}
+.comment-form{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap}
+.comment-form input[type="text"]{flex:1; min-width:140px}
 
-/* Filtros y paginación */
-.actions-row{display:flex; gap:8px; margin:8px 0 12px; align-items:center; flex-wrap:wrap}
-.chip{font-size:.85rem; background:#1e1f22; border:1px solid #2b2d31; padding:4px 8px; border-radius:999px}
 .more{display:flex; justify-content:center; margin-top:12px}
 .more button{background:#202225; color:#fff; border:1px solid #2b2d31; padding:8px 12px; border-radius:8px; cursor:pointer}
-
-/* Juego estilo Mario */
-#juego{margin:50px 0 90px; background:rgba(0,0,0,.14); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px}
-#gameWrap{display:flex; flex-direction:column; align-items:center; gap:8px}
-#mario{background:#0f0f12; border:2px solid #2b2b2b; border-radius:8px; max-width:100%; height:auto}
-.hud{display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center}
 
 /* Fijos */
 .brand{position:fixed; left:16px; bottom:16px; font-weight:800; letter-spacing:1px; opacity:.9}
@@ -80,7 +71,7 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 <header>
 <div>
 <h1>APP para emprendedores</h1>
-<p class="lead">Apps destacadas · Foro tipo reddit (en vivo) · Minijuego de plataformas</p>
+<p class="lead">Apps destacadas · Foro abierto (posts con imagen/video) · Comentarios en hilo</p>
 </div>
 </header>
 
@@ -126,10 +117,10 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 </article>
 </section>
 
-<!-- Foro tipo reddit -->
+<!-- Foro -->
 <section id="foro">
 <h2>Foro & Reseñas</h2>
-<p class="hint">Publica sobre las apps de arriba (texto, imagen o video). Votos, comentarios y feed en vivo.</p>
+<p class="hint">Publica sobre las apps (texto + imagen o video). Cualquiera puede ver y comentar.</p>
 
 <form id="postForm">
 <div>
@@ -141,7 +132,7 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 </select>
 </div>
 <div><label>Tu nombre</label><input id="fName" type="text" placeholder="Ej: Raúl" required maxlength="40"/></div>
-<div class="full"><label>Título (opcional)</label><input id="fTitle" type="text" maxlength="100" placeholder="Ej: Mi experiencia inicial" /></div>
+<div class="full"><label>Título (opcional)</label><input id="fTitle" type="text" maxlength="100" placeholder="Ej: Mi experiencia" /></div>
 <div class="full"><label>Texto</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required maxlength="1000"></textarea></div>
 <div class="full">
 <label>Imagen o video (opcional)</label>
@@ -154,7 +145,7 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 </div>
 </form>
 
-<div class="actions-row">
+<div class="filters">
 <select id="filterApp">
 <option value="">Todas las apps</option>
 <option value="BUSHO">BUSHO</option><option value="Canva">Canva</option>
@@ -163,28 +154,12 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 </select>
 <select id="orderSel">
 <option value="desc">Más nuevas primero</option>
-<option value="top">Top (votos)</option>
 <option value="asc">Más antiguas primero</option>
 </select>
-<span class="chip" id="liveChip">🔴 En vivo</span>
 </div>
 
 <div id="feed" class="feed"></div>
 <div class="more"><button id="loadMore" style="display:none">Cargar más</button></div>
-</section>
-
-<!-- Minijuego: plataformas (tipo Mario) -->
-<section id="juego">
-<h2>Minijuego: Salta hasta la bandera</h2>
-<p class="hint">Flechas o WASD para moverte. Barra espaciadora para saltar. Junta ⭐ y llega a la bandera 🎌.</p>
-<div id="gameWrap">
-<canvas id="mario" width="960" height="480"></canvas>
-<div class="hud">
-<button class="btn" id="restart">Reiniciar</button>
-<div>Nivel: <strong id="lvl">1</strong></div>
-<div>Estrellas: <strong id="coins">0</strong></div>
-</div>
-</div>
 </section>
 </div>
 
@@ -195,6 +170,7 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script>
 /* 🔐 Pega aquí TUS credenciales reales */
 const firebaseConfig = {
@@ -209,151 +185,26 @@ if(!firebaseConfig.apiKey){ alert("Falta configurar Firebase: edita firebaseConf
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = firebase.storage();
+
+// Auth anónimo (mejor estabilidad de permisos/quotas)
+firebase.auth().signInAnonymously().catch(()=>{});
+// Persistencia (si falla, seguimos online normal)
 db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
 </script>
 
 <script>
-/************ Foro en vivo tipo reddit (público) ************/
+/************ Foro abierto (posts + comentarios) ************/
 const allowedApps = ["BUSHO","Canva","Shopify","Zoom","Mercado Pago"];
 const $ = s => document.querySelector(s);
 const feed = $("#feed"), statusEl=$("#status"), bar=$("#bar"), prog=$("#progress");
-const filterApp = $("#filterApp"), orderSel = $("#orderSel"), loadMoreBtn = $("#loadMore"), liveChip=$("#liveChip");
+const filterApp = $("#filterApp"), orderSel = $("#orderSel"), loadMoreBtn = $("#loadMore");
 const PAGE = 20;
-let lastDoc = null, unsub = null;
+let lastDoc = null, unsubPosts = null;
 
 const escapeHTML = s => (s||"").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
 const tsToDate = ts => (ts?.toDate ? ts.toDate() : new Date());
 
-function k(m){ return m ?? 0; }
-
-function postCard(doc){
-const p = doc.data(); const t = tsToDate(p.time);
-const el = document.createElement("article"); el.className="post"; el.id = `post-${doc.id}`;
-el.innerHTML = `
-<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"Invitado")}</div>
-${p.title ? `<h3 style="margin:6px 0 6px">${escapeHTML(p.title)}</h3>` : ""}
-<div>${escapeHTML(p.text||"")}</div>
-<div class="media">
-${p.mediaUrl ? (p.mediaType==="video" ? `<video controls src="${escapeHTML(p.mediaUrl)}"></video>` : `<img loading="lazy" src="${escapeHTML(p.mediaUrl)}" alt="media">`) : ""}
-</div>
-<div class="toolbar">
-<span class="vote">
-<button data-vote="up" data-id="${doc.id}">⬆️</button>
-<strong id="v-${doc.id}">${k(p.votes)}</strong>
-<button data-vote="down" data-id="${doc.id}">⬇️</button>
-</span>
-<span class="tag">${escapeHTML(p.app||"")}</span>
-<span class="meta" style="margin-left:auto">${t.toLocaleString()}</span>
-</div>
-<div class="comments">
-<div class="comment-form">
-<input type="text" placeholder="Comentar..." maxlength="300" />
-<button class="btn" data-cid="${doc.id}">Comentar</button>
-</div>
-<div class="comment-list"></div>
-</div>
-`;
-// Votos
-el.querySelectorAll("button[data-vote]").forEach(b=>{
-b.addEventListener("click", async ()=>{
-const id = b.getAttribute("data-id");
-const delta = b.getAttribute("data-vote")==="up" ? 1 : -1;
-try{
-await db.collection("posts").doc(id).update({ votes: firebase.firestore.FieldValue.increment(delta) });
-}catch(e){ console.error(e); }
-});
-});
-// Comentarios realtime
-const list = el.querySelector(".comment-list");
-db.collection("posts").doc(doc.id).collection("comments").orderBy("time","asc")
-.onSnapshot(s=>{
-list.innerHTML = "";
-s.forEach(c=>{
-const d=c.data(); const ct=tsToDate(d.time);
-const li=document.createElement("div"); li.className="comment";
-li.innerHTML = `<div>${escapeHTML(d.text||"")}</div><div class="by">${escapeHTML(d.name||"Invitado")} · ${ct.toLocaleString()}</div>`;
-list.appendChild(li);
-});
-});
-// Enviar comentario
-const [inp,btn]=el.querySelectorAll(".comment-form > *");
-btn.addEventListener("click", async ()=>{
-const text=inp.value.trim(); if(!text) return;
-await db.collection("posts").doc(doc.id).collection("comments").add({
-text, name:"Invitado", time: firebase.firestore.FieldValue.serverTimestamp()
-});
-inp.value="";
-});
-return el;
-}
-
-function stopLive(){ if(unsub){ unsub(); unsub=null; } liveChip.textContent = "🟡 Vista estática"; }
-
-function baseQueryServer(){
-const dir = orderSel.value;
-// Evitamos índices compuestos obligatorios: por defecto solo ordenamos por time y filtramos en cliente.
-// Para "Top", ordenamos por votes desc (y time como desempate).
-if(dir==="top"){
-return db.collection("posts").orderBy("votes","desc").orderBy("time","desc");
-}
-if(dir==="asc"){ return db.collection("posts").orderBy("time","asc"); }
-return db.collection("posts").orderBy("time","desc");
-}
-
-function startLive(){
-stopLive();
-liveChip.textContent = "🔴 En vivo";
-const q = baseQueryServer().limit(PAGE);
-unsub = q.onSnapshot(snap=>{
-const selected = (filterApp.value || "").trim();
-feed.innerHTML = "";
-const frag=document.createDocumentFragment();
-snap.forEach(doc=>{
-const app = (doc.data().app||"");
-if(!selected || selected===app){ frag.appendChild(postCard(doc)); }
-});
-feed.appendChild(frag);
-lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-}, async (err)=>{
-console.error(err);
-stopLive();
-// Fallback estático
-const snap = await baseQueryServer().limit(PAGE).get();
-const selected = (filterApp.value || "").trim();
-feed.innerHTML = "";
-const frag=document.createDocumentFragment();
-snap.forEach(doc=>{
-const app = (doc.data().app||"");
-if(!selected || selected===app){ frag.appendChild(postCard(doc)); }
-});
-feed.appendChild(frag);
-lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-});
-}
-
-async function loadMore(){
-if(!lastDoc) return;
-const q = baseQueryServer().startAfter(lastDoc).limit(PAGE);
-const snap = await q.get();
-const selected = (filterApp.value || "").trim();
-const frag=document.createDocumentFragment();
-snap.forEach(doc=>{
-const app = (doc.data().app||"");
-if(!selected || selected===app){ frag.appendChild(postCard(doc)); }
-});
-feed.appendChild(frag);
-lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-}
-
-filterApp.addEventListener("change", startLive);
-orderSel.addEventListener("change", startLive);
-loadMoreBtn.addEventListener("click", loadMore);
-
-// Subida con progreso (fluida)
+// ===== Subida con progreso (imagen/video) =====
 async function uploadMedia(file){
 if(!file) return { url:"", type:"" };
 const MAX_MB = 25;
@@ -377,16 +228,133 @@ resolve({ url, type: file.type.startsWith("video/") ? "video" : "image" });
 });
 }
 
-// Publicar post
+// ===== Crear tarjeta de post + manejo de comentarios on-demand =====
+function renderPost(doc){
+const p = doc.data(); const t = tsToDate(p.time);
+const wrap = document.createElement("article");
+wrap.className = "post"; wrap.id = `post-${doc.id}`;
+wrap.innerHTML = `
+<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"Invitado")} · ${t.toLocaleString()}</div>
+${p.title ? `<div class="title">${escapeHTML(p.title)}</div>` : ""}
+<div>${escapeHTML(p.text||"")}</div>
+<div class="media">
+${p.mediaUrl ? (p.mediaType==="video" ? `<video controls src="${escapeHTML(p.mediaUrl)}"></video>` : `<img loading="lazy" src="${escapeHTML(p.mediaUrl)}" alt="media">`) : ""}
+</div>
+<div class="toolbar">
+<button class="comment-toggle" data-id="${doc.id}">Ver comentarios</button>
+<span style="opacity:.8">ID: ${doc.id.slice(0,6)}…</span>
+</div>
+<div class="comments" id="c-${doc.id}">
+<div class="comment-form">
+<input type="text" id="cn-${doc.id}" placeholder="Tu nombre (opcional)" maxlength="40"/>
+<input type="text" id="ct-${doc.id}" placeholder="Escribe un comentario..." maxlength="300"/>
+<button class="btn" data-post="${doc.id}">Comentar</button>
+</div>
+<div class="comment-list" id="cl-${doc.id}"></div>
+</div>
+`;
+
+let commentsOpen = false, unsubC = null;
+// Abrir/cerrar comentarios (crea/detiene listener)
+wrap.querySelector(".comment-toggle").addEventListener("click", ()=>{
+const box = wrap.querySelector(`#c-${doc.id}`);
+commentsOpen = !commentsOpen;
+box.style.display = commentsOpen ? "block" : "none";
+wrap.querySelector(".comment-toggle").textContent = commentsOpen ? "Ocultar comentarios" : "Ver comentarios";
+if(commentsOpen && !unsubC){
+unsubC = db.collection("posts").doc(doc.id).collection("comments").orderBy("time","asc")
+.onSnapshot(s=>{
+const list = wrap.querySelector(`#cl-${doc.id}`);
+list.innerHTML = "";
+s.forEach(c=>{
+const d=c.data(); const ct=tsToDate(d.time);
+const el=document.createElement("div"); el.className="comment";
+el.innerHTML = `<div>${escapeHTML(d.text||"")}</div><div class="by">${escapeHTML(d.name||"Invitado")} · ${ct.toLocaleString()}</div>`;
+list.appendChild(el);
+});
+});
+}
+if(!commentsOpen && unsubC){ unsubC(); unsubC=null; }
+});
+
+// Enviar comentario
+wrap.querySelector(`button[data-post="${doc.id}"]`).addEventListener("click", async ()=>{
+const name = (wrap.querySelector(`#cn-${doc.id}`).value.trim() || "Invitado").slice(0,40);
+const text = wrap.querySelector(`#ct-${doc.id}`).value.trim();
+if(!text) return;
+try{
+await db.collection("posts").doc(doc.id).collection("comments").add({
+name, text, time: firebase.firestore.FieldValue.serverTimestamp()
+});
+wrap.querySelector(`#ct-${doc.id}`).value = "";
+}catch(e){ console.error(e); }
+});
+
+return wrap;
+}
+
+// ===== Listado de posts (en vivo) + paginación estática para más antiguos =====
+function baseQuery(){
+const dir = orderSel.value === "asc" ? "asc" : "desc";
+return db.collection("posts").orderBy("time", dir);
+}
+function startPosts(){
+if(unsubPosts){ unsubPosts(); unsubPosts=null; }
+const selected = (filterApp.value || "").trim();
+const q = baseQuery().limit(PAGE);
+unsubPosts = q.onSnapshot(async snap=>{
+feed.innerHTML = "";
+const frag=document.createDocumentFragment();
+snap.forEach(doc=>{
+const app = (doc.data().app||"");
+if(!selected || app===selected) frag.appendChild(renderPost(doc));
+});
+feed.appendChild(frag);
+lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
+}, async err=>{
+console.error(err);
+// Fallback estático si falla el listener
+const snap2 = await q.get();
+feed.innerHTML = "";
+const frag=document.createDocumentFragment();
+snap2.forEach(doc=>{
+const app = (doc.data().app||"");
+if(!selected || app===selected) frag.appendChild(renderPost(doc));
+});
+feed.appendChild(frag);
+lastDoc = snap2.docs.length ? snap2.docs[snap2.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
+});
+}
+async function loadMore(){
+if(!lastDoc) return;
+const selected = (filterApp.value || "").trim();
+const q = baseQuery().startAfter(lastDoc).limit(PAGE);
+const snap = await q.get();
+const frag=document.createDocumentFragment();
+snap.forEach(doc=>{
+const app = (doc.data().app||"");
+if(!selected || app===selected) frag.appendChild(renderPost(doc));
+});
+feed.appendChild(frag);
+lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
+}
+filterApp.addEventListener("change", startPosts);
+orderSel.addEventListener("change", startPosts);
+loadMoreBtn.addEventListener("click", loadMore);
+
+// ===== Publicar post =====
 document.getElementById("postForm").addEventListener("submit", async e=>{
 e.preventDefault();
 const btn = document.getElementById("sendBtn"); btn.disabled = true;
 statusEl.textContent = "Subiendo...";
 try{
 const app = document.getElementById("fApp").value;
-const name = document.getElementById("fName").value.trim();
+const name = document.getElementById("fName").value.trim().slice(0,40);
 const title = document.getElementById("fTitle").value.trim().slice(0,100);
-const text = document.getElementById("fText").value.trim();
+const text = document.getElementById("fText").value.trim().slice(0,1000);
 const file = document.getElementById("fFile").files[0] || null;
 if(!allowedApps.includes(app)) throw new Error("App no permitida.");
 if(!name || !text) throw new Error("Completa nombre y texto.");
@@ -395,10 +363,8 @@ let mediaUrl="", mediaType="";
 if(file){ ({url:mediaUrl, type:mediaType} = await uploadMedia(file)); }
 
 await db.collection("posts").add({
-app, name:name.slice(0,40), title, text:text.slice(0,1000),
-mediaUrl, mediaType,
-time: firebase.firestore.FieldValue.serverTimestamp(),
-votes: 0
+app, name, title, text, mediaUrl, mediaType,
+time: firebase.firestore.FieldValue.serverTimestamp()
 });
 
 e.target.reset();
@@ -412,191 +378,8 @@ btn.disabled = false;
 }
 });
 
-// Arranca el feed
-startLive();
-</script>
-
-<script>
-/***************** Minijuego: Plataformas (tipo Mario) ******************/
-const C = document.getElementById("mario");
-const X = C.getContext("2d");
-const lvlEl = document.getElementById("lvl");
-const coinsEl = document.getElementById("coins");
-
-let level=1, coins=0, world, player, cameraX=0;
-
-const TILE = 32, GRAV = 0.6, JUMP = -11.5, SPEED = 3.2, FRICTION=0.85;
-const KEY = {left:false, right:false, up:false};
-
-const maps = [
-// 0: vacío, 1: bloque, 2: moneda, 3: bandera
-[
-"0000000000000000000000000000000000000000000000000000",
-"0000000000000000000000000000000000000000000000000000",
-"0000000000000000020000000000000000000000000000000000",
-"0000000000000000000000000000000000002000000000000000",
-"0000000000000000000000000000000000000000000000000000",
-"0000000000000000000000000000020000000000000000000000",
-"0000000000000000000000000000000000000000000000000000",
-"0000000000000011111000000000000000000000000000000000",
-"0000000000000000000000000000000011111100000000000000",
-"1111111111111111111111111111111111111111111111111130"
-],
-[
-"0000000000000000000000000020000000000000000000000000",
-"0000000000000000000000000000000000000000000000000000",
-"0000000000000000000000000000000000002000000000000000",
-"0000000000000000000000000000000000000000000000000000",
-"0000000000000000000000000000000000000000000000000000",
-"0000011111100000000000000000000000000000000000020000",
-"0000000000000000111110000000000000000000000000000000",
-"0000000000000000000000000000000000000000000000000000",
-"0000000000000000000000011111110000000000000000000000",
-"1111111111111111111111111111111111111111111111111130"
-]
-];
-
-function loadLevel(n){
-const raw = maps[(n-1) % maps.length];
-return raw.map(row => row.split("").map(ch => parseInt(ch,10)));
-}
-
-function reset(){
-world = loadLevel(level);
-player = { x: 64, y: 0, vx: 0, vy: 0, onGround: false };
-coins = 0; coinsEl.textContent = coins;
-cameraX = 0; lvlEl.textContent = level;
-}
-
-function tileAt(px, py){
-const tx = Math.floor(px / TILE);
-const ty = Math.floor(py / TILE);
-if(ty < 0 || ty >= world.length || tx < 0) return 1; // paredes invisibles
-if(tx >= world[0].length) return 3; // más allá: bandera
-return world[ty][tx];
-}
-
-function collectIfCoin(px, py){
-const tx = Math.floor(px / TILE);
-const ty = Math.floor(py / TILE);
-if(tx>=0 && tx<world[0].length && ty>=0 && ty<world.length && world[ty][tx]===2){
-world[ty][tx]=0; coins++; coinsEl.textContent = coins;
-}
-}
-
-function physics(){
-// controles
-if(KEY.left) player.vx -= 0.6;
-if(KEY.right) player.vx += 0.6;
-player.vx *= FRICTION;
-
-// salto
-if(KEY.up && player.onGround){ player.vy = JUMP; player.onGround=false; }
-
-// gravedad
-player.vy += GRAV;
-
-// integrar X
-let nx = player.x + player.vx;
-if(player.vx > 0){
-// choque derecha
-if(tileAt(nx+16, player.y-16)===1 || tileAt(nx+16, player.y-1)===1){
-nx = Math.floor((nx+16)/TILE)*TILE - 16; player.vx = 0;
-}
-} else if(player.vx < 0){
-// choque izquierda
-if(tileAt(nx-16, player.y-16)===1 || tileAt(nx-16, player.y-1)===1){
-nx = Math.floor((nx-16)/TILE+1)*TILE + 16; player.vx = 0;
-}
-}
-player.x = nx;
-
-// integrar Y
-let ny = player.y + player.vy;
-if(player.vy > 0){
-// suelo
-if(tileAt(player.x-10, ny+0)===1 || tileAt(player.x+10, ny+0)===1){
-ny = Math.floor(ny/TILE)*TILE; player.vy = 0; player.onGround = true;
-} else { player.onGround = false; }
-} else if(player.vy < 0){
-// techo
-if(tileAt(player.x-10, ny-24)===1 || tileAt(player.x+10, ny-24)===1){
-ny = Math.floor((ny-24)/TILE+1)*TILE + 24; player.vy = 0;
-}
-}
-player.y = ny;
-
-// recoger monedas
-collectIfCoin(player.x, player.y-16);
-
-// caer al vacío → reinicio
-if(player.y > C.height + 200){ reset(); }
-
-// avanzar cámara
-cameraX = Math.max(0, Math.floor(player.x - C.width/2));
-}
-
-function draw(){
-X.fillStyle = "#87ceeb"; // cielo
-X.fillRect(0,0,C.width,C.height);
-
-// dibujar mundo
-const startTile = Math.floor(cameraX / TILE);
-const endTile = startTile + Math.ceil(C.width / TILE) + 2;
-
-for(let y=0;y<world.length;y++){
-for(let x=startTile;x<Math.min(endTile, world[0].length);x++){
-const t = world[y][x];
-const sx = x*TILE - cameraX, sy = y*TILE;
-if(t===1){
-X.fillStyle="#2b2b2e";
-X.fillRect(sx, sy, TILE, TILE);
-X.fillStyle="#1d1d21";
-X.fillRect(sx, sy+TILE-6, TILE, 6);
-} else if(t===2){
-X.font = "22px serif"; X.textAlign="center"; X.textBaseline="middle";
-X.fillText("⭐", sx+TILE/2, sy+TILE/2);
-} else if(t===3){
-X.font = "24px serif"; X.textAlign="center"; X.textBaseline="middle";
-X.fillText("🎌", sx+TILE/2, sy+TILE/2);
-}
-}
-}
-
-// jugador
-X.font = "28px serif";
-X.textAlign = "center"; X.textBaseline = "middle";
-X.fillText("🧢", player.x - cameraX, player.y - 16); // “mario-like” gorrita
-
-// si llegamos a la bandera (al final del mapa)
-const atEnd = (player.x / TILE) >= (world[0].length-1);
-if(atEnd){
-level++; lvlEl.textContent = level;
-reset();
-}
-}
-
-function loop(){ physics(); draw(); requestAnimationFrame(loop); }
-
-// Controles
-window.addEventListener("keydown", e=>{
-const k = e.key.toLowerCase();
-if(k==="arrowleft" || k==="a") KEY.left = true;
-if(k==="arrowright"|| k==="d") KEY.right = true;
-if(k==="arrowup" || k==="w" || k===" ") KEY.up = true;
-});
-window.addEventListener("keyup", e=>{
-const k = e.key.toLowerCase();
-if(k==="arrowleft" || k==="a") KEY.left = false;
-if(k==="arrowright"|| k==="d") KEY.right = false;
-if(k==="arrowup" || k==="w" || k===" ") KEY.up = false;
-});
-
-document.getElementById("restart").addEventListener("click", ()=>{ reset(); });
-
-// Start
-reset(); loop();
+// Iniciar feed
+startPosts();
 </script>
 </body>
 </html>
-
