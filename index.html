@@ -12,7 +12,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:'Montserrat'
 a{color:inherit; text-decoration:none}
 .wrap{max-width:1200px; margin:0 auto; padding:20px}
 header{display:flex; align-items:center; justify-content:center; text-align:center; padding:40px 10px 10px}
-h1{font-size:2.6rem; margin:0 0 8px; text-shadow:0 2px 16px rgba(18,255,65,.7)}
+h1{font-size:2.4rem; margin:0 0 8px; text-shadow:0 2px 16px rgba(18,255,65,.7)}
 p.lead{margin:0; opacity:.9}
 
 /* Grilla Apps */
@@ -39,19 +39,25 @@ textarea{min-height:100px; resize:vertical}
 .actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
 .progress{height:8px; background:#111; border-radius:6px; overflow:hidden; width:220px; display:none}
 .bar{height:100%; width:0%; background:var(--accent); transition:width .1s linear}
-.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px}
+.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px}
 .post{background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%); border:1px solid rgba(255,255,255,.08);
 border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 .meta{font-size:.85rem; color:#c7ced6}
 .stars{color:var(--warn)}
 .media{margin-top:8px}
 .media img, .media video{width:100%; border-radius:10px; display:block}
+.actions-row{display:flex; gap:8px; margin-top:8px; align-items:center}
+.chip{font-size:.85rem; background:#1e1f22; border:1px solid #2b2d31; padding:4px 8px; border-radius:999px}
 .comments{margin-top:10px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px}
 .comment{font-size:.95rem; margin:6px 0}
 .comment .by{color:#cbd2d9; font-size:.85rem}
 .comment-form{display:flex; gap:6px; margin-top:8px}
 .comment-form input{flex:1}
 .comment-form button{white-space:nowrap}
+
+/* Paginación/infinite */
+.more{display:flex; justify-content:center; margin-top:12px}
+.more button{background:#202225; color:#fff; border:1px solid #2b2d31; padding:8px 12px; border-radius:8px; cursor:pointer}
 
 /* Juego (Gomoso) */
 #juego{margin:50px 0 90px; background:rgba(0,0,0,.14); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px}
@@ -72,7 +78,7 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <header>
 <div>
 <h1>APP para emprendedores</h1>
-<p class="lead">Foro global con imágenes/videos en tiempo real y minijuego “Gomoso Equilibrado”.</p>
+<p class="lead">Foro global en tiempo real (con imágenes/videos) y minijuego “Gomoso Equilibrado”.</p>
 </div>
 </header>
 
@@ -121,7 +127,7 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <!-- Foro global -->
 <section id="foro">
 <h2>Foro & Reseñas</h2>
-<p class="hint">Todos pueden publicar reseñas y comentar. Se suben imágenes o videos con barra de progreso.</p>
+<p class="hint">Todos pueden publicar y comentar. Imágenes o videos con barra de progreso. (Las reseñas son públicas)</p>
 
 <form id="postForm">
 <div>
@@ -153,10 +159,26 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 </div>
 </form>
 
+<!-- Filtros y orden -->
+<div class="actions-row">
+<select id="filterApp">
+<option value="">Todas las apps</option>
+<option value="BUSHO">BUSHO</option><option value="Canva">Canva</option>
+<option value="Shopify">Shopify</option><option value="Zoom">Zoom</option>
+<option value="Mercado Pago">Mercado Pago</option>
+</select>
+<select id="orderSel">
+<option value="desc">Más nuevas primero</option>
+<option value="asc">Más antiguas primero</option>
+</select>
+<span class="chip" id="liveChip">🔴 En vivo</span>
+</div>
+
 <div id="feed" class="feed"></div>
+<div class="more"><button id="loadMore" style="display:none">Cargar más</button></div>
 </section>
 
-<!-- Minijuego: Gomoso Equilibrado (alternativa segura) -->
+<!-- Minijuego: Gomoso Equilibrado -->
 <section id="juego">
 <h2>Minijuego: ¡Mantén a Gomoso en forma!</h2>
 <p class="hint">Mueve la mano 👋 con flechas/WASD para empujar a Gomoso. Come 🍔 para crecer y 🍎 para adelgazar. ¡Mantén su tamaño en la zona saludable!</p>
@@ -181,7 +203,7 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 <script>
-/* 🔐 Pega tus credenciales reales (Proyecto con Firestore + Storage) */
+/* ⚠️ Pega tus credenciales reales (Firestore + Storage habilitados) */
 const firebaseConfig = {
 apiKey: "TU_API_KEY",
 authDomain: "TU_AUTH_DOMAIN",
@@ -194,17 +216,123 @@ if(!firebaseConfig.apiKey){ alert("Falta configurar Firebase: edita firebaseConf
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = firebase.storage();
+
+// Persistencia offline (evita “pegado” y refrescos): si falla, seguimos online normal
+db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
 </script>
 
 <script>
-/************ Foro en tiempo real con subida de imagen/video (con progreso) ************/
+/************ Foro en tiempo real (público) con imagen/video y progreso ************/
 const allowedApps = ["BUSHO","Canva","Shopify","Zoom","Mercado Pago"];
 const $ = s => document.querySelector(s);
 const feed = $("#feed"), statusEl=$("#status"), bar=$("#bar"), prog=$("#progress");
+const filterApp = $("#filterApp"), orderSel = $("#orderSel"), loadMoreBtn = $("#loadMore"), liveChip=$("#liveChip");
 
 const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
 const escapeHTML = s => (s||"").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+const PAGE = 20;
+let lastDoc = null, unsub = null;
 
+function tsToDate(ts){ try{ return ts?.toDate ? ts.toDate() : new Date(ts); }catch{ return new Date(); } }
+
+function postCard(doc){
+const p = doc.data(); const t = tsToDate(p.time);
+const el = document.createElement("article"); el.className="post"; el.id = `post-${doc.id}`;
+el.innerHTML = `
+<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"")} <span class="stars">${stars(p.rating||0)}</span></div>
+<div>${escapeHTML(p.text||"")}</div>
+<div class="media">
+${p.mediaUrl ? (p.mediaType==="video" ? `<video controls src="${escapeHTML(p.mediaUrl)}"></video>` : `<img loading="lazy" src="${escapeHTML(p.mediaUrl)}" alt="media">`) : ""}
+</div>
+<div class="meta">${t.toLocaleString()}</div>
+<div class="comments">
+<div class="comment-form">
+<input type="text" placeholder="Comentar..." maxlength="300" />
+<button class="btn">Comentar</button>
+</div>
+<div class="comment-list"></div>
+</div>
+`;
+// Comentarios realtime
+const list = el.querySelector(".comment-list");
+db.collection("posts").doc(doc.id).collection("comments").orderBy("time","asc")
+.onSnapshot(s=>{
+list.innerHTML = "";
+s.forEach(c=>{
+const d=c.data(); const ct=tsToDate(d.time);
+const li=document.createElement("div"); li.className="comment";
+li.innerHTML = `<div>${escapeHTML(d.text||"")}</div><div class="by">${escapeHTML(d.name||"Invitado")} · ${ct.toLocaleString()}</div>`;
+list.appendChild(li);
+});
+});
+// Enviar comentario
+const [inp,btn]=el.querySelectorAll(".comment-form > *");
+btn.addEventListener("click", async ()=>{
+const text=inp.value.trim(); if(!text) return;
+await db.collection("posts").doc(doc.id).collection("comments").add({
+text, name:"Invitado", time: firebase.firestore.FieldValue.serverTimestamp()
+});
+inp.value="";
+});
+return el;
+}
+
+function stopLive(){
+if(unsub){ unsub(); unsub=null; }
+liveChip.textContent = "🟡 Vista estática";
+}
+function startLive(q){
+stopLive();
+liveChip.textContent = "🔴 En vivo";
+unsub = q.onSnapshot(snap=>{
+feed.innerHTML = "";
+const frag=document.createDocumentFragment();
+snap.forEach(doc=> frag.appendChild(postCard(doc)));
+feed.appendChild(frag);
+lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
+}, err=>{
+console.error(err);
+// Fallback a carga estática si falla el listener
+stopLive();
+loadStatic(q);
+});
+}
+async function loadStatic(q){
+const snap = await q.get();
+feed.innerHTML="";
+const frag=document.createDocumentFragment();
+snap.forEach(doc=> frag.appendChild(postCard(doc)));
+feed.appendChild(frag);
+lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
+}
+async function loadMore(){
+if(!lastDoc) return;
+const q = baseQuery().startAfter(lastDoc).limit(PAGE);
+const snap = await q.get();
+const frag=document.createDocumentFragment();
+snap.forEach(doc=> frag.appendChild(postCard(doc)));
+feed.appendChild(frag);
+lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
+}
+function baseQuery(){
+const app = filterApp.value;
+const dir = orderSel.value === "asc" ? "asc" : "desc";
+let q = db.collection("posts").orderBy("time", dir);
+if(app) q = q.where("app","==",app);
+return q;
+}
+function refresh(){
+const q = baseQuery().limit(PAGE);
+startLive(q);
+}
+filterApp.addEventListener("change", refresh);
+orderSel.addEventListener("change", refresh);
+document.getElementById("loadMore").addEventListener("click", loadMore);
+
+// Subida con progreso (no se pega)
 async function uploadMedia(file){
 if(!file) return { url:"", type:"" };
 const MAX_MB = 25;
@@ -218,67 +346,15 @@ const t = ref.put(file, {contentType:file.type});
 t.on('state_changed', snap=>{
 const pct = Math.round((snap.bytesTransferred/snap.totalBytes)*100);
 bar.style.width = pct + "%";
-}, reject, async ()=>{
+}, err=>{
+prog.style.display="none"; bar.style.width="0%"; reject(err);
+}, async ()=>{
 const url = await ref.getDownloadURL();
 bar.style.width = "0%"; prog.style.display="none";
 resolve({ url, type: file.type.startsWith("video/") ? "video" : "image" });
 });
 });
 }
-
-function renderComment(el, c){
-const t = (c.time?.toDate ? c.time.toDate() : new Date());
-const div=document.createElement("div"); div.className="comment";
-div.innerHTML = `<div>${escapeHTML(c.text||"")}</div><div class="by">${escapeHTML(c.name||"Invitado")} · ${t.toLocaleString()}</div>`;
-el.appendChild(div);
-}
-
-function renderPost(doc){
-const p = doc.data();
-const t = p.time?.toDate ? p.time.toDate() : new Date();
-const wrap = document.createElement("article");
-wrap.className = "post";
-wrap.id = `post-${doc.id}`;
-wrap.innerHTML = `
-<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"")} <span class="stars">${stars(p.rating||0)}</span></div>
-<div>${escapeHTML(p.text||"")}</div>
-<div class="media">
-${p.mediaUrl ? (p.mediaType==="video" ? `<video controls src="${escapeHTML(p.mediaUrl)}"></video>` : `<img src="${escapeHTML(p.mediaUrl)}" alt="media">`) : ""}
-</div>
-<div class="meta">${t.toLocaleString()}</div>
-<div class="comments" id="c-${doc.id}">
-<div class="comment-form">
-<input type="text" id="cn-${doc.id}" placeholder="Escribe un comentario..." maxlength="300"/>
-<button class="btn" data-post="${doc.id}">Comentar</button>
-</div>
-<div id="cl-${doc.id}"></div>
-</div>
-`;
-// Comentarios en tiempo real
-db.collection("posts").doc(doc.id).collection("comments").orderBy("time","asc").onSnapshot(s=>{
-const list = wrap.querySelector(`#cl-${doc.id}`);
-list.innerHTML = "";
-s.forEach(c=> renderComment(list, c.data()));
-});
-// Enviar comentario
-wrap.querySelector(`button[data-post="${doc.id}"]`).addEventListener("click", async ()=>{
-const input = wrap.querySelector(`#cn-${doc.id}`);
-const text = input.value.trim(); if(!text) return;
-await db.collection("posts").doc(doc.id).collection("comments").add({
-text, name:"Invitado", time: firebase.firestore.FieldValue.serverTimestamp()
-});
-input.value="";
-});
-return wrap;
-}
-
-// Feed en tiempo real
-db.collection("posts").orderBy("time","desc").limit(50).onSnapshot(snap=>{
-feed.innerHTML="";
-const frag=document.createDocumentFragment();
-snap.forEach(doc=> frag.appendChild(renderPost(doc)));
-feed.appendChild(frag);
-});
 
 // Publicar post
 document.getElementById("postForm").addEventListener("submit", async e=>{
@@ -299,7 +375,9 @@ if(file){ ({url:mediaUrl, type:mediaType} = await uploadMedia(file)); }
 
 await db.collection("posts").add({
 app, name:name.slice(0,40), rating, text:text.slice(0,800),
-mediaUrl, mediaType, time: firebase.firestore.FieldValue.serverTimestamp()
+mediaUrl, mediaType,
+time: firebase.firestore.FieldValue.serverTimestamp(),
+likes: 0
 });
 
 e.target.reset();
@@ -308,12 +386,17 @@ statusEl.textContent = "Publicado ✔️";
 console.error(err);
 statusEl.textContent = "Error: " + err.message;
 }finally{
-setTimeout(()=>statusEl.textContent="",1200);
+setTimeout(()=>statusEl.textContent="",1400);
 btn.disabled = false;
 }
 });
 
-/***************** Minijuego: Gomoso Equilibrado ******************/
+// Arrancar el feed
+refresh();
+</script>
+
+<script>
+/***************** Minijuego: Gomoso Equilibrado (seguro) ******************/
 const cvs = document.getElementById("arena"), ctx = cvs.getContext("2d");
 const lvlEl = document.getElementById("lvl"), scoreEl = document.getElementById("score"), sizeEl = document.getElementById("sizeRead");
 
@@ -322,7 +405,7 @@ let hand = { x: 400, y: 240, vx: 0, vy: 0 };
 let gomoso; // personaje
 let items = []; // comida que cae
 let zone = { min: 24, max: 48 }; // radio saludable
-const G = 0.25, FRICTION = 0.992, PUSH = 1.1, ACCEL = 1.7;
+const G = 0.25, FRICTION = 0.992, PUSH = 1.1;
 
 function rand(a,b){ return Math.random()*(b-a)+a; }
 
@@ -332,12 +415,10 @@ for (let i = 0; i < 6 + level * 2; i++) spawnItem();
 zone.min = Math.max(20, 24 - level * 0.8);
 zone.max = Math.min(64, 48 + level * 0.6);
 }
-
 function spawnItem(){
 const type = Math.random() < 0.5 ? "burger" : "apple";
 items.push({ type, x: rand(40, cvs.width-40), y: rand(-200, -40), vy: rand(1.0, 2.2) });
 }
-
 function startGame() {
 level = 1; score = 0;
 hand = { x: cvs.width/2, y: 200, vx: 0, vy: 0 };
@@ -347,7 +428,6 @@ lvlEl.textContent = level; scoreEl.textContent = score;
 healthyTicks = 0;
 loop();
 }
-
 function drawArena(){
 ctx.fillStyle = "#0f0f12"; ctx.fillRect(0,0,cvs.width,cvs.height);
 ctx.fillStyle = "#2b2b2e"; ctx.fillRect(0, cvs.height-20, cvs.width, 20);
@@ -357,24 +437,20 @@ ctx.beginPath(); ctx.arc(gomoso.x, gomoso.y, zone.min, 0, Math.PI*2); ctx.stroke
 ctx.beginPath(); ctx.arc(gomoso.x, gomoso.y, zone.max, 0, Math.PI*2); ctx.stroke();
 ctx.setLineDash([]);
 }
-
 function drawHand(){
 ctx.font = "26px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
 ctx.fillText("👋", hand.x, hand.y);
 }
-
 function drawGomoso(){
 const face = gomoso.asleep ? "😴" : gomoso.tired ? "🥱" : "😀";
 ctx.font = Math.round(gomoso.r*1.5) + "px serif";
 ctx.textAlign="center"; ctx.textBaseline="middle";
 ctx.fillText(face, gomoso.x, gomoso.y);
 }
-
 function drawItems(){
 ctx.font = "22px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
 items.forEach(it=> ctx.fillText(it.type==="burger" ? "🍔" : "🍎", it.x, it.y));
 }
-
 function physics(){
 // mano
 hand.vx *= 0.92; hand.vy *= 0.92;
@@ -393,7 +469,7 @@ if(gomoso.y > cvs.height-30){ gomoso.y = cvs.height-30; gomoso.vy *= -0.35; }
 const dx = gomoso.x - hand.x, dy = gomoso.y - hand.y, d = Math.hypot(dx,dy);
 if(d < gomoso.r*0.9){ const nx = dx/(d||1), ny = dy/(d||1); gomoso.vx += nx * 1.1; gomoso.vy += ny * 1.1; }
 
-// caída de items + colisión
+// items + colisión
 items.forEach(it=>{
 it.y += it.vy;
 const ddx = gomoso.x - it.x, ddy = gomoso.y - it.y, dist = Math.hypot(ddx,ddy);
@@ -410,7 +486,7 @@ items = items.filter(it=>{ if(it.y > cvs.height + 40){ spawnItem(); return false
 gomoso.asleep = gomoso.r > zone.max + 6;
 gomoso.tired = gomoso.r < zone.min - 6;
 
-// límites extremos → retroceso de nivel
+// límites extremos → retroceso
 if(gomoso.r >= 80 || gomoso.r <= 14){
 if(level > 1) level--;
 gomoso.r = 36;
@@ -419,28 +495,18 @@ lvlEl.textContent = level;
 healthyTicks = 0;
 }
 
-// progreso de nivel si se mantiene en zona saludable
+// progreso de nivel
 sizeEl.textContent = Math.round(gomoso.r) + "px";
 if(gomoso.r >= zone.min && gomoso.r <= zone.max){
 healthyTicks++;
-if(healthyTicks > 60*5){ // ~5s
-level++; lvlEl.textContent = level;
-healthyTicks = 0;
-resetLevel();
-}
+if(healthyTicks > 60*5){ level++; lvlEl.textContent = level; healthyTicks = 0; resetLevel(); }
 } else {
 healthyTicks = Math.max(0, healthyTicks - 2);
 }
 }
-
-function render(){
-drawArena(); drawItems(); drawGomoso(); drawHand();
-}
-
+function render(){ drawArena(); drawItems(); drawGomoso(); drawHand(); }
 let healthyTicks = 0;
 function loop(){ physics(); render(); requestAnimationFrame(loop); }
-
-// Controles
 window.addEventListener("keydown", (e)=>{
 const k = e.key.toLowerCase();
 if(["arrowleft","a"].includes(k)) hand.vx -= 1.7;
@@ -448,7 +514,6 @@ if(["arrowright","d"].includes(k)) hand.vx += 1.7;
 if(["arrowup","w"].includes(k)) hand.vy -= 1.7;
 if(["arrowdown","s"].includes(k)) hand.vy += 1.7;
 });
-
 document.getElementById("restart").addEventListener("click", startGame);
 startGame();
 </script>
