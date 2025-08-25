@@ -7,15 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
 :root{
---bg:#2b2ee6; --text:#f4f6f8; --panel:#202225; --panel2:#151618; --accent:#4CAF50; --muted:#b9c0c7;
---warn:#ffd166;
+--bg:#2b2ee6; --text:#f4f6f8; --panel:#202225; --panel2:#151618; --accent:#4CAF50; --muted:#b9c0c7; --warn:#ffd166;
 }
 *{box-sizing:border-box}
 body{margin:0; background:var(--bg); color:var(--text); font-family:'Montserrat','Segoe UI',Arial,sans-serif}
 a{color:inherit}
 
 .wrap{max-width:1200px; margin:0 auto; padding:20px}
-
 header{display:flex; align-items:center; justify-content:center; text-align:center; padding:40px 10px 10px}
 h1{font-size:2.6rem; margin:0 0 8px; text-shadow:0 2px 16px rgba(18,255,65,.7)}
 p.lead{margin:0; opacity:.9}
@@ -38,12 +36,12 @@ display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radiu
 background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; text-decoration:none; font-weight:700; font-size:.9rem;
 }
 
-/* Foro & Reseñas */
-section#foro{background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px; margin:24px 0 80px}
-section#foro h2{margin:0 0 6px}
+/* Foro */
+#foro{background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px; margin:24px 0 80px}
+#foro h2{margin:0 0 6px}
 .hint{color:var(--muted); margin:0 0 16px}
-form#postForm{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px}
-form#postForm .full{grid-column:1/-1}
+#postForm{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px}
+#postForm .full{grid-column:1/-1}
 input, select, textarea{
 width:100%; border:1px solid rgba(255,255,255,.15); background:#141516; color:#fff;
 border-radius:10px; padding:10px 12px; font-family:inherit; font-size:1rem
@@ -51,11 +49,8 @@ border-radius:10px; padding:10px 12px; font-family:inherit; font-size:1rem
 textarea{min-height:100px; resize:vertical}
 .actions{display:flex; gap:10px; align-items:center}
 .secondary{background:#2a2d31}
-.danger{background:#a33}
-.upload-hint{font-size:.9rem; color:var(--muted)}
 .preview{display:flex; gap:12px; flex-wrap:wrap}
 .preview img{max-width:120px; border-radius:10px; border:1px solid rgba(255,255,255,.1)}
-
 .feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px}
 .post{
 background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%); border:1px solid rgba(255,255,255,.08);
@@ -66,28 +61,17 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)
 .post img{width:100%; height:auto; border-radius:10px; margin-top:8px}
 
 /* Juego */
-section#juego{margin:50px 0 90px; background:rgba(0,0,0,.14); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px}
+#juego{margin:50px 0 90px; background:rgba(0,0,0,.14); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px}
 #gameWrap{display:flex; flex-direction:column; align-items:center; gap:8px}
-canvas#maze{background:#0f0f12; border:2px solid #2b2b2b; border-radius:8px; max-width:100%; height:auto}
+#arena{background:#0f0f12; border:2px solid #2b2b2b; border-radius:8px; max-width:100%; height:auto}
 .hud{display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center}
-.kbd{background:#111; border:1px solid #333; border-radius:6px; padding:2px 6px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace}
-.pad{display:grid; grid-template-columns:40px 40px 40px; gap:6px; margin-top:6px}
-.pad button{height:40px; border-radius:8px; border:1px solid #2f2f2f; background:#1b1c1f; color:#fff; font-weight:700; cursor:pointer}
-.pad button:active{transform:scale(.98)}
 
-/* Fijos */
+/* Fijos + mano */
 .brand{position:fixed; left:16px; bottom:16px; font-weight:800; letter-spacing:1px; opacity:.9}
 .contact{position:fixed; right:16px; bottom:16px; opacity:.9; background:rgba(0,0,0,.3); padding:6px 12px; border-radius:8px}
-
-/* Emoji que saluda */
-.emoji-wave{
-position:fixed; bottom:40px; right:40px; font-size:90px; line-height:1; z-index:9999;
-animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none; filter:drop-shadow(0 3px 6px rgba(0,0,0,.5));
-}
-@keyframes wave{
-0%,100%{transform:rotate(0deg)} 15%{transform:rotate(20deg)} 30%{transform:rotate(-10deg)}
-45%{transform:rotate(12deg)} 60%{transform:rotate(-6deg)} 75%{transform:rotate(4deg)}
-}
+.emoji-wave{position:fixed; bottom:40px; right:40px; font-size:90px; line-height:1; z-index:9999;
+animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none; filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}
+@keyframes wave{0%,100%{transform:rotate(0deg)} 15%{transform:rotate(20deg)} 30%{transform:rotate(-10deg)} 45%{transform:rotate(12deg)} 60%{transform:rotate(-6deg)} 75%{transform:rotate(4deg)}}
 </style>
 </head>
 <body>
@@ -95,100 +79,83 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <header>
 <div>
 <h1>APP para emprendedores</h1>
-<p class="lead">Recursos útiles, foro de reseñas con imágenes y un minijuego para cerrar 😄</p>
+<p class="lead">Recursos útiles, foro abierto con imágenes y un minijuego “Vacas vs Pollos”.</p>
 </div>
 </header>
 
-<!-- Grilla de Apps -->
-<section id="apps" class="grid">
+<!-- Apps -->
+<section id="apps" class="grid" aria-label="apps">
 <article class="card">
 <img class="logo" src="Img/logo.busho.png" alt="BUSHO" />
 <h3>BUSHO</h3>
-<p>Arriendo flexible de espacios comerciales. “Airbnb para tiendas”.</p>
+<p>Arriendo flexible de espacios comerciales.</p>
 <div class="stores">
-<a class="btn" target="_blank" href="https://busho.cl/">Visitar</a>
-<a class="btn" target="_blank" href="https://apps.apple.com/cl/app/busho/id1665748711">iOS</a>
-<a class="btn" target="_blank" href="https://play.google.com/store/apps/details?id=app.busho.cl">Android</a>
+<a class="btn" href="https://busho.cl/" target="_blank" rel="noopener noreferrer">Visitar</a>
+<a class="btn" href="https://apps.apple.com/cl/app/busho/id1665748711" target="_blank" rel="noopener noreferrer">iOS</a>
+<a class="btn" href="https://play.google.com/store/apps/details?id=app.busho.cl" target="_blank" rel="noopener noreferrer">Android</a>
 </div>
 </article>
 
 <article class="card">
 <img class="logo" src="Img/logo.canva.png" alt="Canva" />
 <h3>Canva</h3>
-<p>Diseños fáciles para redes, logos, flyers y más.</p>
-<div class="stores"><a class="btn" target="_blank" href="https://www.canva.com/">Visitar</a></div>
+<p>Diseños fáciles para redes y marca.</p>
+<div class="stores"><a class="btn" href="https://www.canva.com/" target="_blank" rel="noopener noreferrer">Visitar</a></div>
 </article>
 
 <article class="card">
 <img class="logo" src="Img/logo.shopify3.png" alt="Shopify" />
 <h3>Shopify</h3>
-<p>Monta tu tienda online en minutos.</p>
-<div class="stores"><a class="btn" target="_blank" href="https://www.shopify.com/">Visitar</a></div>
+<p>Tu tienda online en minutos.</p>
+<div class="stores"><a class="btn" href="https://www.shopify.com/" target="_blank" rel="noopener noreferrer">Visitar</a></div>
 </article>
 
 <article class="card">
 <img class="logo" src="Img/logo.zoom.png" alt="Zoom" />
 <h3>Zoom</h3>
-<p>Reuniones con clientes y partners.</p>
-<div class="stores"><a class="btn" target="_blank" href="https://zoom.us/">Visitar</a></div>
+<p>Reuniones profesionales.</p>
+<div class="stores"><a class="btn" href="https://zoom.us/" target="_blank" rel="noopener noreferrer">Visitar</a></div>
 </article>
 
 <article class="card">
 <img class="logo" src="Img/logo.mercadopago.png" alt="Mercado Pago" />
 <h3>Mercado Pago</h3>
 <p>Cobra con tarjeta desde el celular.</p>
-<div class="stores"><a class="btn" target="_blank" href="https://www.mercadopago.cl/">Visitar</a></div>
+<div class="stores"><a class="btn" href="https://www.mercadopago.cl/" target="_blank" rel="noopener noreferrer">Visitar</a></div>
 </article>
 </section>
 
-<!-- Foro & Reseñas (global, con imágenes) -->
+<!-- Foro -->
 <section id="foro">
 <h2>Foro & Reseñas</h2>
-<p class="hint">Comparte tu experiencia. Todas las reseñas quedan públicas. (Las imágenes se suben a la nube)</p>
+<p class="hint">Pega tu experiencia. Si configuras Firebase, todo queda público; si no, se guarda localmente solo en tu navegador.</p>
 
 <form id="postForm">
 <div>
 <label>App</label>
 <select id="fApp" required>
-<option value="BUSHO">BUSHO</option>
-<option value="Canva">Canva</option>
-<option value="Shopify">Shopify</option>
-<option value="Zoom">Zoom</option>
+<option value="BUSHO">BUSHO</option><option value="Canva">Canva</option>
+<option value="Shopify">Shopify</option><option value="Zoom">Zoom</option>
 <option value="Mercado Pago">Mercado Pago</option>
 </select>
 </div>
-
-<div>
-<label>Tu nombre</label>
-<input id="fName" type="text" placeholder="Ej: Raúl" required />
-</div>
-
+<div><label>Tu nombre</label><input id="fName" type="text" placeholder="Ej: Raúl" required /></div>
 <div>
 <label>Calificación</label>
 <select id="fRating" required>
-<option value="5">★★★★★ (5)</option>
-<option value="4">★★★★☆ (4)</option>
-<option value="3">★★★☆☆ (3)</option>
-<option value="2">★★☆☆☆ (2)</option>
+<option value="5">★★★★★ (5)</option><option value="4">★★★★☆ (4)</option>
+<option value="3">★★★☆☆ (3)</option><option value="2">★★☆☆☆ (2)</option>
 <option value="1">★☆☆☆☆ (1)</option>
 </select>
 </div>
-
-<div class="full">
-<label>Reseña</label>
-<textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required></textarea>
-</div>
-
+<div class="full"><label>Reseña</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required></textarea></div>
 <div class="full">
 <label>Imagen (opcional)</label>
 <input id="fImage" type="file" accept="image/*" />
-<div class="upload-hint">Formatos comunes (JPG/PNG). Tamaño sugerido &lt; 3 MB.</div>
 <div id="preview" class="preview"></div>
 </div>
-
 <div class="full actions">
 <button class="btn" type="submit" id="sendBtn">Publicar</button>
-<button class="btn secondary" type="button" id="clearLocal">Limpiar caché local</button>
 <span id="status" class="hint"></span>
 </div>
 </form>
@@ -196,20 +163,16 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <div id="feed" class="feed"></div>
 </section>
 
-<!-- Juego del Laberinto -->
+<!-- Juego: Vacas vs Pollos -->
 <section id="juego">
-<h2>Minijuego: lleva la 👋 a la meta</h2>
-<p class="hint">Controles: <span class="kbd">←</span> <span class="kbd">→</span> <span class="kbd">↑</span> <span class="kbd">↓</span> o WASD. En móvil: usa el pad.</p>
+<h2>Minijuego: Vacas 🐄 vs Pollos 🐔</h2>
+<p class="hint">Mueve la mano 👋 con flechas/WASD para empujar. Si un animal cae del borde se convierte en 🍖 o 🍗. Cada nivel hay más y el suelo tiene más huecos.</p>
 <div id="gameWrap">
-<canvas id="maze" width="640" height="480"></canvas>
+<canvas id="arena" width="800" height="480"></canvas>
 <div class="hud">
 <button class="btn" id="restart">Reiniciar</button>
 <div>Nivel: <strong id="lvl">1</strong></div>
-</div>
-<div class="pad">
-<div></div><button data-dy="-1">↑</button><div></div>
-<button data-dx="-1">←</button><button data-dx="1">→</button>
-<div></div><button data-dy="1">↓</button><div></div>
+<div>Puntos: <strong id="score">0</strong></div>
 </div>
 </div>
 </section>
@@ -219,235 +182,236 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <div class="contact">contacto: personappoficial@gmail.com</div>
 <div class="emoji-wave" aria-hidden="true">👋</div>
 
-<!-- Firebase (FORO GLOBAL) -->
-<!-- 1) Añade tus librerías Firebase: -->
+<!-- Firebase opcional -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-<!-- 2) Configura tu proyecto (REEMPLAZA con tus claves de Firebase): -->
 <script>
-// ⚠️ Rellena con los valores de tu proyecto Firebase
+// Si tienes Firebase, pon aquí tus claves. Si lo dejas vacío, el foro usa modo local.
 const firebaseConfig = {
-apiKey: "TU_API_KEY",
-authDomain: "TU_AUTH_DOMAIN",
-projectId: "TU_PROJECT_ID",
-storageBucket: "TU_STORAGE_BUCKET",
-messagingSenderId: "TU_SENDER_ID",
-appId: "TU_APP_ID"
+apiKey:"", authDomain:"", projectId:"", storageBucket:"", messagingSenderId:"", appId:""
 };
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const storage = firebase.storage();
+let useFirebase = Object.values(firebaseConfig).some(Boolean);
+if(useFirebase){ firebase.initializeApp(firebaseConfig); }
 </script>
 
-<!-- Foro & Reseñas (Firestore + Storage) + Juego -->
 <script>
-// ===== Utilidades =====
-const $ = sel => document.querySelector(sel);
-const $$ = sel => document.querySelectorAll(sel);
-const feed = $("#feed");
-const statusEl = $("#status");
-const preview = $("#preview");
-const escapeHTML = (str) => (str || "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+/*********** Foro con modo dual (Firebase o Local) ***********/
+const $ = s => document.querySelector(s);
+const feed = $("#feed"), statusEl = $("#status"), preview = $("#preview");
 const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
+const escapeHTML = s => (s||"").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
 
-// ===== Previsualizar imagen =====
+// Previsualización
 $("#fImage").addEventListener("change", e=>{
-preview.innerHTML = "";
-const file = e.target.files?.[0];
-if(!file) return;
-const url = URL.createObjectURL(file);
-const img = new Image();
-img.src = url; img.onload = ()=> URL.revokeObjectURL(url);
-preview.appendChild(img);
+preview.innerHTML=""; const f=e.target.files?.[0]; if(!f) return;
+const url=URL.createObjectURL(f); const img=new Image(); img.src=url; img.onload=()=>URL.revokeObjectURL(url); preview.appendChild(img);
 });
 
-// ===== Publicar post =====
-$("#postForm").addEventListener("submit", async (e)=>{
-e.preventDefault();
-statusEl.textContent = "Publicando...";
-$("#sendBtn").disabled = true;
+// APIs de almacenamiento
+const LS_KEY="personapp_posts_v2";
+const db = (useFirebase? firebase.firestore(): null);
+const storage = (useFirebase? firebase.storage(): null);
 
-try{
-const app = $("#fApp").value;
-const name = $("#fName").value.trim();
-const rating = $("#fRating").value;
-const text = $("#fText").value.trim();
-const file = $("#fImage").files?.[0] || null;
-
-if(!name || !text) throw new Error("Completa nombre y reseña.");
-
-let imageUrl = "";
-if(file){
-const safeName = file.name.replace(/[^a-z0-9.\-_]/gi,"_");
-const path = `images/${Date.now()}_${safeName}`;
-const ref = storage.ref().child(path);
+async function savePost({app,name,rating,text,file}){
+let imageUrl="";
+if(useFirebase && file){
+const safe=file.name.replace(/[^a-z0-9.\-_]/gi,"_");
+const ref=storage.ref().child(`images/${Date.now()}_${safe}`);
 await ref.put(file);
-imageUrl = await ref.getDownloadURL();
+imageUrl=await ref.getDownloadURL();
+}else if(file){
+// modo local: guardamos como base64
+imageUrl = await new Promise(res=>{
+const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(file);
+});
+}
+const post={app,name,rating:+rating,text,imageUrl,time:Date.now()};
+if(useFirebase){
+await db.collection("posts").add(post);
+}else{
+const list=JSON.parse(localStorage.getItem(LS_KEY)||"[]"); list.push(post);
+localStorage.setItem(LS_KEY, JSON.stringify(list));
+renderLocal();
+}
 }
 
-await db.collection("posts").add({
-app, name, rating: +rating, text, imageUrl, time: Date.now()
-});
-
-$("#postForm").reset();
-preview.innerHTML = "";
-statusEl.textContent = "Publicado ✔️";
-setTimeout(()=> statusEl.textContent = "", 1400);
-}catch(err){
-console.error(err);
-statusEl.textContent = "Error: " + err.message;
-}finally{
-$("#sendBtn").disabled = false;
-}
-});
-
-// ===== Listener en tiempo real =====
-db.collection("posts").orderBy("time","desc").onSnapshot(snap=>{
-const frag = document.createDocumentFragment();
-snap.forEach(doc=>{
-const p = doc.data();
-const card = document.createElement("article");
-card.className = "post";
-card.innerHTML = `
-<div class="meta"><strong>${escapeHTML(p.app)}</strong> · ${escapeHTML(p.name)}
-<span class="stars">${stars(p.rating)}</span>
-</div>
+function renderLocal(){
+const items=(JSON.parse(localStorage.getItem(LS_KEY)||"[]")).sort((a,b)=>b.time-a.time);
+feed.innerHTML = items.map(p=>`
+<article class="post">
+<div class="meta"><strong>${escapeHTML(p.app)}</strong> · ${escapeHTML(p.name)} <span class="stars">${stars(p.rating)}</span></div>
 <div>${escapeHTML(p.text)}</div>
-${p.imageUrl ? `<img src="${escapeHTML(p.imageUrl)}" alt="imagen">` : ""}
-<div class="meta">${new Date(p.time||0).toLocaleString()}</div>
-`;
-frag.appendChild(card);
+${p.imageUrl?`<img src="${escapeHTML(p.imageUrl)}" alt="imagen">`:""}
+<div class="meta">${new Date(p.time).toLocaleString()}</div>
+</article>`).join('') || '<p class="hint">Aún no hay reseñas.</p>';
+}
+
+if(useFirebase){
+db.collection("posts").orderBy("time","desc").onSnapshot(snap=>{
+const frag=document.createDocumentFragment();
+snap.forEach(d=>{
+const p=d.data(); const el=document.createElement("article"); el.className="post";
+el.innerHTML=`<div class="meta"><strong>${escapeHTML(p.app)}</strong> · ${escapeHTML(p.name)} <span class="stars">${stars(p.rating)}</span></div>
+<div>${escapeHTML(p.text)}</div>${p.imageUrl?`<img src="${escapeHTML(p.imageUrl)}" alt="imagen">`:""}
+<div class="meta">${new Date(p.time||0).toLocaleString()}</div>`;
+frag.appendChild(el);
 });
-feed.innerHTML = "";
-feed.appendChild(frag);
+feed.innerHTML=""; feed.appendChild(frag);
+});
+}else{ renderLocal(); }
+
+$("#postForm").addEventListener("submit", async e=>{
+e.preventDefault(); statusEl.textContent="Publicando..."; $("#sendBtn").disabled=true;
+const app=$("#fApp").value, name=$("#fName").value.trim(), rating=$("#fRating").value, text=$("#fText").value.trim(), file=$("#fImage").files?.[0]||null;
+if(!name||!text){ statusEl.textContent="Completa nombre y reseña."; $("#sendBtn").disabled=false; return; }
+try{
+await savePost({app,name,rating,text,file});
+e.target.reset(); preview.innerHTML=""; statusEl.textContent="Publicado ✔️"; setTimeout(()=>statusEl.textContent="",1200);
+}catch(err){ statusEl.textContent="Error: "+err.message; }
+$("#sendBtn").disabled=false;
 });
 
-// Limpia caché local (no afecta Firestore; es útil por si el navegador guarda algo viejo)
-$("#clearLocal").addEventListener("click", ()=>{
-localStorage.clear();
-statusEl.textContent = "Caché local limpiado.";
-setTimeout(()=> statusEl.textContent = "", 1200);
+/***************** Juego: Vacas vs Pollos ******************/
+const cvs=document.getElementById("arena"), ctx=cvs.getContext("2d");
+const lvlEl=$("#lvl"), scoreEl=$("#score");
+let level=1, score=0, entities=[], holes=[], hand={x:400,y:240,vx:0,vy:0};
+const G=0.25, FRICTION=0.995, PUSH=0.9;
+
+function rand(a,b){ return Math.random()*(b-a)+a; }
+
+function genHoles(){
+holes=[]; const n=Math.min(5, 1+Math.floor(level/2));
+for(let i=0;i<n;i++){
+const w=rand(60,110), x=rand(40, cvs.width-40-w), y=rand(260, cvs.height-60);
+holes.push({x,y,w,h:18});
+}
+}
+
+function spawnWave(){
+entities=[];
+const n = 6 + level*2;
+for(let i=0;i<n;i++){
+const team = (i%2===0)? "cow":"chicken";
+entities.push({
+team, x: rand(80, cvs.width-80), y: rand(40,120),
+vx: rand(-1,1), vy: 0, r: 16, alive:true, cooked:false
+});
+}
+}
+
+function drawArena(){
+ctx.fillStyle="#0f0f12"; ctx.fillRect(0,0,cvs.width,cvs.height);
+// piso
+ctx.fillStyle="#2b2b2e"; ctx.fillRect(0, cvs.height-20, cvs.width, 20);
+// huecos
+ctx.fillStyle="#0f0f12";
+holes.forEach(h=> ctx.fillRect(h.x, h.y, h.w, h.h));
+}
+
+function drawEntity(e){
+let emoji = e.team==="cow" ? "🐄" : "🐔";
+if(e.cooked) emoji = e.team==="cow" ? "🍖" : "🍗";
+ctx.font = "24px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
+ctx.fillText(emoji, e.x, e.y);
+}
+
+function physics(){
+// mano
+hand.vx*=0.92; hand.vy*=0.92;
+hand.x+=hand.vx; hand.y+=hand.vy;
+hand.x=Math.max(20, Math.min(cvs.width-20, hand.x));
+hand.y=Math.max(20, Math.min(cvs.height-40, hand.y));
+
+// entidades
+entities.forEach(e=>{
+if(!e.alive) return;
+e.vy += G;
+e.x += e.vx; e.y += e.vy;
+e.vx *= FRICTION; e.vy *= FRICTION;
+
+// colisión con bordes superiores/laterales
+if(e.x<10){ e.x=10; e.vx*=-0.6; }
+if(e.x>cvs.width-10){ e.x=cvs.width-10; e.vx*=-0.6; }
+if(e.y<10){ e.y=10; e.vy*=-0.6; }
+
+// piso sólido salvo huecos
+const onFloor = e.y>=cvs.height-30;
+let inHole=false;
+holes.forEach(h=>{
+if(e.y>=h.y-2 && e.y<=h.y+h.h && e.x>=h.x && e.x<=h.x+h.w){ inHole=true; }
+});
+if(onFloor && !inHole){
+e.y=cvs.height-30; e.vy*=-0.35;
+}
+
+// colisión con mano
+const dx=e.x-hand.x, dy=e.y-hand.y, d=Math.hypot(dx,dy);
+if(d<32){
+const nx=dx/(d||1), ny=dy/(d||1);
+e.vx += nx*PUSH; e.vy += ny*PUSH;
+}
+
+// colisiones simples entre animales
+entities.forEach(o=>{
+if(o===e || !o.alive) return;
+const dx=e.x-o.x, dy=e.y-o.y, d=Math.hypot(dx,dy);
+if(d<22){
+const nx=dx/(d||1), ny=dy/(d||1);
+e.vx += nx*0.4; e.vy += ny*0.4;
+o.vx -= nx*0.4; o.vy -= ny*0.4;
+}
 });
 
-// ====== JUEGO: Laberinto con niveles ======
-const cvs = document.getElementById("maze");
-const ctx = cvs.getContext("2d");
-const lvlEl = document.getElementById("lvl");
-let level = 1, gridW=15, gridH=11, cell=32;
-let maze, player, goal;
+// cayó del mapa -> se cocina
+if(e.y>cvs.height+30 && !e.cooked){
+e.cooked=true; score += 10; scoreEl.textContent=score;
+}
+// si está cocinado y se fue del todo, desaparece
+if(e.cooked && e.y>cvs.height+120){
+e.alive=false;
+}
+});
 
-function generateMaze(w,h){
-// dimensiones impares
-w = w%2===0 ? w+1 : w; h = h%2===0 ? h+1 : h;
-const M = Array.from({length:h}, ()=> Array(w).fill(1));
-const stack = [{x:1,y:1}];
-M[1][1]=0;
-const dirs = [{dx:2,dy:0},{dx:-2,dy:0},{dx:0,dy:2},{dx:0,dy:-2}];
-while(stack.length){
-const cur = stack[stack.length-1];
-const order = dirs.slice().sort(()=>Math.random()-0.5);
-let carved = false;
-for(const d of order){
-const nx = cur.x + d.dx, ny = cur.y + d.dy;
-if(nx>0 && nx<w-1 && ny>0 && ny<h-1 && M[ny][nx]===1){
-M[ny][nx]=0;
-M[cur.y + d.dy/2 | 0][cur.x + d.dx/2 | 0]=0;
-stack.push({x:nx,y:ny});
-carved = true; break;
-}
-}
-if(!carved) stack.pop();
-}
-M[h-2][w-2]=0;
-return M;
-}
-
-function fitCanvas(){
-// Ajusta cell para que el canvas quepa en pantallas pequeñas
-const maxW = Math.min(640, window.innerWidth - 40);
-const maxH = 420;
-cell = Math.floor(Math.min(maxW / gridW, maxH / gridH));
-cvs.width = gridW * cell;
-cvs.height = gridH * cell;
-}
-
-function resetLevel(){
-fitCanvas();
-maze = generateMaze(gridW, gridH);
-player = {x:1, y:1};
-goal = {x:gridW-2, y:gridH-2};
-draw();
-}
-
-function draw(){
-ctx.fillStyle = "#0f0f12";
-ctx.fillRect(0,0,cvs.width,cvs.height);
-
-// muros
-ctx.fillStyle = "#2b2b2e";
-for(let y=0;y<gridH;y++){
-for(let x=0;x<gridW;x++){
-if(maze[y][x]===1) ctx.fillRect(x*cell, y*cell, cell, cell);
+// si no quedan vivos → siguiente nivel
+if(entities.every(e=>!e.alive || e.cooked)){
+level++; document.getElementById("lvl").textContent=level;
+genHoles(); spawnWave();
 }
 }
 
-// meta
-ctx.fillStyle = "#ffcc00";
-ctx.beginPath();
-ctx.arc((goal.x+0.5)*cell, (goal.y+0.5)*cell, cell*0.28, 0, Math.PI*2);
-ctx.fill();
-
-// jugador (emoji)
-ctx.font = Math.floor(cell*0.8) + "px serif";
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-ctx.fillText("👋", (player.x+0.5)*cell, (player.y+0.5)*cell);
+function render(){
+drawArena();
+// dibuja mano
+ctx.font="26px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
+ctx.fillText("👋", hand.x, hand.y);
+// dibuja entidades
+entities.forEach(e=> drawEntity(e));
 }
 
-function tryMove(dx,dy){
-const nx = player.x + dx, ny = player.y + dy;
-if(nx<0 || ny<0 || nx>=gridW || ny>=gridH) return;
-if(maze[ny][nx]===0){
-player.x = nx; player.y = ny; draw();
-if(player.x===goal.x && player.y===goal.y){
-// siguiente nivel
-level++;
-lvlEl.textContent = level;
-// Incrementa dificultad
-gridW = Math.min(35, gridW + 4);
-gridH = Math.min(27, gridH + 2);
-resetLevel();
-}
-}
-}
+function loop(){ physics(); render(); requestAnimationFrame(loop); }
 
+// Controles mano
+const accel=1.6;
 window.addEventListener("keydown", (e)=>{
-const k = e.key.toLowerCase();
-if(["arrowleft","a"].includes(k)) { tryMove(-1,0); e.preventDefault(); }
-if(["arrowright","d"].includes(k)) { tryMove(1,0); e.preventDefault(); }
-if(["arrowup","w"].includes(k)) { tryMove(0,-1); e.preventDefault(); }
-if(["arrowdown","s"].includes(k)) { tryMove(0,1); e.preventDefault(); }
+const k=e.key.toLowerCase();
+if(["arrowleft","a"].includes(k)) hand.vx-=accel;
+if(["arrowright","d"].includes(k)) hand.vx+=accel;
+if(["arrowup","w"].includes(k)) hand.vy-=accel;
+if(["arrowdown","s"].includes(k)) hand.vy+=accel;
 });
 
-// Pad táctil
-$$(".pad button").forEach(b=>{
-b.addEventListener("click", ()=>{
-const dx = +b.getAttribute("data-dx")||0;
-const dy = +b.getAttribute("data-dy")||0;
-tryMove(dx,dy);
-});
-});
-
-// Botón reiniciar
-document.getElementById("restart").addEventListener("click", ()=>{
-level = 1; gridW = 15; gridH = 11; lvlEl.textContent = level; resetLevel();
-});
-
-window.addEventListener("resize", resetLevel);
 // Inicio
-resetLevel();
+function startGame(){
+level=1; score=0; lvlEl.textContent=level; scoreEl.textContent=score;
+hand={x:cvs.width/2,y:120,vx:0,vy:0};
+genHoles(); spawnWave(); loop();
+}
+document.getElementById("restart").addEventListener("click", startGame);
+startGame();
 </script>
 </body>
 </html>
+
+
 
