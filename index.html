@@ -9,23 +9,23 @@
 :root{ --bg:#2b2ee6; --text:#f4f6f8; --panel:#202225; --panel2:#151618; --accent:#4CAF50; --muted:#b9c0c7; --warn:#ffd166; }
 *{box-sizing:border-box}
 body{margin:0; background:var(--bg); color:var(--text); font-family:'Montserrat','Segoe UI',Arial,sans-serif}
-a{color:inherit}
+a{color:inherit; text-decoration:none}
 .wrap{max-width:1200px; margin:0 auto; padding:20px}
 header{display:flex; align-items:center; justify-content:center; text-align:center; padding:40px 10px 10px}
 h1{font-size:2.6rem; margin:0 0 8px; text-shadow:0 2px 16px rgba(18,255,65,.7)}
 p.lead{margin:0; opacity:.9}
 
-/* Grilla de Apps */
+/* Grilla Apps */
 .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; margin:32px 0 48px}
 .card{background:linear-gradient(135deg,var(--panel2) 60%,var(--panel) 100%); border:1px solid rgba(255,255,255,.06);
-border-radius:16px; padding:18px; box-shadow:0 2px 16px rgba(0,0,0,.25); transition:transform .2s ease, box-shadow .2s ease;}
+border-radius:16px; padding:18px; box-shadow:0 2px 16px rgba(0,0,0,.25); transition:transform .2s, box-shadow .2s;}
 .card:hover{transform:translateY(-6px); box-shadow:0 10px 24px rgba(0,0,0,.35)}
 .card img.logo{width:64px; height:64px; object-fit:contain; background:#111; border-radius:12px; box-shadow:0 1px 8px rgba(0,0,0,.3)}
 .card h3{margin:12px 0 8px; font-size:1.15rem}
 .card p{margin:0 0 12px; color:#dfe5ea}
 .stores{display:flex; gap:8px; flex-wrap:wrap}
 .btn{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:none; cursor:pointer;
-background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; text-decoration:none; font-weight:700; font-size:.9rem;}
+background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; font-weight:700; font-size:.9rem}
 
 /* Foro */
 #foro{background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px; margin:24px 0 80px}
@@ -36,17 +36,24 @@ background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; te
 input, select, textarea{width:100%; border:1px solid rgba(255,255,255,.15); background:#141516; color:#fff;
 border-radius:10px; padding:10px 12px; font-family:inherit; font-size:1rem}
 textarea{min-height:100px; resize:vertical}
-.actions{display:flex; gap:10px; align-items:center}
-.preview{display:flex; gap:12px; flex-wrap:wrap}
-.preview img{max-width:120px; border-radius:10px; border:1px solid rgba(255,255,255,.1)}
-.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px}
+.actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.progress{height:8px; background:#111; border-radius:6px; overflow:hidden; width:220px; display:none}
+.bar{height:100%; width:0%; background:var(--accent); transition:width .1s linear}
+.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px}
 .post{background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%); border:1px solid rgba(255,255,255,.08);
 border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 .meta{font-size:.85rem; color:#c7ced6}
 .stars{color:var(--warn)}
-.post img{width:100%; height:auto; border-radius:10px; margin-top:8px}
+.media{margin-top:8px}
+.media img, .media video{width:100%; border-radius:10px; display:block}
+.comments{margin-top:10px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px}
+.comment{font-size:.95rem; margin:6px 0}
+.comment .by{color:#cbd2d9; font-size:.85rem}
+.comment-form{display:flex; gap:6px; margin-top:8px}
+.comment-form input{flex:1}
+.comment-form button{white-space:nowrap}
 
-/* Juego */
+/* Juego (Gomoso) */
 #juego{margin:50px 0 90px; background:rgba(0,0,0,.14); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px}
 #gameWrap{display:flex; flex-direction:column; align-items:center; gap:8px}
 #arena{background:#0f0f12; border:2px solid #2b2b2b; border-radius:8px; max-width:100%; height:auto}
@@ -65,11 +72,11 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <header>
 <div>
 <h1>APP para emprendedores</h1>
-<p class="lead">Recursos útiles, foro global con imágenes y un minijuego “Vacas vs Pollos”.</p>
+<p class="lead">Foro global con imágenes/videos en tiempo real y minijuego “Gomoso Equilibrado”.</p>
 </div>
 </header>
 
-<!-- Apps (solo estas apps se pueden reseñar) -->
+<!-- Apps -->
 <section id="apps" class="grid" aria-label="apps">
 <article class="card">
 <img class="logo" src="Img/logo.busho.png" alt="BUSHO" />
@@ -114,7 +121,7 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <!-- Foro global -->
 <section id="foro">
 <h2>Foro & Reseñas</h2>
-<p class="hint">Todas las reseñas se guardan en la nube y aparecen en tiempo real. (Solo sobre las apps publicadas.)</p>
+<p class="hint">Todos pueden publicar reseñas y comentar. Se suben imágenes o videos con barra de progreso.</p>
 
 <form id="postForm">
 <div>
@@ -136,9 +143,9 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 </div>
 <div class="full"><label>Reseña</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required maxlength="800"></textarea></div>
 <div class="full">
-<label>Imagen (opcional)</label>
-<input id="fImage" type="file" accept="image/*" />
-<div id="preview" class="preview"></div>
+<label>Imagen o video (opcional)</label>
+<input id="fFile" type="file" accept="image/*,video/*" />
+<div class="progress" id="progress"><div class="bar" id="bar"></div></div>
 </div>
 <div class="full actions">
 <button class="btn" type="submit" id="sendBtn">Publicar</button>
@@ -149,16 +156,17 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <div id="feed" class="feed"></div>
 </section>
 
-<!-- Juego: Vacas vs Pollos -->
+<!-- Minijuego: Gomoso Equilibrado (alternativa segura) -->
 <section id="juego">
-<h2>Minijuego: Vacas 🐄 vs Pollos 🐔</h2>
-<p class="hint">Mueve la mano 👋 con flechas/WASD para empujar. Si un animal cae del borde se convierte en 🍖 o 🍗. Cada nivel hay más y aparecen huecos en el piso.</p>
+<h2>Minijuego: ¡Mantén a Gomoso en forma!</h2>
+<p class="hint">Mueve la mano 👋 con flechas/WASD para empujar a Gomoso. Come 🍔 para crecer y 🍎 para adelgazar. ¡Mantén su tamaño en la zona saludable!</p>
 <div id="gameWrap">
 <canvas id="arena" width="800" height="480"></canvas>
 <div class="hud">
 <button class="btn" id="restart">Reiniciar</button>
 <div>Nivel: <strong id="lvl">1</strong></div>
 <div>Puntos: <strong id="score">0</strong></div>
+<div>Tamaño: <strong id="sizeRead">—</strong></div>
 </div>
 </div>
 </section>
@@ -168,130 +176,283 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <div class="contact">contacto: personappoficial@gmail.com</div>
 <div class="emoji-wave" aria-hidden="true">👋</div>
 
-<!-- Firebase (obligatorio para foro global) -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 <script>
-/* 🔐 Pega aquí tus credenciales reales de Firebase */
+/* 🔐 Pega tus credenciales reales (Proyecto con Firestore + Storage) */
 const firebaseConfig = {
 apiKey: "TU_API_KEY",
 authDomain: "TU_AUTH_DOMAIN",
 projectId: "TU_PROJECT_ID",
-storageBucket:"TU_STORAGE_BUCKET",
-messagingSenderId:"TU_SENDER_ID",
+storageBucket: "TU_STORAGE_BUCKET",
+messagingSenderId: "TU_SENDER_ID",
 appId: "TU_APP_ID"
 };
-if(!firebaseConfig.apiKey) alert("Falta configurar Firebase: edita firebaseConfig.");
+if(!firebaseConfig.apiKey){ alert("Falta configurar Firebase: edita firebaseConfig."); }
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = firebase.storage();
 </script>
 
 <script>
-/*********** Foro global (Firestore + Storage) ***********/
-const allowedApps = ["BUSHO","Canva","Shopify","Zoom","Mercado Pago"]; // solo estas
+/************ Foro en tiempo real con subida de imagen/video (con progreso) ************/
+const allowedApps = ["BUSHO","Canva","Shopify","Zoom","Mercado Pago"];
 const $ = s => document.querySelector(s);
-const feed = $("#feed"), statusEl = $("#status"), preview = $("#preview");
+const feed = $("#feed"), statusEl=$("#status"), bar=$("#bar"), prog=$("#progress");
+
 const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
 const escapeHTML = s => (s||"").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-const MAX_IMG_MB = 3;
 
-// previsualización de imagen
-$("#fImage").addEventListener("change", e=>{
-preview.innerHTML=""; const f=e.target.files?.[0]; if(!f) return;
-if(f.size > MAX_IMG_MB*1024*1024){ alert("Imagen demasiado grande. Máx " + MAX_IMG_MB + "MB"); e.target.value=""; return; }
-const url=URL.createObjectURL(f); const img=new Image(); img.src=url; img.onload=()=>URL.revokeObjectURL(url); preview.appendChild(img);
+async function uploadMedia(file){
+if(!file) return { url:"", type:"" };
+const MAX_MB = 25;
+if(file.size > MAX_MB*1024*1024) throw new Error("Archivo muy grande (máx " + MAX_MB + " MB).");
+const safe = file.name.replace(/[^a-z0-9.\-_]/gi,"_");
+const path = `media/${Date.now()}_${safe}`;
+const ref = storage.ref().child(path);
+prog.style.display="block";
+return await new Promise((resolve, reject)=>{
+const t = ref.put(file, {contentType:file.type});
+t.on('state_changed', snap=>{
+const pct = Math.round((snap.bytesTransferred/snap.totalBytes)*100);
+bar.style.width = pct + "%";
+}, reject, async ()=>{
+const url = await ref.getDownloadURL();
+bar.style.width = "0%"; prog.style.display="none";
+resolve({ url, type: file.type.startsWith("video/") ? "video" : "image" });
 });
-
-async function publishPost({app,name,rating,text,file}){
-if(!allowedApps.includes(app)) throw new Error("App no permitida");
-let imageUrl="";
-if(file){
-const safe=file.name.replace(/[^a-z0-9.\-_]/gi,"_");
-const ref=storage.ref().child(`images/${Date.now()}_${safe}`);
-await ref.put(file, {contentType:file.type});
-imageUrl=await ref.getDownloadURL();
-}
-const post={
-app, name: name.slice(0,40), rating:+rating,
-text: text.slice(0,800), imageUrl,
-time: firebase.firestore.FieldValue.serverTimestamp()
-};
-await db.collection("posts").add(post);
+});
 }
 
-// render realtime
-db.collection("posts").orderBy("time","desc").onSnapshot(snap=>{
-const frag=document.createDocumentFragment();
-snap.forEach(doc=>{
-const p=doc.data();
+function renderComment(el, c){
+const t = (c.time?.toDate ? c.time.toDate() : new Date());
+const div=document.createElement("div"); div.className="comment";
+div.innerHTML = `<div>${escapeHTML(c.text||"")}</div><div class="by">${escapeHTML(c.name||"Invitado")} · ${t.toLocaleString()}</div>`;
+el.appendChild(div);
+}
+
+function renderPost(doc){
+const p = doc.data();
 const t = p.time?.toDate ? p.time.toDate() : new Date();
-const el=document.createElement("article"); el.className="post";
-el.innerHTML=`
+const wrap = document.createElement("article");
+wrap.className = "post";
+wrap.id = `post-${doc.id}`;
+wrap.innerHTML = `
 <div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"")} <span class="stars">${stars(p.rating||0)}</span></div>
 <div>${escapeHTML(p.text||"")}</div>
-${p.imageUrl?`<img src="${escapeHTML(p.imageUrl)}" alt="imagen">`:""}
-<div class="meta">${t.toLocaleString()}</div>`;
-frag.appendChild(el);
+<div class="media">
+${p.mediaUrl ? (p.mediaType==="video" ? `<video controls src="${escapeHTML(p.mediaUrl)}"></video>` : `<img src="${escapeHTML(p.mediaUrl)}" alt="media">`) : ""}
+</div>
+<div class="meta">${t.toLocaleString()}</div>
+<div class="comments" id="c-${doc.id}">
+<div class="comment-form">
+<input type="text" id="cn-${doc.id}" placeholder="Escribe un comentario..." maxlength="300"/>
+<button class="btn" data-post="${doc.id}">Comentar</button>
+</div>
+<div id="cl-${doc.id}"></div>
+</div>
+`;
+// Comentarios en tiempo real
+db.collection("posts").doc(doc.id).collection("comments").orderBy("time","asc").onSnapshot(s=>{
+const list = wrap.querySelector(`#cl-${doc.id}`);
+list.innerHTML = "";
+s.forEach(c=> renderComment(list, c.data()));
 });
-feed.innerHTML=""; feed.appendChild(frag);
+// Enviar comentario
+wrap.querySelector(`button[data-post="${doc.id}"]`).addEventListener("click", async ()=>{
+const input = wrap.querySelector(`#cn-${doc.id}`);
+const text = input.value.trim(); if(!text) return;
+await db.collection("posts").doc(doc.id).collection("comments").add({
+text, name:"Invitado", time: firebase.firestore.FieldValue.serverTimestamp()
 });
-
-document.getElementById("postForm").addEventListener("submit", async e=>{
-e.preventDefault(); statusEl.textContent="Publicando..."; document.getElementById("sendBtn").disabled=true;
-const app=$("#fApp").value, name=$("#fName").value.trim(), rating=$("#fRating").value, text=$("#fText").value.trim(), file=$("#fImage").files?.[0]||null;
-if(!name || !text){ statusEl.textContent="Completa nombre y reseña."; document.getElementById("sendBtn").disabled=false; return; }
-try{
-await publishPost({app,name,rating,text,file});
-e.target.reset(); preview.innerHTML=""; statusEl.textContent="Publicado ✔️"; setTimeout(()=>statusEl.textContent="",1200);
-}catch(err){ console.error(err); statusEl.textContent="Error: "+err.message; }
-document.getElementById("sendBtn").disabled=false;
+input.value="";
 });
-
-/***************** Minijuego: Vacas vs Pollos ******************/
-const cvs=document.getElementById("arena"), ctx=cvs.getContext("2d");
-const lvlEl=document.getElementById("lvl"), scoreEl=document.getElementById("score");
-let level=1, score=0, entities=[], holes=[], hand={x:400,y:240,vx:0,vy:0};
-const G=0.25, FRICTION=0.995, PUSH=0.9;
-const rand=(a,b)=>Math.random()*(b-a)+a;
-
-function genHoles(){ holes=[]; const n=Math.min(6, 1+Math.floor(level/2));
-for(let i=0;i<n;i++){ const w=rand(60,110), x=rand(40, cvs.width-40-w), y=rand(260, cvs.height-60); holes.push({x,y,w,h:18}); } }
-function spawnWave(){ entities=[]; const n = 6 + level*2;
-for(let i=0;i<n;i++){ const team=(i%2===0)?"cow":"chicken";
-entities.push({team, x:rand(80,cvs.width-80), y:rand(40,120), vx:rand(-1,1), vy:0, alive:true, cooked:false});
-}}
-function drawArena(){ ctx.fillStyle="#0f0f12"; ctx.fillRect(0,0,cvs.width,cvs.height);
-ctx.fillStyle="#2b2b2e"; ctx.fillRect(0, cvs.height-20, cvs.width, 20); ctx.fillStyle="#0f0f12"; holes.forEach(h=>ctx.fillRect(h.x,h.y,h.w,h.h)); }
-function drawEntity(e){ let emoji=e.cooked ? (e.team==="cow"?"🍖":"🍗") : (e.team==="cow"?"🐄":"🐔");
-ctx.font="24px serif"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(emoji, e.x, e.y); }
-function physics(){
-hand.vx*=0.92; hand.vy*=0.92; hand.x+=hand.vx; hand.y+=hand.vy;
-hand.x=Math.max(20,Math.min(cvs.width-20,hand.x)); hand.y=Math.max(20,Math.min(cvs.height-40,hand.y));
-entities.forEach(e=>{
-if(!e.alive) return; e.vy+=G; e.x+=e.vx; e.y+=e.vy; e.vx*=FRICTION; e.vy*=FRICTION;
-if(e.x<10){e.x=10; e.vx*=-0.6} if(e.x>cvs.width-10){e.x=cvs.width-10; e.vx*=-0.6} if(e.y<10){e.y=10; e.vy*=-0.6}
-const onFloor=e.y>=cvs.height-30; let inHole=false;
-holes.forEach(h=>{ if(e.y>=h.y-2 && e.y<=h.y+h.h && e.x>=h.x && e.x<=h.x+h.w) inHole=true; });
-if(onFloor && !inHole){ e.y=cvs.height-30; e.vy*=-0.35; }
-const dx=e.x-hand.x, dy=e.y-hand.y, d=Math.hypot(dx,dy);
-if(d<32){ const nx=dx/(d||1), ny=dy/(d||1); e.vx+=nx*PUSH; e.vy+=ny*PUSH; }
-entities.forEach(o=>{ if(o===e||!o.alive) return; const dx=e.x-o.x,dy=e.y-o.y,d=Math.hypot(dx,dy); if(d<22){ const nx=dx/(d||1),ny=dy/(d||1); e.vx+=nx*0.4; e.vy+=ny*0.4; o.vx-=nx*0.4; o.vy-=ny*0.4; }});
-if(e.y>cvs.height+30 && !e.cooked){ e.cooked=true; score+=10; scoreEl.textContent=score; }
-if(e.cooked && e.y>cvs.height+120){ e.alive=false; }
-});
-if(entities.every(e=>!e.alive || e.cooked)){ level++; lvlEl.textContent=level; genHoles(); spawnWave(); }
+return wrap;
 }
-function render(){ drawArena(); ctx.font="26px serif"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText("👋", hand.x, hand.y); entities.forEach(drawEntity); }
+
+// Feed en tiempo real
+db.collection("posts").orderBy("time","desc").limit(50).onSnapshot(snap=>{
+feed.innerHTML="";
+const frag=document.createDocumentFragment();
+snap.forEach(doc=> frag.appendChild(renderPost(doc)));
+feed.appendChild(frag);
+});
+
+// Publicar post
+document.getElementById("postForm").addEventListener("submit", async e=>{
+e.preventDefault();
+const btn = document.getElementById("sendBtn"); btn.disabled = true;
+statusEl.textContent = "Subiendo...";
+try{
+const app = document.getElementById("fApp").value;
+const name = document.getElementById("fName").value.trim();
+const rating = +document.getElementById("fRating").value;
+const text = document.getElementById("fText").value.trim();
+const file = document.getElementById("fFile").files[0] || null;
+if(!allowedApps.includes(app)) throw new Error("App no permitida.");
+if(!name || !text) throw new Error("Completa nombre y reseña.");
+
+let mediaUrl="", mediaType="";
+if(file){ ({url:mediaUrl, type:mediaType} = await uploadMedia(file)); }
+
+await db.collection("posts").add({
+app, name:name.slice(0,40), rating, text:text.slice(0,800),
+mediaUrl, mediaType, time: firebase.firestore.FieldValue.serverTimestamp()
+});
+
+e.target.reset();
+statusEl.textContent = "Publicado ✔️";
+}catch(err){
+console.error(err);
+statusEl.textContent = "Error: " + err.message;
+}finally{
+setTimeout(()=>statusEl.textContent="",1200);
+btn.disabled = false;
+}
+});
+
+/***************** Minijuego: Gomoso Equilibrado ******************/
+const cvs = document.getElementById("arena"), ctx = cvs.getContext("2d");
+const lvlEl = document.getElementById("lvl"), scoreEl = document.getElementById("score"), sizeEl = document.getElementById("sizeRead");
+
+let level = 1, score = 0;
+let hand = { x: 400, y: 240, vx: 0, vy: 0 };
+let gomoso; // personaje
+let items = []; // comida que cae
+let zone = { min: 24, max: 48 }; // radio saludable
+const G = 0.25, FRICTION = 0.992, PUSH = 1.1, ACCEL = 1.7;
+
+function rand(a,b){ return Math.random()*(b-a)+a; }
+
+function resetLevel() {
+items = [];
+for (let i = 0; i < 6 + level * 2; i++) spawnItem();
+zone.min = Math.max(20, 24 - level * 0.8);
+zone.max = Math.min(64, 48 + level * 0.6);
+}
+
+function spawnItem(){
+const type = Math.random() < 0.5 ? "burger" : "apple";
+items.push({ type, x: rand(40, cvs.width-40), y: rand(-200, -40), vy: rand(1.0, 2.2) });
+}
+
+function startGame() {
+level = 1; score = 0;
+hand = { x: cvs.width/2, y: 200, vx: 0, vy: 0 };
+gomoso = { x: cvs.width/2, y: cvs.height-60, vx: 0, vy: 0, r: 36, asleep: false, tired: false };
+resetLevel();
+lvlEl.textContent = level; scoreEl.textContent = score;
+healthyTicks = 0;
+loop();
+}
+
+function drawArena(){
+ctx.fillStyle = "#0f0f12"; ctx.fillRect(0,0,cvs.width,cvs.height);
+ctx.fillStyle = "#2b2b2e"; ctx.fillRect(0, cvs.height-20, cvs.width, 20);
+ctx.strokeStyle = "rgba(76, 175, 80, 0.55)";
+ctx.setLineDash([6,6]);
+ctx.beginPath(); ctx.arc(gomoso.x, gomoso.y, zone.min, 0, Math.PI*2); ctx.stroke();
+ctx.beginPath(); ctx.arc(gomoso.x, gomoso.y, zone.max, 0, Math.PI*2); ctx.stroke();
+ctx.setLineDash([]);
+}
+
+function drawHand(){
+ctx.font = "26px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
+ctx.fillText("👋", hand.x, hand.y);
+}
+
+function drawGomoso(){
+const face = gomoso.asleep ? "😴" : gomoso.tired ? "🥱" : "😀";
+ctx.font = Math.round(gomoso.r*1.5) + "px serif";
+ctx.textAlign="center"; ctx.textBaseline="middle";
+ctx.fillText(face, gomoso.x, gomoso.y);
+}
+
+function drawItems(){
+ctx.font = "22px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
+items.forEach(it=> ctx.fillText(it.type==="burger" ? "🍔" : "🍎", it.x, it.y));
+}
+
+function physics(){
+// mano
+hand.vx *= 0.92; hand.vy *= 0.92;
+hand.x += hand.vx; hand.y += hand.vy;
+hand.x = Math.max(20, Math.min(cvs.width-20, hand.x));
+hand.y = Math.max(20, Math.min(cvs.height-40, hand.y));
+
+// gomoso
+gomoso.vy += G; gomoso.x += gomoso.vx; gomoso.y += gomoso.vy;
+gomoso.vx *= FRICTION; gomoso.vy *= FRICTION;
+if(gomoso.x < 20){ gomoso.x = 20; gomoso.vx *= -0.5; }
+if(gomoso.x > cvs.width-20){ gomoso.x = cvs.width-20; gomoso.vx *= -0.5; }
+if(gomoso.y > cvs.height-30){ gomoso.y = cvs.height-30; gomoso.vy *= -0.35; }
+
+// empuje de la mano
+const dx = gomoso.x - hand.x, dy = gomoso.y - hand.y, d = Math.hypot(dx,dy);
+if(d < gomoso.r*0.9){ const nx = dx/(d||1), ny = dy/(d||1); gomoso.vx += nx * 1.1; gomoso.vy += ny * 1.1; }
+
+// caída de items + colisión
+items.forEach(it=>{
+it.y += it.vy;
+const ddx = gomoso.x - it.x, ddy = gomoso.y - it.y, dist = Math.hypot(ddx,ddy);
+if(dist < gomoso.r*0.9){
+if(it.type==="burger"){ gomoso.r = Math.min(72, gomoso.r + 2.2); score += 5; }
+else { gomoso.r = Math.max(16, gomoso.r - 2.0); score += 5; }
+it.y = cvs.height + 100;
+scoreEl.textContent = score;
+}
+});
+items = items.filter(it=>{ if(it.y > cvs.height + 40){ spawnItem(); return false; } return true; });
+
+// estados
+gomoso.asleep = gomoso.r > zone.max + 6;
+gomoso.tired = gomoso.r < zone.min - 6;
+
+// límites extremos → retroceso de nivel
+if(gomoso.r >= 80 || gomoso.r <= 14){
+if(level > 1) level--;
+gomoso.r = 36;
+resetLevel();
+lvlEl.textContent = level;
+healthyTicks = 0;
+}
+
+// progreso de nivel si se mantiene en zona saludable
+sizeEl.textContent = Math.round(gomoso.r) + "px";
+if(gomoso.r >= zone.min && gomoso.r <= zone.max){
+healthyTicks++;
+if(healthyTicks > 60*5){ // ~5s
+level++; lvlEl.textContent = level;
+healthyTicks = 0;
+resetLevel();
+}
+} else {
+healthyTicks = Math.max(0, healthyTicks - 2);
+}
+}
+
+function render(){
+drawArena(); drawItems(); drawGomoso(); drawHand();
+}
+
+let healthyTicks = 0;
 function loop(){ physics(); render(); requestAnimationFrame(loop); }
-const accel=1.6; window.addEventListener("keydown", e=>{ const k=e.key.toLowerCase();
-if(["arrowleft","a"].includes(k)) hand.vx-=accel; if(["arrowright","d"].includes(k)) hand.vx+=accel; if(["arrowup","w"].includes(k)) hand.vy-=accel; if(["arrowdown","s"].includes(k)) hand.vy+=accel; });
-function startGame(){ level=1; score=0; lvlEl.textContent=level; scoreEl.textContent=score; hand={x:cvs.width/2,y:120,vx:0,vy:0}; genHoles(); spawnWave(); loop(); }
-document.getElementById("restart").addEventListener("click", startGame); startGame();
+
+// Controles
+window.addEventListener("keydown", (e)=>{
+const k = e.key.toLowerCase();
+if(["arrowleft","a"].includes(k)) hand.vx -= 1.7;
+if(["arrowright","d"].includes(k)) hand.vx += 1.7;
+if(["arrowup","w"].includes(k)) hand.vy -= 1.7;
+if(["arrowdown","s"].includes(k)) hand.vy += 1.7;
+});
+
+document.getElementById("restart").addEventListener("click", startGame);
+startGame();
 </script>
 </body>
 </html>
-
 
 
