@@ -6,13 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
-:root{
---bg:#020210; --text:#f4f6f8; --panel:#202225; --panel2:#151618; --accent:#4CAF50; --muted:#b9c0c7; --warn:#ffd166;
-}
+:root{ --bg:#2b2ee6; --text:#f4f6f8; --panel:#202225; --panel2:#151618; --accent:#4CAF50; --muted:#b9c0c7; --warn:#ffd166; }
 *{box-sizing:border-box}
 body{margin:0; background:var(--bg); color:var(--text); font-family:'Montserrat','Segoe UI',Arial,sans-serif}
 a{color:inherit}
-
 .wrap{max-width:1200px; margin:0 auto; padding:20px}
 header{display:flex; align-items:center; justify-content:center; text-align:center; padding:40px 10px 10px}
 h1{font-size:2.6rem; margin:0 0 8px; text-shadow:0 2px 16px rgba(18,255,65,.7)}
@@ -20,21 +17,15 @@ p.lead{margin:0; opacity:.9}
 
 /* Grilla de Apps */
 .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; margin:32px 0 48px}
-.card{
-background:linear-gradient(135deg,var(--panel2) 60%,var(--panel) 100%);
-border:1px solid rgba(255,255,255,.06);
-border-radius:16px; padding:18px; box-shadow:0 2px 16px rgba(0,0,0,.25);
-transition:transform .2s ease, box-shadow .2s ease;
-}
+.card{background:linear-gradient(135deg,var(--panel2) 60%,var(--panel) 100%); border:1px solid rgba(255,255,255,.06);
+border-radius:16px; padding:18px; box-shadow:0 2px 16px rgba(0,0,0,.25); transition:transform .2s ease, box-shadow .2s ease;}
 .card:hover{transform:translateY(-6px); box-shadow:0 10px 24px rgba(0,0,0,.35)}
 .card img.logo{width:64px; height:64px; object-fit:contain; background:#111; border-radius:12px; box-shadow:0 1px 8px rgba(0,0,0,.3)}
 .card h3{margin:12px 0 8px; font-size:1.15rem}
 .card p{margin:0 0 12px; color:#dfe5ea}
 .stores{display:flex; gap:8px; flex-wrap:wrap}
-.btn{
-display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:none; cursor:pointer;
-background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; text-decoration:none; font-weight:700; font-size:.9rem;
-}
+.btn{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:none; cursor:pointer;
+background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; text-decoration:none; font-weight:700; font-size:.9rem;}
 
 /* Foro */
 #foro{background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px; margin:24px 0 80px}
@@ -42,20 +33,15 @@ background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; te
 .hint{color:var(--muted); margin:0 0 16px}
 #postForm{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px}
 #postForm .full{grid-column:1/-1}
-input, select, textarea{
-width:100%; border:1px solid rgba(255,255,255,.15); background:#141516; color:#fff;
-border-radius:10px; padding:10px 12px; font-family:inherit; font-size:1rem
-}
+input, select, textarea{width:100%; border:1px solid rgba(255,255,255,.15); background:#141516; color:#fff;
+border-radius:10px; padding:10px 12px; font-family:inherit; font-size:1rem}
 textarea{min-height:100px; resize:vertical}
 .actions{display:flex; gap:10px; align-items:center}
-.secondary{background:#2a2d31}
 .preview{display:flex; gap:12px; flex-wrap:wrap}
 .preview img{max-width:120px; border-radius:10px; border:1px solid rgba(255,255,255,.1)}
 .feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px}
-.post{
-background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%); border:1px solid rgba(255,255,255,.08);
-border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)
-}
+.post{background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%); border:1px solid rgba(255,255,255,.08);
+border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 .meta{font-size:.85rem; color:#c7ced6}
 .stars{color:var(--warn)}
 .post img{width:100%; height:auto; border-radius:10px; margin-top:8px}
@@ -79,11 +65,11 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <header>
 <div>
 <h1>APP para emprendedores</h1>
-<p class="lead">Recursos útiles, foro abierto con imágenes y un minijuego “Vacas vs Pollos”.</p>
+<p class="lead">Recursos útiles, foro global con imágenes y un minijuego “Vacas vs Pollos”.</p>
 </div>
 </header>
 
-<!-- Apps -->
+<!-- Apps (solo estas apps se pueden reseñar) -->
 <section id="apps" class="grid" aria-label="apps">
 <article class="card">
 <img class="logo" src="Img/logo.busho.png" alt="BUSHO" />
@@ -125,10 +111,10 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 </article>
 </section>
 
-<!-- Foro -->
+<!-- Foro global -->
 <section id="foro">
 <h2>Foro & Reseñas</h2>
-<p class="hint">Pega tu experiencia. Si configuras Firebase, todo queda público; si no, se guarda localmente solo en tu navegador.</p>
+<p class="hint">Todas las reseñas se guardan en la nube y aparecen en tiempo real. (Solo sobre las apps publicadas.)</p>
 
 <form id="postForm">
 <div>
@@ -139,7 +125,7 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <option value="Mercado Pago">Mercado Pago</option>
 </select>
 </div>
-<div><label>Tu nombre</label><input id="fName" type="text" placeholder="Ej: Raúl" required /></div>
+<div><label>Tu nombre</label><input id="fName" type="text" placeholder="Ej: Raúl" required maxlength="40"/></div>
 <div>
 <label>Calificación</label>
 <select id="fRating" required>
@@ -148,7 +134,7 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <option value="1">★☆☆☆☆ (1)</option>
 </select>
 </div>
-<div class="full"><label>Reseña</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required></textarea></div>
+<div class="full"><label>Reseña</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required maxlength="800"></textarea></div>
 <div class="full">
 <label>Imagen (opcional)</label>
 <input id="fImage" type="file" accept="image/*" />
@@ -166,7 +152,7 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <!-- Juego: Vacas vs Pollos -->
 <section id="juego">
 <h2>Minijuego: Vacas 🐄 vs Pollos 🐔</h2>
-<p class="hint">Mueve la mano 👋 con flechas/WASD para empujar. Si un animal cae del borde se convierte en 🍖 o 🍗. Cada nivel hay más y el suelo tiene más huecos.</p>
+<p class="hint">Mueve la mano 👋 con flechas/WASD para empujar. Si un animal cae del borde se convierte en 🍖 o 🍗. Cada nivel hay más y aparecen huecos en el piso.</p>
 <div id="gameWrap">
 <canvas id="arena" width="800" height="480"></canvas>
 <div class="hud">
@@ -182,233 +168,127 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <div class="contact">contacto: personappoficial@gmail.com</div>
 <div class="emoji-wave" aria-hidden="true">👋</div>
 
-<!-- Firebase opcional -->
+<!-- Firebase (obligatorio para foro global) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 <script>
-// Si tienes Firebase, pon aquí tus claves. Si lo dejas vacío, el foro usa modo local.
+/* 🔐 Pega aquí tus credenciales reales de Firebase */
 const firebaseConfig = {
-apiKey:"", authDomain:"", projectId:"", storageBucket:"", messagingSenderId:"", appId:""
+apiKey: "TU_API_KEY",
+authDomain: "TU_AUTH_DOMAIN",
+projectId: "TU_PROJECT_ID",
+storageBucket:"TU_STORAGE_BUCKET",
+messagingSenderId:"TU_SENDER_ID",
+appId: "TU_APP_ID"
 };
-let useFirebase = Object.values(firebaseConfig).some(Boolean);
-if(useFirebase){ firebase.initializeApp(firebaseConfig); }
+if(!firebaseConfig.apiKey) alert("Falta configurar Firebase: edita firebaseConfig.");
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const storage = firebase.storage();
 </script>
 
 <script>
-/*********** Foro con modo dual (Firebase o Local) ***********/
+/*********** Foro global (Firestore + Storage) ***********/
+const allowedApps = ["BUSHO","Canva","Shopify","Zoom","Mercado Pago"]; // solo estas
 const $ = s => document.querySelector(s);
 const feed = $("#feed"), statusEl = $("#status"), preview = $("#preview");
 const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
 const escapeHTML = s => (s||"").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+const MAX_IMG_MB = 3;
 
-// Previsualización
+// previsualización de imagen
 $("#fImage").addEventListener("change", e=>{
 preview.innerHTML=""; const f=e.target.files?.[0]; if(!f) return;
+if(f.size > MAX_IMG_MB*1024*1024){ alert("Imagen demasiado grande. Máx " + MAX_IMG_MB + "MB"); e.target.value=""; return; }
 const url=URL.createObjectURL(f); const img=new Image(); img.src=url; img.onload=()=>URL.revokeObjectURL(url); preview.appendChild(img);
 });
 
-// APIs de almacenamiento
-const LS_KEY="personapp_posts_v2";
-const db = (useFirebase? firebase.firestore(): null);
-const storage = (useFirebase? firebase.storage(): null);
-
-async function savePost({app,name,rating,text,file}){
+async function publishPost({app,name,rating,text,file}){
+if(!allowedApps.includes(app)) throw new Error("App no permitida");
 let imageUrl="";
-if(useFirebase && file){
+if(file){
 const safe=file.name.replace(/[^a-z0-9.\-_]/gi,"_");
 const ref=storage.ref().child(`images/${Date.now()}_${safe}`);
-await ref.put(file);
+await ref.put(file, {contentType:file.type});
 imageUrl=await ref.getDownloadURL();
-}else if(file){
-// modo local: guardamos como base64
-imageUrl = await new Promise(res=>{
-const r=new FileReader(); r.onload=()=>res(r.result); r.readAsDataURL(file);
-});
 }
-const post={app,name,rating:+rating,text,imageUrl,time:Date.now()};
-if(useFirebase){
+const post={
+app, name: name.slice(0,40), rating:+rating,
+text: text.slice(0,800), imageUrl,
+time: firebase.firestore.FieldValue.serverTimestamp()
+};
 await db.collection("posts").add(post);
-}else{
-const list=JSON.parse(localStorage.getItem(LS_KEY)||"[]"); list.push(post);
-localStorage.setItem(LS_KEY, JSON.stringify(list));
-renderLocal();
-}
 }
 
-function renderLocal(){
-const items=(JSON.parse(localStorage.getItem(LS_KEY)||"[]")).sort((a,b)=>b.time-a.time);
-feed.innerHTML = items.map(p=>`
-<article class="post">
-<div class="meta"><strong>${escapeHTML(p.app)}</strong> · ${escapeHTML(p.name)} <span class="stars">${stars(p.rating)}</span></div>
-<div>${escapeHTML(p.text)}</div>
-${p.imageUrl?`<img src="${escapeHTML(p.imageUrl)}" alt="imagen">`:""}
-<div class="meta">${new Date(p.time).toLocaleString()}</div>
-</article>`).join('') || '<p class="hint">Aún no hay reseñas.</p>';
-}
-
-if(useFirebase){
+// render realtime
 db.collection("posts").orderBy("time","desc").onSnapshot(snap=>{
 const frag=document.createDocumentFragment();
-snap.forEach(d=>{
-const p=d.data(); const el=document.createElement("article"); el.className="post";
-el.innerHTML=`<div class="meta"><strong>${escapeHTML(p.app)}</strong> · ${escapeHTML(p.name)} <span class="stars">${stars(p.rating)}</span></div>
-<div>${escapeHTML(p.text)}</div>${p.imageUrl?`<img src="${escapeHTML(p.imageUrl)}" alt="imagen">`:""}
-<div class="meta">${new Date(p.time||0).toLocaleString()}</div>`;
+snap.forEach(doc=>{
+const p=doc.data();
+const t = p.time?.toDate ? p.time.toDate() : new Date();
+const el=document.createElement("article"); el.className="post";
+el.innerHTML=`
+<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"")} <span class="stars">${stars(p.rating||0)}</span></div>
+<div>${escapeHTML(p.text||"")}</div>
+${p.imageUrl?`<img src="${escapeHTML(p.imageUrl)}" alt="imagen">`:""}
+<div class="meta">${t.toLocaleString()}</div>`;
 frag.appendChild(el);
 });
 feed.innerHTML=""; feed.appendChild(frag);
 });
-}else{ renderLocal(); }
 
-$("#postForm").addEventListener("submit", async e=>{
-e.preventDefault(); statusEl.textContent="Publicando..."; $("#sendBtn").disabled=true;
+document.getElementById("postForm").addEventListener("submit", async e=>{
+e.preventDefault(); statusEl.textContent="Publicando..."; document.getElementById("sendBtn").disabled=true;
 const app=$("#fApp").value, name=$("#fName").value.trim(), rating=$("#fRating").value, text=$("#fText").value.trim(), file=$("#fImage").files?.[0]||null;
-if(!name||!text){ statusEl.textContent="Completa nombre y reseña."; $("#sendBtn").disabled=false; return; }
+if(!name || !text){ statusEl.textContent="Completa nombre y reseña."; document.getElementById("sendBtn").disabled=false; return; }
 try{
-await savePost({app,name,rating,text,file});
+await publishPost({app,name,rating,text,file});
 e.target.reset(); preview.innerHTML=""; statusEl.textContent="Publicado ✔️"; setTimeout(()=>statusEl.textContent="",1200);
-}catch(err){ statusEl.textContent="Error: "+err.message; }
-$("#sendBtn").disabled=false;
+}catch(err){ console.error(err); statusEl.textContent="Error: "+err.message; }
+document.getElementById("sendBtn").disabled=false;
 });
 
-/***************** Juego: Vacas vs Pollos ******************/
+/***************** Minijuego: Vacas vs Pollos ******************/
 const cvs=document.getElementById("arena"), ctx=cvs.getContext("2d");
-const lvlEl=$("#lvl"), scoreEl=$("#score");
+const lvlEl=document.getElementById("lvl"), scoreEl=document.getElementById("score");
 let level=1, score=0, entities=[], holes=[], hand={x:400,y:240,vx:0,vy:0};
 const G=0.25, FRICTION=0.995, PUSH=0.9;
+const rand=(a,b)=>Math.random()*(b-a)+a;
 
-function rand(a,b){ return Math.random()*(b-a)+a; }
-
-function genHoles(){
-holes=[]; const n=Math.min(5, 1+Math.floor(level/2));
-for(let i=0;i<n;i++){
-const w=rand(60,110), x=rand(40, cvs.width-40-w), y=rand(260, cvs.height-60);
-holes.push({x,y,w,h:18});
-}
-}
-
-function spawnWave(){
-entities=[];
-const n = 6 + level*2;
-for(let i=0;i<n;i++){
-const team = (i%2===0)? "cow":"chicken";
-entities.push({
-team, x: rand(80, cvs.width-80), y: rand(40,120),
-vx: rand(-1,1), vy: 0, r: 16, alive:true, cooked:false
-});
-}
-}
-
-function drawArena(){
-ctx.fillStyle="#0f0f12"; ctx.fillRect(0,0,cvs.width,cvs.height);
-// piso
-ctx.fillStyle="#2b2b2e"; ctx.fillRect(0, cvs.height-20, cvs.width, 20);
-// huecos
-ctx.fillStyle="#0f0f12";
-holes.forEach(h=> ctx.fillRect(h.x, h.y, h.w, h.h));
-}
-
-function drawEntity(e){
-let emoji = e.team==="cow" ? "🐄" : "🐔";
-if(e.cooked) emoji = e.team==="cow" ? "🍖" : "🍗";
-ctx.font = "24px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
-ctx.fillText(emoji, e.x, e.y);
-}
-
+function genHoles(){ holes=[]; const n=Math.min(6, 1+Math.floor(level/2));
+for(let i=0;i<n;i++){ const w=rand(60,110), x=rand(40, cvs.width-40-w), y=rand(260, cvs.height-60); holes.push({x,y,w,h:18}); } }
+function spawnWave(){ entities=[]; const n = 6 + level*2;
+for(let i=0;i<n;i++){ const team=(i%2===0)?"cow":"chicken";
+entities.push({team, x:rand(80,cvs.width-80), y:rand(40,120), vx:rand(-1,1), vy:0, alive:true, cooked:false});
+}}
+function drawArena(){ ctx.fillStyle="#0f0f12"; ctx.fillRect(0,0,cvs.width,cvs.height);
+ctx.fillStyle="#2b2b2e"; ctx.fillRect(0, cvs.height-20, cvs.width, 20); ctx.fillStyle="#0f0f12"; holes.forEach(h=>ctx.fillRect(h.x,h.y,h.w,h.h)); }
+function drawEntity(e){ let emoji=e.cooked ? (e.team==="cow"?"🍖":"🍗") : (e.team==="cow"?"🐄":"🐔");
+ctx.font="24px serif"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(emoji, e.x, e.y); }
 function physics(){
-// mano
-hand.vx*=0.92; hand.vy*=0.92;
-hand.x+=hand.vx; hand.y+=hand.vy;
-hand.x=Math.max(20, Math.min(cvs.width-20, hand.x));
-hand.y=Math.max(20, Math.min(cvs.height-40, hand.y));
-
-// entidades
+hand.vx*=0.92; hand.vy*=0.92; hand.x+=hand.vx; hand.y+=hand.vy;
+hand.x=Math.max(20,Math.min(cvs.width-20,hand.x)); hand.y=Math.max(20,Math.min(cvs.height-40,hand.y));
 entities.forEach(e=>{
-if(!e.alive) return;
-e.vy += G;
-e.x += e.vx; e.y += e.vy;
-e.vx *= FRICTION; e.vy *= FRICTION;
-
-// colisión con bordes superiores/laterales
-if(e.x<10){ e.x=10; e.vx*=-0.6; }
-if(e.x>cvs.width-10){ e.x=cvs.width-10; e.vx*=-0.6; }
-if(e.y<10){ e.y=10; e.vy*=-0.6; }
-
-// piso sólido salvo huecos
-const onFloor = e.y>=cvs.height-30;
-let inHole=false;
-holes.forEach(h=>{
-if(e.y>=h.y-2 && e.y<=h.y+h.h && e.x>=h.x && e.x<=h.x+h.w){ inHole=true; }
-});
-if(onFloor && !inHole){
-e.y=cvs.height-30; e.vy*=-0.35;
-}
-
-// colisión con mano
+if(!e.alive) return; e.vy+=G; e.x+=e.vx; e.y+=e.vy; e.vx*=FRICTION; e.vy*=FRICTION;
+if(e.x<10){e.x=10; e.vx*=-0.6} if(e.x>cvs.width-10){e.x=cvs.width-10; e.vx*=-0.6} if(e.y<10){e.y=10; e.vy*=-0.6}
+const onFloor=e.y>=cvs.height-30; let inHole=false;
+holes.forEach(h=>{ if(e.y>=h.y-2 && e.y<=h.y+h.h && e.x>=h.x && e.x<=h.x+h.w) inHole=true; });
+if(onFloor && !inHole){ e.y=cvs.height-30; e.vy*=-0.35; }
 const dx=e.x-hand.x, dy=e.y-hand.y, d=Math.hypot(dx,dy);
-if(d<32){
-const nx=dx/(d||1), ny=dy/(d||1);
-e.vx += nx*PUSH; e.vy += ny*PUSH;
-}
-
-// colisiones simples entre animales
-entities.forEach(o=>{
-if(o===e || !o.alive) return;
-const dx=e.x-o.x, dy=e.y-o.y, d=Math.hypot(dx,dy);
-if(d<22){
-const nx=dx/(d||1), ny=dy/(d||1);
-e.vx += nx*0.4; e.vy += ny*0.4;
-o.vx -= nx*0.4; o.vy -= ny*0.4;
-}
+if(d<32){ const nx=dx/(d||1), ny=dy/(d||1); e.vx+=nx*PUSH; e.vy+=ny*PUSH; }
+entities.forEach(o=>{ if(o===e||!o.alive) return; const dx=e.x-o.x,dy=e.y-o.y,d=Math.hypot(dx,dy); if(d<22){ const nx=dx/(d||1),ny=dy/(d||1); e.vx+=nx*0.4; e.vy+=ny*0.4; o.vx-=nx*0.4; o.vy-=ny*0.4; }});
+if(e.y>cvs.height+30 && !e.cooked){ e.cooked=true; score+=10; scoreEl.textContent=score; }
+if(e.cooked && e.y>cvs.height+120){ e.alive=false; }
 });
-
-// cayó del mapa -> se cocina
-if(e.y>cvs.height+30 && !e.cooked){
-e.cooked=true; score += 10; scoreEl.textContent=score;
+if(entities.every(e=>!e.alive || e.cooked)){ level++; lvlEl.textContent=level; genHoles(); spawnWave(); }
 }
-// si está cocinado y se fue del todo, desaparece
-if(e.cooked && e.y>cvs.height+120){
-e.alive=false;
-}
-});
-
-// si no quedan vivos → siguiente nivel
-if(entities.every(e=>!e.alive || e.cooked)){
-level++; document.getElementById("lvl").textContent=level;
-genHoles(); spawnWave();
-}
-}
-
-function render(){
-drawArena();
-// dibuja mano
-ctx.font="26px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
-ctx.fillText("👋", hand.x, hand.y);
-// dibuja entidades
-entities.forEach(e=> drawEntity(e));
-}
-
+function render(){ drawArena(); ctx.font="26px serif"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText("👋", hand.x, hand.y); entities.forEach(drawEntity); }
 function loop(){ physics(); render(); requestAnimationFrame(loop); }
-
-// Controles mano
-const accel=1.6;
-window.addEventListener("keydown", (e)=>{
-const k=e.key.toLowerCase();
-if(["arrowleft","a"].includes(k)) hand.vx-=accel;
-if(["arrowright","d"].includes(k)) hand.vx+=accel;
-if(["arrowup","w"].includes(k)) hand.vy-=accel;
-if(["arrowdown","s"].includes(k)) hand.vy+=accel;
-});
-
-// Inicio
-function startGame(){
-level=1; score=0; lvlEl.textContent=level; scoreEl.textContent=score;
-hand={x:cvs.width/2,y:120,vx:0,vy:0};
-genHoles(); spawnWave(); loop();
-}
-document.getElementById("restart").addEventListener("click", startGame);
-startGame();
+const accel=1.6; window.addEventListener("keydown", e=>{ const k=e.key.toLowerCase();
+if(["arrowleft","a"].includes(k)) hand.vx-=accel; if(["arrowright","d"].includes(k)) hand.vx+=accel; if(["arrowup","w"].includes(k)) hand.vy-=accel; if(["arrowdown","s"].includes(k)) hand.vy+=accel; });
+function startGame(){ level=1; score=0; lvlEl.textContent=level; scoreEl.textContent=score; hand={x:cvs.width/2,y:120,vx:0,vy:0}; genHoles(); spawnWave(); loop(); }
+document.getElementById("restart").addEventListener("click", startGame); startGame();
 </script>
 </body>
 </html>
