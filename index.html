@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
-:root{ --bg:#131319; --text:#f4f6f8; --panel:#202225; --panel2:#151618; --accent:#4CAF50; --muted:#b9c0c7; --warn:#ffd166; }
+:root{ --bg:#2b2ee6; --text:#f4f6f8; --panel:#202225; --panel2:#151618; --accent:#4CAF50; --muted:#b9c0c7; --warn:#ffd166; }
 *{box-sizing:border-box}
 body{margin:0; background:var(--bg); color:var(--text); font-family:'Montserrat','Segoe UI',Arial,sans-serif}
 a{color:inherit; text-decoration:none}
@@ -36,27 +36,25 @@ background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; fo
 input, select, textarea{width:100%; border:1px solid rgba(255,255,255,.15); background:#141516; color:#fff;
 border-radius:10px; padding:10px 12px; font-family:inherit; font-size:1rem}
 textarea{min-height:100px; resize:vertical}
+.actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
 .progress{height:8px; background:#111; border-radius:6px; overflow:hidden; width:220px; display:none}
 .bar{height:100%; width:0%; background:var(--accent); transition:width .1s linear}
-.actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
 
-.filters{display:flex; gap:8px; margin:8px 0 12px; align-items:center; flex-wrap:wrap}
-.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:14px}
-
+.controls{display:flex; gap:8px; margin-bottom:12px; align-items:center; flex-wrap:wrap}
+.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px}
 .post{background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%); border:1px solid rgba(255,255,255,.08);
 border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 .meta{font-size:.85rem; color:#c7ced6}
-.title{margin:6px 0 6px; font-weight:700}
+.stars{color:var(--warn)}
 .media{margin-top:8px}
 .media img, .media video{width:100%; border-radius:10px; display:block}
-.toolbar{display:flex; gap:10px; margin-top:8px; align-items:center}
-.comment-toggle{background:#1f2023; color:#fff; border:1px solid #2b2d31; border-radius:8px; padding:4px 8px; cursor:pointer}
 
-.comments{margin-top:10px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px; display:none}
+.comments{margin-top:10px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px}
 .comment{font-size:.95rem; margin:6px 0}
 .comment .by{color:#cbd2d9; font-size:.85rem}
-.comment-form{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap}
-.comment-form input[type="text"]{flex:1; min-width:140px}
+.comment-form{display:flex; gap:6px; margin-top:8px}
+.comment-form input{flex:1}
+.comment-form button{white-space:nowrap}
 
 .more{display:flex; justify-content:center; margin-top:12px}
 .more button{background:#202225; color:#fff; border:1px solid #2b2d31; padding:8px 12px; border-radius:8px; cursor:pointer}
@@ -71,7 +69,7 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 <header>
 <div>
 <h1>APP para emprendedores</h1>
-<p class="lead">Apps destacadas · Foro abierto (posts con imagen/video) · Comentarios en hilo</p>
+<p class="lead">Foro global con imágenes/videos en tiempo real. (Sin mini-juego)</p>
 </div>
 </header>
 
@@ -117,10 +115,10 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 </article>
 </section>
 
-<!-- Foro -->
+<!-- Foro global -->
 <section id="foro">
 <h2>Foro & Reseñas</h2>
-<p class="hint">Publica sobre las apps (texto + imagen o video). Cualquiera puede ver y comentar.</p>
+<p class="hint">Todos pueden publicar y comentar. Imágenes o videos con barra de progreso. (Reseñas públicas visibles en cualquier dispositivo)</p>
 
 <form id="postForm">
 <div>
@@ -132,8 +130,15 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 </select>
 </div>
 <div><label>Tu nombre</label><input id="fName" type="text" placeholder="Ej: Raúl" required maxlength="40"/></div>
-<div class="full"><label>Título (opcional)</label><input id="fTitle" type="text" maxlength="100" placeholder="Ej: Mi experiencia" /></div>
-<div class="full"><label>Texto</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required maxlength="1000"></textarea></div>
+<div>
+<label>Calificación</label>
+<select id="fRating" required>
+<option value="5">★★★★★ (5)</option><option value="4">★★★★☆ (4)</option>
+<option value="3">★★★☆☆ (3)</option><option value="2">★★☆☆☆ (2)</option>
+<option value="1">★☆☆☆☆ (1)</option>
+</select>
+</div>
+<div class="full"><label>Reseña</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required maxlength="800"></textarea></div>
 <div class="full">
 <label>Imagen o video (opcional)</label>
 <input id="fFile" type="file" accept="image/*,video/*" />
@@ -145,7 +150,7 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 </div>
 </form>
 
-<div class="filters">
+<div class="controls">
 <select id="filterApp">
 <option value="">Todas las apps</option>
 <option value="BUSHO">BUSHO</option><option value="Canva">Canva</option>
@@ -170,9 +175,8 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script>
-/* 🔐 Pega aquí TUS credenciales reales */
+/* 🔐 Pega aquí tus credenciales REALES (Firestore + Storage habilitados) */
 const firebaseConfig = {
 apiKey: "TU_API_KEY",
 authDomain: "TU_AUTH_DOMAIN",
@@ -185,26 +189,111 @@ if(!firebaseConfig.apiKey){ alert("Falta configurar Firebase: edita firebaseConf
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = firebase.storage();
-
-// Auth anónimo (mejor estabilidad de permisos/quotas)
-firebase.auth().signInAnonymously().catch(()=>{});
-// Persistencia (si falla, seguimos online normal)
-db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
 </script>
 
 <script>
-/************ Foro abierto (posts + comentarios) ************/
+/************ Foro en tiempo real con imagen/video + paginación ************/
 const allowedApps = ["BUSHO","Canva","Shopify","Zoom","Mercado Pago"];
 const $ = s => document.querySelector(s);
 const feed = $("#feed"), statusEl=$("#status"), bar=$("#bar"), prog=$("#progress");
 const filterApp = $("#filterApp"), orderSel = $("#orderSel"), loadMoreBtn = $("#loadMore");
-const PAGE = 20;
-let lastDoc = null, unsubPosts = null;
 
+const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
 const escapeHTML = s => (s||"").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-const tsToDate = ts => (ts?.toDate ? ts.toDate() : new Date());
+const PAGE = 20;
+let lastDoc = null, unsub = null;
 
-// ===== Subida con progreso (imagen/video) =====
+function tsToDate(ts){ try{ return ts?.toDate ? ts.toDate() : new Date(ts); }catch{ return new Date(); } }
+
+function postCard(doc){
+const p = doc.data(); const t = tsToDate(p.time);
+const el = document.createElement("article"); el.className="post"; el.id = `post-${doc.id}`;
+el.innerHTML = `
+<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"")} <span class="stars">${stars(p.rating||0)}</span></div>
+<div>${escapeHTML(p.text||"")}</div>
+<div class="media">
+${p.mediaUrl ? (p.mediaType==="video" ? `<video controls src="${escapeHTML(p.mediaUrl)}"></video>` : `<img loading="lazy" src="${escapeHTML(p.mediaUrl)}" alt="media">`) : ""}
+</div>
+<div class="meta">${t.toLocaleString()}</div>
+<div class="comments">
+<div class="comment-form">
+<input type="text" placeholder="Comentar..." maxlength="300" />
+<button class="btn">Comentar</button>
+</div>
+<div class="comment-list"></div>
+</div>
+`;
+// Comentarios realtime
+const list = el.querySelector(".comment-list");
+db.collection("posts").doc(doc.id).collection("comments").orderBy("time","asc")
+.onSnapshot(s=>{
+list.innerHTML = "";
+s.forEach(c=>{
+const d=c.data(); const ct=tsToDate(d.time);
+const li=document.createElement("div"); li.className="comment";
+li.innerHTML = `<div>${escapeHTML(d.text||"")}</div><div class="by">${escapeHTML(d.name||"Invitado")} · ${ct.toLocaleString()}</div>`;
+list.appendChild(li);
+});
+});
+// Enviar comentario
+const [inp,btn]=el.querySelectorAll(".comment-form > *");
+btn.addEventListener("click", async ()=>{
+const text=inp.value.trim(); if(!text) return;
+await db.collection("posts").doc(doc.id).collection("comments").add({
+text, name:"Invitado", time: firebase.firestore.FieldValue.serverTimestamp()
+});
+inp.value="";
+});
+return el;
+}
+
+function stopLive(){ if(unsub){ unsub(); unsub=null; } }
+function startLive(q){
+stopLive();
+unsub = q.onSnapshot(snap=>{
+feed.innerHTML = "";
+const frag=document.createDocumentFragment();
+snap.forEach(doc=> frag.appendChild(postCard(doc)));
+feed.appendChild(frag);
+lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
+}, async ()=>{
+stopLive(); // fallback
+await loadStatic(q);
+});
+}
+async function loadStatic(q){
+const snap = await q.get();
+feed.innerHTML="";
+const frag=document.createDocumentFragment();
+snap.forEach(doc=> frag.appendChild(postCard(doc)));
+feed.appendChild(frag);
+lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
+}
+async function loadMore(){
+if(!lastDoc) return;
+const q = baseQuery().startAfter(lastDoc).limit(PAGE);
+const snap = await q.get();
+const frag=document.createDocumentFragment();
+snap.forEach(doc=> frag.appendChild(postCard(doc)));
+feed.appendChild(frag);
+lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
+}
+function baseQuery(){
+const app = filterApp.value;
+const dir = orderSel.value === "asc" ? "asc" : "desc";
+let q = db.collection("posts").orderBy("time", dir);
+if(app) q = q.where("app","==",app);
+return q;
+}
+function refresh(){ startLive( baseQuery().limit(PAGE) ); }
+filterApp.addEventListener("change", refresh);
+orderSel.addEventListener("change", refresh);
+document.getElementById("loadMore").addEventListener("click", loadMore);
+
+// Subida con progreso
 async function uploadMedia(file){
 if(!file) return { url:"", type:"" };
 const MAX_MB = 25;
@@ -228,142 +317,26 @@ resolve({ url, type: file.type.startsWith("video/") ? "video" : "image" });
 });
 }
 
-// ===== Crear tarjeta de post + manejo de comentarios on-demand =====
-function renderPost(doc){
-const p = doc.data(); const t = tsToDate(p.time);
-const wrap = document.createElement("article");
-wrap.className = "post"; wrap.id = `post-${doc.id}`;
-wrap.innerHTML = `
-<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"Invitado")} · ${t.toLocaleString()}</div>
-${p.title ? `<div class="title">${escapeHTML(p.title)}</div>` : ""}
-<div>${escapeHTML(p.text||"")}</div>
-<div class="media">
-${p.mediaUrl ? (p.mediaType==="video" ? `<video controls src="${escapeHTML(p.mediaUrl)}"></video>` : `<img loading="lazy" src="${escapeHTML(p.mediaUrl)}" alt="media">`) : ""}
-</div>
-<div class="toolbar">
-<button class="comment-toggle" data-id="${doc.id}">Ver comentarios</button>
-<span style="opacity:.8">ID: ${doc.id.slice(0,6)}…</span>
-</div>
-<div class="comments" id="c-${doc.id}">
-<div class="comment-form">
-<input type="text" id="cn-${doc.id}" placeholder="Tu nombre (opcional)" maxlength="40"/>
-<input type="text" id="ct-${doc.id}" placeholder="Escribe un comentario..." maxlength="300"/>
-<button class="btn" data-post="${doc.id}">Comentar</button>
-</div>
-<div class="comment-list" id="cl-${doc.id}"></div>
-</div>
-`;
-
-let commentsOpen = false, unsubC = null;
-// Abrir/cerrar comentarios (crea/detiene listener)
-wrap.querySelector(".comment-toggle").addEventListener("click", ()=>{
-const box = wrap.querySelector(`#c-${doc.id}`);
-commentsOpen = !commentsOpen;
-box.style.display = commentsOpen ? "block" : "none";
-wrap.querySelector(".comment-toggle").textContent = commentsOpen ? "Ocultar comentarios" : "Ver comentarios";
-if(commentsOpen && !unsubC){
-unsubC = db.collection("posts").doc(doc.id).collection("comments").orderBy("time","asc")
-.onSnapshot(s=>{
-const list = wrap.querySelector(`#cl-${doc.id}`);
-list.innerHTML = "";
-s.forEach(c=>{
-const d=c.data(); const ct=tsToDate(d.time);
-const el=document.createElement("div"); el.className="comment";
-el.innerHTML = `<div>${escapeHTML(d.text||"")}</div><div class="by">${escapeHTML(d.name||"Invitado")} · ${ct.toLocaleString()}</div>`;
-list.appendChild(el);
-});
-});
-}
-if(!commentsOpen && unsubC){ unsubC(); unsubC=null; }
-});
-
-// Enviar comentario
-wrap.querySelector(`button[data-post="${doc.id}"]`).addEventListener("click", async ()=>{
-const name = (wrap.querySelector(`#cn-${doc.id}`).value.trim() || "Invitado").slice(0,40);
-const text = wrap.querySelector(`#ct-${doc.id}`).value.trim();
-if(!text) return;
-try{
-await db.collection("posts").doc(doc.id).collection("comments").add({
-name, text, time: firebase.firestore.FieldValue.serverTimestamp()
-});
-wrap.querySelector(`#ct-${doc.id}`).value = "";
-}catch(e){ console.error(e); }
-});
-
-return wrap;
-}
-
-// ===== Listado de posts (en vivo) + paginación estática para más antiguos =====
-function baseQuery(){
-const dir = orderSel.value === "asc" ? "asc" : "desc";
-return db.collection("posts").orderBy("time", dir);
-}
-function startPosts(){
-if(unsubPosts){ unsubPosts(); unsubPosts=null; }
-const selected = (filterApp.value || "").trim();
-const q = baseQuery().limit(PAGE);
-unsubPosts = q.onSnapshot(async snap=>{
-feed.innerHTML = "";
-const frag=document.createDocumentFragment();
-snap.forEach(doc=>{
-const app = (doc.data().app||"");
-if(!selected || app===selected) frag.appendChild(renderPost(doc));
-});
-feed.appendChild(frag);
-lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-}, async err=>{
-console.error(err);
-// Fallback estático si falla el listener
-const snap2 = await q.get();
-feed.innerHTML = "";
-const frag=document.createDocumentFragment();
-snap2.forEach(doc=>{
-const app = (doc.data().app||"");
-if(!selected || app===selected) frag.appendChild(renderPost(doc));
-});
-feed.appendChild(frag);
-lastDoc = snap2.docs.length ? snap2.docs[snap2.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-});
-}
-async function loadMore(){
-if(!lastDoc) return;
-const selected = (filterApp.value || "").trim();
-const q = baseQuery().startAfter(lastDoc).limit(PAGE);
-const snap = await q.get();
-const frag=document.createDocumentFragment();
-snap.forEach(doc=>{
-const app = (doc.data().app||"");
-if(!selected || app===selected) frag.appendChild(renderPost(doc));
-});
-feed.appendChild(frag);
-lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-}
-filterApp.addEventListener("change", startPosts);
-orderSel.addEventListener("change", startPosts);
-loadMoreBtn.addEventListener("click", loadMore);
-
-// ===== Publicar post =====
+// Publicar post
 document.getElementById("postForm").addEventListener("submit", async e=>{
 e.preventDefault();
 const btn = document.getElementById("sendBtn"); btn.disabled = true;
 statusEl.textContent = "Subiendo...";
 try{
 const app = document.getElementById("fApp").value;
-const name = document.getElementById("fName").value.trim().slice(0,40);
-const title = document.getElementById("fTitle").value.trim().slice(0,100);
-const text = document.getElementById("fText").value.trim().slice(0,1000);
+const name = document.getElementById("fName").value.trim();
+const rating = +document.getElementById("fRating").value;
+const text = document.getElementById("fText").value.trim();
 const file = document.getElementById("fFile").files[0] || null;
 if(!allowedApps.includes(app)) throw new Error("App no permitida.");
-if(!name || !text) throw new Error("Completa nombre y texto.");
+if(!name || !text) throw new Error("Completa nombre y reseña.");
 
 let mediaUrl="", mediaType="";
 if(file){ ({url:mediaUrl, type:mediaType} = await uploadMedia(file)); }
 
 await db.collection("posts").add({
-app, name, title, text, mediaUrl, mediaType,
+app, name:name.slice(0,40), rating, text:text.slice(0,800),
+mediaUrl, mediaType,
 time: firebase.firestore.FieldValue.serverTimestamp()
 });
 
@@ -378,8 +351,8 @@ btn.disabled = false;
 }
 });
 
-// Iniciar feed
-startPosts();
+// Arrancar el feed
+refresh();
 </script>
 </body>
 </html>
