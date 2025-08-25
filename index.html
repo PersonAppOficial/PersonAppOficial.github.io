@@ -1,241 +1,155 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DMDTR0PJKP"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-DMDTR0PJKP');
-</script>
-
-<meta charset="UTF-8" />
+<meta charset="utf-8" />
 <title>PersonAPP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
-
 <style>
-/* ===== Base ===== */
 :root{
---bg:#3c3cd2; /* color de fondo página */
---text:#f2f2f2; /* texto general claro */
---panel:#232526; /* tarjetas */
---panel2:#181818;
---accent:#4CAF50; /* verde de acento */
---muted:#bfbfbf; /* texto tenue */
+--bg:#2b2ee6; --text:#f4f6f8; --panel:#202225; --panel2:#151618; --accent:#4CAF50; --muted:#b9c0c7;
+--warn:#ffd166;
 }
-
 *{box-sizing:border-box}
-body{
-margin:0;
-background:var(--bg);
-color:var(--text);
-font-family:'Montserrat','Segoe UI',Arial,sans-serif;
-}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Montserrat','Segoe UI',Arial,sans-serif}
+a{color:inherit}
 
-.main-container{
-max-width:1400px;
-margin:0 auto;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:16px;
-}
+.wrap{max-width:1200px; margin:0 auto; padding:20px}
 
-.titulo-principal{
-text-align:center;
-color:hsl(0 0% 96%);
-margin:48px 0;
-font-size:2.8em;
-font-weight:700;
-letter-spacing:2.5px;
-text-shadow:0 2px 16px rgba(18,255,65,.92);
-animation:fadeInDown 1.2s cubic-bezier(.77,0,.18,1) .1s both;
-}
-@keyframes fadeInDown{
-from{opacity:0; transform:translateY(-40px)}
-to{opacity:1; transform:translateY(0)}
-}
+header{display:flex; align-items:center; justify-content:center; text-align:center; padding:40px 10px 10px}
+h1{font-size:2.6rem; margin:0 0 8px; text-shadow:0 2px 16px rgba(18,255,65,.7)}
+p.lead{margin:0; opacity:.9}
 
-/* ===== Grilla de apps ===== */
-.logo-grid-wrapper{width:100%; display:flex; justify-content:center}
-.logo-grid{
-display:flex; flex-wrap:wrap; gap:32px;
-justify-content:center; padding:0 0 40px 0; margin:0;
-max-width:100%;
-}
-
-.logo-item{
-flex:0 0 300px; min-width:260px; max-width:300px;
-display:flex; flex-direction:column; align-items:center;
+/* Grilla de Apps */
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; margin:32px 0 48px}
+.card{
 background:linear-gradient(135deg,var(--panel2) 60%,var(--panel) 100%);
-border-radius:18px; padding:28px 22px 22px;
-box-shadow:0 2px 18px rgba(0,0,0,.45);
-transition:transform .25s cubic-bezier(.77,0,.18,1), box-shadow .25s, background .25s;
-cursor:pointer; position:relative; overflow:visible;
-animation:logoPop 1.1s cubic-bezier(.77,0,.18,1) both;
+border:1px solid rgba(255,255,255,.06);
+border-radius:16px; padding:18px; box-shadow:0 2px 16px rgba(0,0,0,.25);
+transition:transform .2s ease, box-shadow .2s ease;
 }
-@keyframes logoPop{
-from{opacity:0; transform:scale(.85) translateY(40px)}
-to{opacity:1; transform:scale(1) translateY(0)}
-}
-.logo-item:hover{
-transform:translateY(-10px) scale(1.06) rotate(-1deg);
-box-shadow:0 8px 32px rgba(0,0,0,.3), 0 2px 18px rgba(0,0,0,.45);
-background:linear-gradient(135deg,var(--panel) 60%,var(--panel2) 100%);
-}
-.logo-item img{
-width:70px; height:70px; object-fit:contain; margin-bottom:18px;
-background:#222; border-radius:12px; box-shadow:0 1px 8px rgba(0,0,0,.25);
-transition:box-shadow .25s, transform .25s; z-index:1;
-}
-.logo-item:hover img{ box-shadow:0 4px 24px rgba(0,0,0,.3); transform:scale(1.08) rotate(2deg) }
-
-.logo-description{
-color:#ddd; font-size:.95rem; text-align:left;
-margin:12px 0 0; font-weight:600; letter-spacing:.3px; line-height:1.4;
-max-width:340px; padding:0 4px;
+.card:hover{transform:translateY(-6px); box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.card img.logo{width:64px; height:64px; object-fit:contain; background:#111; border-radius:12px; box-shadow:0 1px 8px rgba(0,0,0,.3)}
+.card h3{margin:12px 0 8px; font-size:1.15rem}
+.card p{margin:0 0 12px; color:#dfe5ea}
+.stores{display:flex; gap:8px; flex-wrap:wrap}
+.btn{
+display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:none; cursor:pointer;
+background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; text-decoration:none; font-weight:700; font-size:.9rem;
 }
 
-.store-buttons{display:flex; gap:8px; margin-top:12px; align-items:center; justify-content:center; width:100%}
-.store-btn{
-display:flex; align-items:center; gap:8px; padding:8px 12px;
-background:linear-gradient(90deg,#232526 0%, var(--accent) 100%);
-color:#fff; border-radius:8px; text-decoration:none; font-weight:600; font-size:.85em;
-box-shadow:0 1px 6px rgba(255,255,255,.1); white-space:nowrap;
+/* Foro & Reseñas */
+section#foro{background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px; margin:24px 0 80px}
+section#foro h2{margin:0 0 6px}
+.hint{color:var(--muted); margin:0 0 16px}
+form#postForm{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px}
+form#postForm .full{grid-column:1/-1}
+input, select, textarea{
+width:100%; border:1px solid rgba(255,255,255,.15); background:#141516; color:#fff;
+border-radius:10px; padding:10px 12px; font-family:inherit; font-size:1rem
 }
-.store-btn:hover{ transform:scale(1.04) }
+textarea{min-height:100px; resize:vertical}
+.actions{display:flex; gap:10px; align-items:center}
+.secondary{background:#2a2d31}
+.danger{background:#a33}
+.upload-hint{font-size:.9rem; color:var(--muted)}
+.preview{display:flex; gap:12px; flex-wrap:wrap}
+.preview img{max-width:120px; border-radius:10px; border:1px solid rgba(255,255,255,.1)}
 
-/* ===== Footer fijo ===== */
-.marca-personapp{
-position:fixed; left:32px; bottom:24px; color:#fff; font-size:1.6em; font-weight:700; opacity:.92; letter-spacing:2px; z-index:100;
-text-shadow:0 2px 8px rgba(0,0,0,.7); user-select:none; animation:fadeInLeft 1.2s cubic-bezier(.77,0,.18,1) .5s both;
+.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px}
+.post{
+background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%); border:1px solid rgba(255,255,255,.08);
+border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)
 }
-@keyframes fadeInLeft{from{opacity:0; transform:translateX(-40px)} to{opacity:1; transform:translateX(0)}}
+.meta{font-size:.85rem; color:#c7ced6}
+.stars{color:var(--warn)}
+.post img{width:100%; height:auto; border-radius:10px; margin-top:8px}
 
-.contacto-personapp{
-position:fixed; right:32px; bottom:24px; color:#fff; font-size:1.05em; font-weight:500; opacity:.92; letter-spacing:1px; z-index:100;
-text-shadow:0 2px 8px rgba(0,0,0,.7); user-select:none; background:rgba(0,0,0,.3); padding:6px 16px; border-radius:8px;
-}
+/* Juego */
+section#juego{margin:50px 0 90px; background:rgba(0,0,0,.14); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px}
+#gameWrap{display:flex; flex-direction:column; align-items:center; gap:8px}
+canvas#maze{background:#0f0f12; border:2px solid #2b2b2b; border-radius:8px; max-width:100%; height:auto}
+.hud{display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center}
+.kbd{background:#111; border:1px solid #333; border-radius:6px; padding:2px 6px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace}
+.pad{display:grid; grid-template-columns:40px 40px 40px; gap:6px; margin-top:6px}
+.pad button{height:40px; border-radius:8px; border:1px solid #2f2f2f; background:#1b1c1f; color:#fff; font-weight:700; cursor:pointer}
+.pad button:active{transform:scale(.98)}
 
-/* ===== Emoji que saluda ===== */
+/* Fijos */
+.brand{position:fixed; left:16px; bottom:16px; font-weight:800; letter-spacing:1px; opacity:.9}
+.contact{position:fixed; right:16px; bottom:16px; opacity:.9; background:rgba(0,0,0,.3); padding:6px 12px; border-radius:8px}
+
+/* Emoji que saluda */
 .emoji-wave{
 position:fixed; bottom:40px; right:40px; font-size:90px; line-height:1; z-index:9999;
-animation:waveEmoji 1.6s ease-in-out infinite; user-select:none; pointer-events:none; filter:drop-shadow(0 3px 6px rgba(0,0,0,.5));
+animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none; filter:drop-shadow(0 3px 6px rgba(0,0,0,.5));
 }
-@keyframes waveEmoji{
-0%,100%{transform:rotate(0deg)}
-15%{transform:rotate(20deg)}
-30%{transform:rotate(-10deg)}
-45%{transform:rotate(12deg)}
-60%{transform:rotate(-6deg)}
-75%{transform:rotate(4deg)}
-}
-
-/* ===== Blog/Reseñas ===== */
-.blog{
-width:100%; max-width:1000px; margin:40px auto 100px; background:rgba(0,0,0,.18);
-border-radius:16px; padding:24px; box-shadow:0 2px 16px rgba(0,0,0,.25);
-}
-.blog h2{ margin:0 0 8px }
-.blog p.hint{ color:var(--muted); margin:0 0 16px }
-.review-form{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px }
-.review-form .full{ grid-column:1/-1 }
-.review-form input,.review-form select,.review-form textarea{
-width:100%; border:1px solid rgba(255,255,255,.15); background:#1c1c1c; color:#fff; border-radius:8px; padding:10px 12px; font-family:inherit
-}
-.review-form textarea{ min-height:90px; resize:vertical }
-.review-form button{
-background:var(--accent); color:#fff; border:none; border-radius:10px; padding:12px 16px; font-weight:700; cursor:pointer
-}
-.reviews{ display:grid; grid-template-columns:1fr 1fr; gap:14px }
-.review{
-background:linear-gradient(135deg, #1a1a1a 60%, #222 100%); border:1px solid rgba(255,255,255,.08);
-border-radius:12px; padding:14px 16px; box-shadow:0 1px 10px rgba(0,0,0,.25)
-}
-.review .meta{ font-size:.85em; color:var(--muted); margin-bottom:6px }
-.review .stars{ color:#ffd166; margin-left:6px }
-@media (max-width:900px){
-.titulo-principal{ font-size:2em; margin:32px 0 }
-.reviews{ grid-template-columns:1fr }
+@keyframes wave{
+0%,100%{transform:rotate(0deg)} 15%{transform:rotate(20deg)} 30%{transform:rotate(-10deg)}
+45%{transform:rotate(12deg)} 60%{transform:rotate(-6deg)} 75%{transform:rotate(4deg)}
 }
 </style>
 </head>
-
 <body>
-<div class="main-container">
-<h1 class="titulo-principal">APP para emprendedores</h1>
-
-<div class="logo-grid-wrapper">
-<div class="logo-grid">
-
-<!-- BUSHO -->
-<div class="logo-item">
-<a href="https://busho.cl/" target="_blank" class="logo-link">
-<img src="Img/logo.busho.png" alt="BUSHO" />
-</a>
-<p class="logo-description">
-BUSHO es la plataforma líder de arriendo flexible de espacios comerciales, como un “Airbnb para tiendas”, que
-conecta emprendedores con puntos de venta en Chile y el extranjero.
-</p>
-<div class="store-buttons">
-<a class="store-btn" target="_blank" href="https://apps.apple.com/cl/app/busho/id1665748711">
-<img src="Img/logo.ios.png" alt="App Store" width="16" height="16" /> iOS
-</a>
-<a class="store-btn" target="_blank" href="https://play.google.com/store/apps/details?id=app.busho.cl&pli=1">
-<img src="Img/logo.appstore.png" alt="Play Store" width="16" height="16" /> Android
-</a>
-<a class="store-btn" target="_blank" href="https://appgallery.huawei.com/app/C107382701">
-<img src="Img/logo.huawei.png" alt="Huawei Store" width="16" height="16" /> Huawei
-</a>
-</div>
-</div>
-
-<!-- CANVA -->
-<div class="logo-item">
-<a href="https://www.canva.com/" target="_blank" class="logo-link">
-<img src="Img/logo.canva.png" alt="Canva" />
-</a>
-<p class="logo-description">Canva: diseños rápidos para redes, logos, flyers y más. Muy fácil de usar.</p>
-</div>
-
-<!-- SHOPIFY -->
-<div class="logo-item">
-<a href="https://www.shopify.com/" target="_blank" class="logo-link">
-<img src="Img/logo.shopify3.png" alt="Shopify" />
-</a>
-<p class="logo-description">Shopify: monta tu tienda online en minutos. (También Tiendanube y Jumpseller en Chile).</p>
-</div>
-
-<!-- ZOOM -->
-<div class="logo-item">
-<a href="https://www.zoom.com/" target="_blank" class="logo-link">
-<img src="Img/logo.zoom.png" alt="Zoom" />
-</a>
-<p class="logo-description">Zoom: reuniones con clientes, proveedores e inversionistas.</p>
-</div>
-
-<!-- MERCADO PAGO -->
-<div class="logo-item">
-<a href="https://www.mercadopago.cl/" target="_blank" class="logo-link">
-<img src="Img/logo.mercadopago.png" alt="Mercado Pago" />
-</a>
-<p class="logo-description">Mercado Pago: cobra con tarjeta desde el celular.</p>
-</div>
-
-</div>
-</div>
-
-<!-- ===== BLOG / RESEÑAS ===== -->
-<section class="blog" id="blog">
-<h2>Reseñas de estas apps</h2>
-<p class="hint">Deja tu experiencia: selecciona una app, pon tu nombre, califica y escribe tu reseña.</p>
-
-<form class="review-form" id="reviewForm">
+<div class="wrap">
+<header>
 <div>
-<label for="appSel">App</label>
-<select id="appSel" required>
+<h1>APP para emprendedores</h1>
+<p class="lead">Recursos útiles, foro de reseñas con imágenes y un minijuego para cerrar 😄</p>
+</div>
+</header>
+
+<!-- Grilla de Apps -->
+<section id="apps" class="grid">
+<article class="card">
+<img class="logo" src="Img/logo.busho.png" alt="BUSHO" />
+<h3>BUSHO</h3>
+<p>Arriendo flexible de espacios comerciales. “Airbnb para tiendas”.</p>
+<div class="stores">
+<a class="btn" target="_blank" href="https://busho.cl/">Visitar</a>
+<a class="btn" target="_blank" href="https://apps.apple.com/cl/app/busho/id1665748711">iOS</a>
+<a class="btn" target="_blank" href="https://play.google.com/store/apps/details?id=app.busho.cl">Android</a>
+</div>
+</article>
+
+<article class="card">
+<img class="logo" src="Img/logo.canva.png" alt="Canva" />
+<h3>Canva</h3>
+<p>Diseños fáciles para redes, logos, flyers y más.</p>
+<div class="stores"><a class="btn" target="_blank" href="https://www.canva.com/">Visitar</a></div>
+</article>
+
+<article class="card">
+<img class="logo" src="Img/logo.shopify3.png" alt="Shopify" />
+<h3>Shopify</h3>
+<p>Monta tu tienda online en minutos.</p>
+<div class="stores"><a class="btn" target="_blank" href="https://www.shopify.com/">Visitar</a></div>
+</article>
+
+<article class="card">
+<img class="logo" src="Img/logo.zoom.png" alt="Zoom" />
+<h3>Zoom</h3>
+<p>Reuniones con clientes y partners.</p>
+<div class="stores"><a class="btn" target="_blank" href="https://zoom.us/">Visitar</a></div>
+</article>
+
+<article class="card">
+<img class="logo" src="Img/logo.mercadopago.png" alt="Mercado Pago" />
+<h3>Mercado Pago</h3>
+<p>Cobra con tarjeta desde el celular.</p>
+<div class="stores"><a class="btn" target="_blank" href="https://www.mercadopago.cl/">Visitar</a></div>
+</article>
+</section>
+
+<!-- Foro & Reseñas (global, con imágenes) -->
+<section id="foro">
+<h2>Foro & Reseñas</h2>
+<p class="hint">Comparte tu experiencia. Todas las reseñas quedan públicas. (Las imágenes se suben a la nube)</p>
+
+<form id="postForm">
+<div>
+<label>App</label>
+<select id="fApp" required>
 <option value="BUSHO">BUSHO</option>
 <option value="Canva">Canva</option>
 <option value="Shopify">Shopify</option>
@@ -243,13 +157,15 @@ conecta emprendedores con puntos de venta en Chile y el extranjero.
 <option value="Mercado Pago">Mercado Pago</option>
 </select>
 </div>
+
 <div>
-<label for="nameInput">Tu nombre</label>
-<input id="nameInput" type="text" placeholder="Ej: Raúl" required />
+<label>Tu nombre</label>
+<input id="fName" type="text" placeholder="Ej: Raúl" required />
 </div>
+
 <div>
-<label for="ratingSel">Calificación</label>
-<select id="ratingSel" required>
+<label>Calificación</label>
+<select id="fRating" required>
 <option value="5">★★★★★ (5)</option>
 <option value="4">★★★★☆ (4)</option>
 <option value="3">★★★☆☆ (3)</option>
@@ -257,80 +173,281 @@ conecta emprendedores con puntos de venta en Chile y el extranjero.
 <option value="1">★☆☆☆☆ (1)</option>
 </select>
 </div>
+
 <div class="full">
-<label for="commentInput">Reseña</label>
-<textarea id="commentInput" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required></textarea>
+<label>Reseña</label>
+<textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required></textarea>
 </div>
+
 <div class="full">
-<button type="submit">Publicar reseña</button>
+<label>Imagen (opcional)</label>
+<input id="fImage" type="file" accept="image/*" />
+<div class="upload-hint">Formatos comunes (JPG/PNG). Tamaño sugerido &lt; 3 MB.</div>
+<div id="preview" class="preview"></div>
+</div>
+
+<div class="full actions">
+<button class="btn" type="submit" id="sendBtn">Publicar</button>
+<button class="btn secondary" type="button" id="clearLocal">Limpiar caché local</button>
+<span id="status" class="hint"></span>
 </div>
 </form>
 
-<div class="reviews" id="reviewsList"></div>
+<div id="feed" class="feed"></div>
+</section>
+
+<!-- Juego del Laberinto -->
+<section id="juego">
+<h2>Minijuego: lleva la 👋 a la meta</h2>
+<p class="hint">Controles: <span class="kbd">←</span> <span class="kbd">→</span> <span class="kbd">↑</span> <span class="kbd">↓</span> o WASD. En móvil: usa el pad.</p>
+<div id="gameWrap">
+<canvas id="maze" width="640" height="480"></canvas>
+<div class="hud">
+<button class="btn" id="restart">Reiniciar</button>
+<div>Nivel: <strong id="lvl">1</strong></div>
+</div>
+<div class="pad">
+<div></div><button data-dy="-1">↑</button><div></div>
+<button data-dx="-1">←</button><button data-dx="1">→</button>
+<div></div><button data-dy="1">↓</button><div></div>
+</div>
+</div>
 </section>
 </div>
 
-<div class="marca-personapp">PersonAPP</div>
-<div class="contacto-personapp">contacto: personappoficial@gmail.com</div>
-
-<!-- Emoji que saluda -->
+<div class="brand">PersonAPP</div>
+<div class="contact">contacto: personappoficial@gmail.com</div>
 <div class="emoji-wave" aria-hidden="true">👋</div>
 
-<!-- ===== JS: reseñas con localStorage ===== -->
+<!-- Firebase (FORO GLOBAL) -->
+<!-- 1) Añade tus librerías Firebase: -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+<!-- 2) Configura tu proyecto (REEMPLAZA con tus claves de Firebase): -->
 <script>
-const LS_KEY = 'personapp_reviews_v1';
+// ⚠️ Rellena con los valores de tu proyecto Firebase
+const firebaseConfig = {
+apiKey: "TU_API_KEY",
+authDomain: "TU_AUTH_DOMAIN",
+projectId: "TU_PROJECT_ID",
+storageBucket: "TU_STORAGE_BUCKET",
+messagingSenderId: "TU_SENDER_ID",
+appId: "TU_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const storage = firebase.storage();
+</script>
 
-function escapeHTML(str){
-return str.replace(/[&<>"']/g, m =>
-({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
-}
+<!-- Foro & Reseñas (Firestore + Storage) + Juego -->
+<script>
+// ===== Utilidades =====
+const $ = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
+const feed = $("#feed");
+const statusEl = $("#status");
+const preview = $("#preview");
+const escapeHTML = (str) => (str || "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
 
-function loadReviews(){
-try{ return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
-catch{ return []; }
-}
-function saveReviews(list){
-localStorage.setItem(LS_KEY, JSON.stringify(list));
-}
-
-function stars(n){
-n = Math.max(1, Math.min(5, parseInt(n,10)||5));
-return '★'.repeat(n) + '☆'.repeat(5-n);
-}
-
-function renderReviews(){
-const container = document.getElementById('reviewsList');
-const items = loadReviews().sort((a,b)=>b.time-a.time);
-container.innerHTML = items.map(r => `
-<article class="review">
-<div class="meta">
-<strong>${escapeHTML(r.app)}</strong> · ${escapeHTML(r.name)}
-<span class="stars">${stars(r.rating)}</span>
-</div>
-<div>${escapeHTML(r.comment)}</div>
-<div class="meta">${new Date(r.time).toLocaleString()}</div>
-</article>
-`).join('') || '<p class="hint">Aún no hay reseñas. ¡Sé el primero en escribir una!</p>';
-}
-
-document.getElementById('reviewForm').addEventListener('submit', (e)=>{
-e.preventDefault();
-const app = document.getElementById('appSel').value;
-const name = document.getElementById('nameInput').value.trim();
-const rating = document.getElementById('ratingSel').value;
-const comment = document.getElementById('commentInput').value.trim();
-if(!name || !comment) return;
-
-const list = loadReviews();
-list.push({ app, name, rating, comment, time: Date.now() });
-saveReviews(list);
-
-e.target.reset();
-renderReviews();
+// ===== Previsualizar imagen =====
+$("#fImage").addEventListener("change", e=>{
+preview.innerHTML = "";
+const file = e.target.files?.[0];
+if(!file) return;
+const url = URL.createObjectURL(file);
+const img = new Image();
+img.src = url; img.onload = ()=> URL.revokeObjectURL(url);
+preview.appendChild(img);
 });
 
-// Render inicial
-renderReviews();
+// ===== Publicar post =====
+$("#postForm").addEventListener("submit", async (e)=>{
+e.preventDefault();
+statusEl.textContent = "Publicando...";
+$("#sendBtn").disabled = true;
+
+try{
+const app = $("#fApp").value;
+const name = $("#fName").value.trim();
+const rating = $("#fRating").value;
+const text = $("#fText").value.trim();
+const file = $("#fImage").files?.[0] || null;
+
+if(!name || !text) throw new Error("Completa nombre y reseña.");
+
+let imageUrl = "";
+if(file){
+const safeName = file.name.replace(/[^a-z0-9.\-_]/gi,"_");
+const path = `images/${Date.now()}_${safeName}`;
+const ref = storage.ref().child(path);
+await ref.put(file);
+imageUrl = await ref.getDownloadURL();
+}
+
+await db.collection("posts").add({
+app, name, rating: +rating, text, imageUrl, time: Date.now()
+});
+
+$("#postForm").reset();
+preview.innerHTML = "";
+statusEl.textContent = "Publicado ✔️";
+setTimeout(()=> statusEl.textContent = "", 1400);
+}catch(err){
+console.error(err);
+statusEl.textContent = "Error: " + err.message;
+}finally{
+$("#sendBtn").disabled = false;
+}
+});
+
+// ===== Listener en tiempo real =====
+db.collection("posts").orderBy("time","desc").onSnapshot(snap=>{
+const frag = document.createDocumentFragment();
+snap.forEach(doc=>{
+const p = doc.data();
+const card = document.createElement("article");
+card.className = "post";
+card.innerHTML = `
+<div class="meta"><strong>${escapeHTML(p.app)}</strong> · ${escapeHTML(p.name)}
+<span class="stars">${stars(p.rating)}</span>
+</div>
+<div>${escapeHTML(p.text)}</div>
+${p.imageUrl ? `<img src="${escapeHTML(p.imageUrl)}" alt="imagen">` : ""}
+<div class="meta">${new Date(p.time||0).toLocaleString()}</div>
+`;
+frag.appendChild(card);
+});
+feed.innerHTML = "";
+feed.appendChild(frag);
+});
+
+// Limpia caché local (no afecta Firestore; es útil por si el navegador guarda algo viejo)
+$("#clearLocal").addEventListener("click", ()=>{
+localStorage.clear();
+statusEl.textContent = "Caché local limpiado.";
+setTimeout(()=> statusEl.textContent = "", 1200);
+});
+
+// ====== JUEGO: Laberinto con niveles ======
+const cvs = document.getElementById("maze");
+const ctx = cvs.getContext("2d");
+const lvlEl = document.getElementById("lvl");
+let level = 1, gridW=15, gridH=11, cell=32;
+let maze, player, goal;
+
+function generateMaze(w,h){
+// dimensiones impares
+w = w%2===0 ? w+1 : w; h = h%2===0 ? h+1 : h;
+const M = Array.from({length:h}, ()=> Array(w).fill(1));
+const stack = [{x:1,y:1}];
+M[1][1]=0;
+const dirs = [{dx:2,dy:0},{dx:-2,dy:0},{dx:0,dy:2},{dx:0,dy:-2}];
+while(stack.length){
+const cur = stack[stack.length-1];
+const order = dirs.slice().sort(()=>Math.random()-0.5);
+let carved = false;
+for(const d of order){
+const nx = cur.x + d.dx, ny = cur.y + d.dy;
+if(nx>0 && nx<w-1 && ny>0 && ny<h-1 && M[ny][nx]===1){
+M[ny][nx]=0;
+M[cur.y + d.dy/2 | 0][cur.x + d.dx/2 | 0]=0;
+stack.push({x:nx,y:ny});
+carved = true; break;
+}
+}
+if(!carved) stack.pop();
+}
+M[h-2][w-2]=0;
+return M;
+}
+
+function fitCanvas(){
+// Ajusta cell para que el canvas quepa en pantallas pequeñas
+const maxW = Math.min(640, window.innerWidth - 40);
+const maxH = 420;
+cell = Math.floor(Math.min(maxW / gridW, maxH / gridH));
+cvs.width = gridW * cell;
+cvs.height = gridH * cell;
+}
+
+function resetLevel(){
+fitCanvas();
+maze = generateMaze(gridW, gridH);
+player = {x:1, y:1};
+goal = {x:gridW-2, y:gridH-2};
+draw();
+}
+
+function draw(){
+ctx.fillStyle = "#0f0f12";
+ctx.fillRect(0,0,cvs.width,cvs.height);
+
+// muros
+ctx.fillStyle = "#2b2b2e";
+for(let y=0;y<gridH;y++){
+for(let x=0;x<gridW;x++){
+if(maze[y][x]===1) ctx.fillRect(x*cell, y*cell, cell, cell);
+}
+}
+
+// meta
+ctx.fillStyle = "#ffcc00";
+ctx.beginPath();
+ctx.arc((goal.x+0.5)*cell, (goal.y+0.5)*cell, cell*0.28, 0, Math.PI*2);
+ctx.fill();
+
+// jugador (emoji)
+ctx.font = Math.floor(cell*0.8) + "px serif";
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+ctx.fillText("👋", (player.x+0.5)*cell, (player.y+0.5)*cell);
+}
+
+function tryMove(dx,dy){
+const nx = player.x + dx, ny = player.y + dy;
+if(nx<0 || ny<0 || nx>=gridW || ny>=gridH) return;
+if(maze[ny][nx]===0){
+player.x = nx; player.y = ny; draw();
+if(player.x===goal.x && player.y===goal.y){
+// siguiente nivel
+level++;
+lvlEl.textContent = level;
+// Incrementa dificultad
+gridW = Math.min(35, gridW + 4);
+gridH = Math.min(27, gridH + 2);
+resetLevel();
+}
+}
+}
+
+window.addEventListener("keydown", (e)=>{
+const k = e.key.toLowerCase();
+if(["arrowleft","a"].includes(k)) { tryMove(-1,0); e.preventDefault(); }
+if(["arrowright","d"].includes(k)) { tryMove(1,0); e.preventDefault(); }
+if(["arrowup","w"].includes(k)) { tryMove(0,-1); e.preventDefault(); }
+if(["arrowdown","s"].includes(k)) { tryMove(0,1); e.preventDefault(); }
+});
+
+// Pad táctil
+$$(".pad button").forEach(b=>{
+b.addEventListener("click", ()=>{
+const dx = +b.getAttribute("data-dx")||0;
+const dy = +b.getAttribute("data-dy")||0;
+tryMove(dx,dy);
+});
+});
+
+// Botón reiniciar
+document.getElementById("restart").addEventListener("click", ()=>{
+level = 1; gridW = 15; gridH = 11; lvlEl.textContent = level; resetLevel();
+});
+
+window.addEventListener("resize", resetLevel);
+// Inicio
+resetLevel();
 </script>
 </body>
 </html>
+
