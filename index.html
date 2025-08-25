@@ -39,15 +39,18 @@ textarea{min-height:100px; resize:vertical}
 .actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
 .progress{height:8px; background:#111; border-radius:6px; overflow:hidden; width:220px; display:none}
 .bar{height:100%; width:0%; background:var(--accent); transition:width .1s linear}
-.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px}
+.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:14px}
 .post{background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%); border:1px solid rgba(255,255,255,.08);
 border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 .meta{font-size:.85rem; color:#c7ced6}
 .stars{color:var(--warn)}
 .media{margin-top:8px}
 .media img, .media video{width:100%; border-radius:10px; display:block}
-.actions-row{display:flex; gap:8px; margin-top:8px; align-items:center}
-.chip{font-size:.85rem; background:#1e1f22; border:1px solid #2b2d31; padding:4px 8px; border-radius:999px}
+.toolbar{display:flex; gap:10px; margin-top:8px; align-items:center}
+.vote{display:inline-flex; gap:6px; align-items:center}
+.vote button{background:#1f2023; color:#fff; border:1px solid #2b2d31; border-radius:8px; padding:4px 8px; cursor:pointer}
+.tag{font-size:.85rem; background:#1e1f22; border:1px solid #2b2d31; padding:4px 8px; border-radius:999px}
+
 .comments{margin-top:10px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px}
 .comment{font-size:.95rem; margin:6px 0}
 .comment .by{color:#cbd2d9; font-size:.85rem}
@@ -55,22 +58,21 @@ border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)}
 .comment-form input{flex:1}
 .comment-form button{white-space:nowrap}
 
-/* Paginación/infinite */
+/* Filtros y paginación */
+.actions-row{display:flex; gap:8px; margin:8px 0 12px; align-items:center; flex-wrap:wrap}
+.chip{font-size:.85rem; background:#1e1f22; border:1px solid #2b2d31; padding:4px 8px; border-radius:999px}
 .more{display:flex; justify-content:center; margin-top:12px}
 .more button{background:#202225; color:#fff; border:1px solid #2b2d31; padding:8px 12px; border-radius:8px; cursor:pointer}
 
-/* Juego (Gomoso) */
+/* Juego estilo Mario */
 #juego{margin:50px 0 90px; background:rgba(0,0,0,.14); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px}
 #gameWrap{display:flex; flex-direction:column; align-items:center; gap:8px}
-#arena{background:#0f0f12; border:2px solid #2b2b2b; border-radius:8px; max-width:100%; height:auto}
+#mario{background:#0f0f12; border:2px solid #2b2b2b; border-radius:8px; max-width:100%; height:auto}
 .hud{display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center}
 
-/* Fijos + mano */
+/* Fijos */
 .brand{position:fixed; left:16px; bottom:16px; font-weight:800; letter-spacing:1px; opacity:.9}
 .contact{position:fixed; right:16px; bottom:16px; opacity:.9; background:rgba(0,0,0,.3); padding:6px 12px; border-radius:8px}
-.emoji-wave{position:fixed; bottom:40px; right:40px; font-size:90px; line-height:1; z-index:9999;
-animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none; filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}
-@keyframes wave{0%,100%{transform:rotate(0deg)} 15%{transform:rotate(20deg)} 30%{transform:rotate(-10deg)} 45%{transform:rotate(12deg)} 60%{transform:rotate(-6deg)} 75%{transform:rotate(4deg)}}
 </style>
 </head>
 <body>
@@ -78,7 +80,7 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <header>
 <div>
 <h1>APP para emprendedores</h1>
-<p class="lead">Foro global en tiempo real (con imágenes/videos) y minijuego “Gomoso Equilibrado”.</p>
+<p class="lead">Apps destacadas · Foro tipo reddit (en vivo) · Minijuego de plataformas</p>
 </div>
 </header>
 
@@ -124,10 +126,10 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 </article>
 </section>
 
-<!-- Foro global -->
+<!-- Foro tipo reddit -->
 <section id="foro">
 <h2>Foro & Reseñas</h2>
-<p class="hint">Todos pueden publicar y comentar. Imágenes o videos con barra de progreso. (Las reseñas son públicas)</p>
+<p class="hint">Publica sobre las apps de arriba (texto, imagen o video). Votos, comentarios y feed en vivo.</p>
 
 <form id="postForm">
 <div>
@@ -139,15 +141,8 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 </select>
 </div>
 <div><label>Tu nombre</label><input id="fName" type="text" placeholder="Ej: Raúl" required maxlength="40"/></div>
-<div>
-<label>Calificación</label>
-<select id="fRating" required>
-<option value="5">★★★★★ (5)</option><option value="4">★★★★☆ (4)</option>
-<option value="3">★★★☆☆ (3)</option><option value="2">★★☆☆☆ (2)</option>
-<option value="1">★☆☆☆☆ (1)</option>
-</select>
-</div>
-<div class="full"><label>Reseña</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required maxlength="800"></textarea></div>
+<div class="full"><label>Título (opcional)</label><input id="fTitle" type="text" maxlength="100" placeholder="Ej: Mi experiencia inicial" /></div>
+<div class="full"><label>Texto</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required maxlength="1000"></textarea></div>
 <div class="full">
 <label>Imagen o video (opcional)</label>
 <input id="fFile" type="file" accept="image/*,video/*" />
@@ -159,7 +154,6 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 </div>
 </form>
 
-<!-- Filtros y orden -->
 <div class="actions-row">
 <select id="filterApp">
 <option value="">Todas las apps</option>
@@ -169,6 +163,7 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 </select>
 <select id="orderSel">
 <option value="desc">Más nuevas primero</option>
+<option value="top">Top (votos)</option>
 <option value="asc">Más antiguas primero</option>
 </select>
 <span class="chip" id="liveChip">🔴 En vivo</span>
@@ -178,17 +173,16 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 <div class="more"><button id="loadMore" style="display:none">Cargar más</button></div>
 </section>
 
-<!-- Minijuego: Gomoso Equilibrado -->
+<!-- Minijuego: plataformas (tipo Mario) -->
 <section id="juego">
-<h2>Minijuego: ¡Mantén a Gomoso en forma!</h2>
-<p class="hint">Mueve la mano 👋 con flechas/WASD para empujar a Gomoso. Come 🍔 para crecer y 🍎 para adelgazar. ¡Mantén su tamaño en la zona saludable!</p>
+<h2>Minijuego: Salta hasta la bandera</h2>
+<p class="hint">Flechas o WASD para moverte. Barra espaciadora para saltar. Junta ⭐ y llega a la bandera 🎌.</p>
 <div id="gameWrap">
-<canvas id="arena" width="800" height="480"></canvas>
+<canvas id="mario" width="960" height="480"></canvas>
 <div class="hud">
 <button class="btn" id="restart">Reiniciar</button>
 <div>Nivel: <strong id="lvl">1</strong></div>
-<div>Puntos: <strong id="score">0</strong></div>
-<div>Tamaño: <strong id="sizeRead">—</strong></div>
+<div>Estrellas: <strong id="coins">0</strong></div>
 </div>
 </div>
 </section>
@@ -196,14 +190,13 @@ animation:wave 1.6s ease-in-out infinite; user-select:none; pointer-events:none;
 
 <div class="brand">PersonAPP</div>
 <div class="contact">contacto: personappoficial@gmail.com</div>
-<div class="emoji-wave" aria-hidden="true">👋</div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 <script>
-/* ⚠️ Pega tus credenciales reales (Firestore + Storage habilitados) */
+/* 🔐 Pega aquí TUS credenciales reales */
 const firebaseConfig = {
 apiKey: "TU_API_KEY",
 authDomain: "TU_AUTH_DOMAIN",
@@ -216,43 +209,61 @@ if(!firebaseConfig.apiKey){ alert("Falta configurar Firebase: edita firebaseConf
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = firebase.storage();
-
-// Persistencia offline (evita “pegado” y refrescos): si falla, seguimos online normal
 db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
 </script>
 
 <script>
-/************ Foro en tiempo real (público) con imagen/video y progreso ************/
+/************ Foro en vivo tipo reddit (público) ************/
 const allowedApps = ["BUSHO","Canva","Shopify","Zoom","Mercado Pago"];
 const $ = s => document.querySelector(s);
 const feed = $("#feed"), statusEl=$("#status"), bar=$("#bar"), prog=$("#progress");
 const filterApp = $("#filterApp"), orderSel = $("#orderSel"), loadMoreBtn = $("#loadMore"), liveChip=$("#liveChip");
-
-const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
-const escapeHTML = s => (s||"").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
 const PAGE = 20;
 let lastDoc = null, unsub = null;
 
-function tsToDate(ts){ try{ return ts?.toDate ? ts.toDate() : new Date(ts); }catch{ return new Date(); } }
+const escapeHTML = s => (s||"").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
+const tsToDate = ts => (ts?.toDate ? ts.toDate() : new Date());
+
+function k(m){ return m ?? 0; }
 
 function postCard(doc){
 const p = doc.data(); const t = tsToDate(p.time);
 const el = document.createElement("article"); el.className="post"; el.id = `post-${doc.id}`;
 el.innerHTML = `
-<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"")} <span class="stars">${stars(p.rating||0)}</span></div>
+<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"Invitado")}</div>
+${p.title ? `<h3 style="margin:6px 0 6px">${escapeHTML(p.title)}</h3>` : ""}
 <div>${escapeHTML(p.text||"")}</div>
 <div class="media">
 ${p.mediaUrl ? (p.mediaType==="video" ? `<video controls src="${escapeHTML(p.mediaUrl)}"></video>` : `<img loading="lazy" src="${escapeHTML(p.mediaUrl)}" alt="media">`) : ""}
 </div>
-<div class="meta">${t.toLocaleString()}</div>
+<div class="toolbar">
+<span class="vote">
+<button data-vote="up" data-id="${doc.id}">⬆️</button>
+<strong id="v-${doc.id}">${k(p.votes)}</strong>
+<button data-vote="down" data-id="${doc.id}">⬇️</button>
+</span>
+<span class="tag">${escapeHTML(p.app||"")}</span>
+<span class="meta" style="margin-left:auto">${t.toLocaleString()}</span>
+</div>
 <div class="comments">
 <div class="comment-form">
 <input type="text" placeholder="Comentar..." maxlength="300" />
-<button class="btn">Comentar</button>
+<button class="btn" data-cid="${doc.id}">Comentar</button>
 </div>
 <div class="comment-list"></div>
 </div>
 `;
+// Votos
+el.querySelectorAll("button[data-vote]").forEach(b=>{
+b.addEventListener("click", async ()=>{
+const id = b.getAttribute("data-id");
+const delta = b.getAttribute("data-vote")==="up" ? 1 : -1;
+try{
+await db.collection("posts").doc(id).update({ votes: firebase.firestore.FieldValue.increment(delta) });
+}catch(e){ console.error(e); }
+});
+});
 // Comentarios realtime
 const list = el.querySelector(".comment-list");
 db.collection("posts").doc(doc.id).collection("comments").orderBy("time","asc")
@@ -277,62 +288,72 @@ inp.value="";
 return el;
 }
 
-function stopLive(){
-if(unsub){ unsub(); unsub=null; }
-liveChip.textContent = "🟡 Vista estática";
+function stopLive(){ if(unsub){ unsub(); unsub=null; } liveChip.textContent = "🟡 Vista estática"; }
+
+function baseQueryServer(){
+const dir = orderSel.value;
+// Evitamos índices compuestos obligatorios: por defecto solo ordenamos por time y filtramos en cliente.
+// Para "Top", ordenamos por votes desc (y time como desempate).
+if(dir==="top"){
+return db.collection("posts").orderBy("votes","desc").orderBy("time","desc");
 }
-function startLive(q){
+if(dir==="asc"){ return db.collection("posts").orderBy("time","asc"); }
+return db.collection("posts").orderBy("time","desc");
+}
+
+function startLive(){
 stopLive();
 liveChip.textContent = "🔴 En vivo";
+const q = baseQueryServer().limit(PAGE);
 unsub = q.onSnapshot(snap=>{
+const selected = (filterApp.value || "").trim();
 feed.innerHTML = "";
 const frag=document.createDocumentFragment();
-snap.forEach(doc=> frag.appendChild(postCard(doc)));
+snap.forEach(doc=>{
+const app = (doc.data().app||"");
+if(!selected || selected===app){ frag.appendChild(postCard(doc)); }
+});
 feed.appendChild(frag);
 lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
 loadMoreBtn.style.display = lastDoc ? "" : "none";
-}, err=>{
+}, async (err)=>{
 console.error(err);
-// Fallback a carga estática si falla el listener
 stopLive();
-loadStatic(q);
+// Fallback estático
+const snap = await baseQueryServer().limit(PAGE).get();
+const selected = (filterApp.value || "").trim();
+feed.innerHTML = "";
+const frag=document.createDocumentFragment();
+snap.forEach(doc=>{
+const app = (doc.data().app||"");
+if(!selected || selected===app){ frag.appendChild(postCard(doc)); }
+});
+feed.appendChild(frag);
+lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
+loadMoreBtn.style.display = lastDoc ? "" : "none";
 });
 }
-async function loadStatic(q){
-const snap = await q.get();
-feed.innerHTML="";
-const frag=document.createDocumentFragment();
-snap.forEach(doc=> frag.appendChild(postCard(doc)));
-feed.appendChild(frag);
-lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-}
+
 async function loadMore(){
 if(!lastDoc) return;
-const q = baseQuery().startAfter(lastDoc).limit(PAGE);
+const q = baseQueryServer().startAfter(lastDoc).limit(PAGE);
 const snap = await q.get();
+const selected = (filterApp.value || "").trim();
 const frag=document.createDocumentFragment();
-snap.forEach(doc=> frag.appendChild(postCard(doc)));
+snap.forEach(doc=>{
+const app = (doc.data().app||"");
+if(!selected || selected===app){ frag.appendChild(postCard(doc)); }
+});
 feed.appendChild(frag);
 lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
 loadMoreBtn.style.display = lastDoc ? "" : "none";
 }
-function baseQuery(){
-const app = filterApp.value;
-const dir = orderSel.value === "asc" ? "asc" : "desc";
-let q = db.collection("posts").orderBy("time", dir);
-if(app) q = q.where("app","==",app);
-return q;
-}
-function refresh(){
-const q = baseQuery().limit(PAGE);
-startLive(q);
-}
-filterApp.addEventListener("change", refresh);
-orderSel.addEventListener("change", refresh);
-document.getElementById("loadMore").addEventListener("click", loadMore);
 
-// Subida con progreso (no se pega)
+filterApp.addEventListener("change", startLive);
+orderSel.addEventListener("change", startLive);
+loadMoreBtn.addEventListener("click", loadMore);
+
+// Subida con progreso (fluida)
 async function uploadMedia(file){
 if(!file) return { url:"", type:"" };
 const MAX_MB = 25;
@@ -364,20 +385,20 @@ statusEl.textContent = "Subiendo...";
 try{
 const app = document.getElementById("fApp").value;
 const name = document.getElementById("fName").value.trim();
-const rating = +document.getElementById("fRating").value;
+const title = document.getElementById("fTitle").value.trim().slice(0,100);
 const text = document.getElementById("fText").value.trim();
 const file = document.getElementById("fFile").files[0] || null;
 if(!allowedApps.includes(app)) throw new Error("App no permitida.");
-if(!name || !text) throw new Error("Completa nombre y reseña.");
+if(!name || !text) throw new Error("Completa nombre y texto.");
 
 let mediaUrl="", mediaType="";
 if(file){ ({url:mediaUrl, type:mediaType} = await uploadMedia(file)); }
 
 await db.collection("posts").add({
-app, name:name.slice(0,40), rating, text:text.slice(0,800),
+app, name:name.slice(0,40), title, text:text.slice(0,1000),
 mediaUrl, mediaType,
 time: firebase.firestore.FieldValue.serverTimestamp(),
-likes: 0
+votes: 0
 });
 
 e.target.reset();
@@ -391,133 +412,191 @@ btn.disabled = false;
 }
 });
 
-// Arrancar el feed
-refresh();
+// Arranca el feed
+startLive();
 </script>
 
 <script>
-/***************** Minijuego: Gomoso Equilibrado (seguro) ******************/
-const cvs = document.getElementById("arena"), ctx = cvs.getContext("2d");
-const lvlEl = document.getElementById("lvl"), scoreEl = document.getElementById("score"), sizeEl = document.getElementById("sizeRead");
+/***************** Minijuego: Plataformas (tipo Mario) ******************/
+const C = document.getElementById("mario");
+const X = C.getContext("2d");
+const lvlEl = document.getElementById("lvl");
+const coinsEl = document.getElementById("coins");
 
-let level = 1, score = 0;
-let hand = { x: 400, y: 240, vx: 0, vy: 0 };
-let gomoso; // personaje
-let items = []; // comida que cae
-let zone = { min: 24, max: 48 }; // radio saludable
-const G = 0.25, FRICTION = 0.992, PUSH = 1.1;
+let level=1, coins=0, world, player, cameraX=0;
 
-function rand(a,b){ return Math.random()*(b-a)+a; }
+const TILE = 32, GRAV = 0.6, JUMP = -11.5, SPEED = 3.2, FRICTION=0.85;
+const KEY = {left:false, right:false, up:false};
 
-function resetLevel() {
-items = [];
-for (let i = 0; i < 6 + level * 2; i++) spawnItem();
-zone.min = Math.max(20, 24 - level * 0.8);
-zone.max = Math.min(64, 48 + level * 0.6);
+const maps = [
+// 0: vacío, 1: bloque, 2: moneda, 3: bandera
+[
+"0000000000000000000000000000000000000000000000000000",
+"0000000000000000000000000000000000000000000000000000",
+"0000000000000000020000000000000000000000000000000000",
+"0000000000000000000000000000000000002000000000000000",
+"0000000000000000000000000000000000000000000000000000",
+"0000000000000000000000000000020000000000000000000000",
+"0000000000000000000000000000000000000000000000000000",
+"0000000000000011111000000000000000000000000000000000",
+"0000000000000000000000000000000011111100000000000000",
+"1111111111111111111111111111111111111111111111111130"
+],
+[
+"0000000000000000000000000020000000000000000000000000",
+"0000000000000000000000000000000000000000000000000000",
+"0000000000000000000000000000000000002000000000000000",
+"0000000000000000000000000000000000000000000000000000",
+"0000000000000000000000000000000000000000000000000000",
+"0000011111100000000000000000000000000000000000020000",
+"0000000000000000111110000000000000000000000000000000",
+"0000000000000000000000000000000000000000000000000000",
+"0000000000000000000000011111110000000000000000000000",
+"1111111111111111111111111111111111111111111111111130"
+]
+];
+
+function loadLevel(n){
+const raw = maps[(n-1) % maps.length];
+return raw.map(row => row.split("").map(ch => parseInt(ch,10)));
 }
-function spawnItem(){
-const type = Math.random() < 0.5 ? "burger" : "apple";
-items.push({ type, x: rand(40, cvs.width-40), y: rand(-200, -40), vy: rand(1.0, 2.2) });
+
+function reset(){
+world = loadLevel(level);
+player = { x: 64, y: 0, vx: 0, vy: 0, onGround: false };
+coins = 0; coinsEl.textContent = coins;
+cameraX = 0; lvlEl.textContent = level;
 }
-function startGame() {
-level = 1; score = 0;
-hand = { x: cvs.width/2, y: 200, vx: 0, vy: 0 };
-gomoso = { x: cvs.width/2, y: cvs.height-60, vx: 0, vy: 0, r: 36, asleep: false, tired: false };
-resetLevel();
-lvlEl.textContent = level; scoreEl.textContent = score;
-healthyTicks = 0;
-loop();
+
+function tileAt(px, py){
+const tx = Math.floor(px / TILE);
+const ty = Math.floor(py / TILE);
+if(ty < 0 || ty >= world.length || tx < 0) return 1; // paredes invisibles
+if(tx >= world[0].length) return 3; // más allá: bandera
+return world[ty][tx];
 }
-function drawArena(){
-ctx.fillStyle = "#0f0f12"; ctx.fillRect(0,0,cvs.width,cvs.height);
-ctx.fillStyle = "#2b2b2e"; ctx.fillRect(0, cvs.height-20, cvs.width, 20);
-ctx.strokeStyle = "rgba(76, 175, 80, 0.55)";
-ctx.setLineDash([6,6]);
-ctx.beginPath(); ctx.arc(gomoso.x, gomoso.y, zone.min, 0, Math.PI*2); ctx.stroke();
-ctx.beginPath(); ctx.arc(gomoso.x, gomoso.y, zone.max, 0, Math.PI*2); ctx.stroke();
-ctx.setLineDash([]);
+
+function collectIfCoin(px, py){
+const tx = Math.floor(px / TILE);
+const ty = Math.floor(py / TILE);
+if(tx>=0 && tx<world[0].length && ty>=0 && ty<world.length && world[ty][tx]===2){
+world[ty][tx]=0; coins++; coinsEl.textContent = coins;
 }
-function drawHand(){
-ctx.font = "26px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
-ctx.fillText("👋", hand.x, hand.y);
 }
-function drawGomoso(){
-const face = gomoso.asleep ? "😴" : gomoso.tired ? "🥱" : "😀";
-ctx.font = Math.round(gomoso.r*1.5) + "px serif";
-ctx.textAlign="center"; ctx.textBaseline="middle";
-ctx.fillText(face, gomoso.x, gomoso.y);
-}
-function drawItems(){
-ctx.font = "22px serif"; ctx.textAlign="center"; ctx.textBaseline="middle";
-items.forEach(it=> ctx.fillText(it.type==="burger" ? "🍔" : "🍎", it.x, it.y));
-}
+
 function physics(){
-// mano
-hand.vx *= 0.92; hand.vy *= 0.92;
-hand.x += hand.vx; hand.y += hand.vy;
-hand.x = Math.max(20, Math.min(cvs.width-20, hand.x));
-hand.y = Math.max(20, Math.min(cvs.height-40, hand.y));
+// controles
+if(KEY.left) player.vx -= 0.6;
+if(KEY.right) player.vx += 0.6;
+player.vx *= FRICTION;
 
-// gomoso
-gomoso.vy += G; gomoso.x += gomoso.vx; gomoso.y += gomoso.vy;
-gomoso.vx *= FRICTION; gomoso.vy *= FRICTION;
-if(gomoso.x < 20){ gomoso.x = 20; gomoso.vx *= -0.5; }
-if(gomoso.x > cvs.width-20){ gomoso.x = cvs.width-20; gomoso.vx *= -0.5; }
-if(gomoso.y > cvs.height-30){ gomoso.y = cvs.height-30; gomoso.vy *= -0.35; }
+// salto
+if(KEY.up && player.onGround){ player.vy = JUMP; player.onGround=false; }
 
-// empuje de la mano
-const dx = gomoso.x - hand.x, dy = gomoso.y - hand.y, d = Math.hypot(dx,dy);
-if(d < gomoso.r*0.9){ const nx = dx/(d||1), ny = dy/(d||1); gomoso.vx += nx * 1.1; gomoso.vy += ny * 1.1; }
+// gravedad
+player.vy += GRAV;
 
-// items + colisión
-items.forEach(it=>{
-it.y += it.vy;
-const ddx = gomoso.x - it.x, ddy = gomoso.y - it.y, dist = Math.hypot(ddx,ddy);
-if(dist < gomoso.r*0.9){
-if(it.type==="burger"){ gomoso.r = Math.min(72, gomoso.r + 2.2); score += 5; }
-else { gomoso.r = Math.max(16, gomoso.r - 2.0); score += 5; }
-it.y = cvs.height + 100;
-scoreEl.textContent = score;
+// integrar X
+let nx = player.x + player.vx;
+if(player.vx > 0){
+// choque derecha
+if(tileAt(nx+16, player.y-16)===1 || tileAt(nx+16, player.y-1)===1){
+nx = Math.floor((nx+16)/TILE)*TILE - 16; player.vx = 0;
 }
-});
-items = items.filter(it=>{ if(it.y > cvs.height + 40){ spawnItem(); return false; } return true; });
-
-// estados
-gomoso.asleep = gomoso.r > zone.max + 6;
-gomoso.tired = gomoso.r < zone.min - 6;
-
-// límites extremos → retroceso
-if(gomoso.r >= 80 || gomoso.r <= 14){
-if(level > 1) level--;
-gomoso.r = 36;
-resetLevel();
-lvlEl.textContent = level;
-healthyTicks = 0;
-}
-
-// progreso de nivel
-sizeEl.textContent = Math.round(gomoso.r) + "px";
-if(gomoso.r >= zone.min && gomoso.r <= zone.max){
-healthyTicks++;
-if(healthyTicks > 60*5){ level++; lvlEl.textContent = level; healthyTicks = 0; resetLevel(); }
-} else {
-healthyTicks = Math.max(0, healthyTicks - 2);
+} else if(player.vx < 0){
+// choque izquierda
+if(tileAt(nx-16, player.y-16)===1 || tileAt(nx-16, player.y-1)===1){
+nx = Math.floor((nx-16)/TILE+1)*TILE + 16; player.vx = 0;
 }
 }
-function render(){ drawArena(); drawItems(); drawGomoso(); drawHand(); }
-let healthyTicks = 0;
-function loop(){ physics(); render(); requestAnimationFrame(loop); }
-window.addEventListener("keydown", (e)=>{
+player.x = nx;
+
+// integrar Y
+let ny = player.y + player.vy;
+if(player.vy > 0){
+// suelo
+if(tileAt(player.x-10, ny+0)===1 || tileAt(player.x+10, ny+0)===1){
+ny = Math.floor(ny/TILE)*TILE; player.vy = 0; player.onGround = true;
+} else { player.onGround = false; }
+} else if(player.vy < 0){
+// techo
+if(tileAt(player.x-10, ny-24)===1 || tileAt(player.x+10, ny-24)===1){
+ny = Math.floor((ny-24)/TILE+1)*TILE + 24; player.vy = 0;
+}
+}
+player.y = ny;
+
+// recoger monedas
+collectIfCoin(player.x, player.y-16);
+
+// caer al vacío → reinicio
+if(player.y > C.height + 200){ reset(); }
+
+// avanzar cámara
+cameraX = Math.max(0, Math.floor(player.x - C.width/2));
+}
+
+function draw(){
+X.fillStyle = "#87ceeb"; // cielo
+X.fillRect(0,0,C.width,C.height);
+
+// dibujar mundo
+const startTile = Math.floor(cameraX / TILE);
+const endTile = startTile + Math.ceil(C.width / TILE) + 2;
+
+for(let y=0;y<world.length;y++){
+for(let x=startTile;x<Math.min(endTile, world[0].length);x++){
+const t = world[y][x];
+const sx = x*TILE - cameraX, sy = y*TILE;
+if(t===1){
+X.fillStyle="#2b2b2e";
+X.fillRect(sx, sy, TILE, TILE);
+X.fillStyle="#1d1d21";
+X.fillRect(sx, sy+TILE-6, TILE, 6);
+} else if(t===2){
+X.font = "22px serif"; X.textAlign="center"; X.textBaseline="middle";
+X.fillText("⭐", sx+TILE/2, sy+TILE/2);
+} else if(t===3){
+X.font = "24px serif"; X.textAlign="center"; X.textBaseline="middle";
+X.fillText("🎌", sx+TILE/2, sy+TILE/2);
+}
+}
+}
+
+// jugador
+X.font = "28px serif";
+X.textAlign = "center"; X.textBaseline = "middle";
+X.fillText("🧢", player.x - cameraX, player.y - 16); // “mario-like” gorrita
+
+// si llegamos a la bandera (al final del mapa)
+const atEnd = (player.x / TILE) >= (world[0].length-1);
+if(atEnd){
+level++; lvlEl.textContent = level;
+reset();
+}
+}
+
+function loop(){ physics(); draw(); requestAnimationFrame(loop); }
+
+// Controles
+window.addEventListener("keydown", e=>{
 const k = e.key.toLowerCase();
-if(["arrowleft","a"].includes(k)) hand.vx -= 1.7;
-if(["arrowright","d"].includes(k)) hand.vx += 1.7;
-if(["arrowup","w"].includes(k)) hand.vy -= 1.7;
-if(["arrowdown","s"].includes(k)) hand.vy += 1.7;
+if(k==="arrowleft" || k==="a") KEY.left = true;
+if(k==="arrowright"|| k==="d") KEY.right = true;
+if(k==="arrowup" || k==="w" || k===" ") KEY.up = true;
 });
-document.getElementById("restart").addEventListener("click", startGame);
-startGame();
+window.addEventListener("keyup", e=>{
+const k = e.key.toLowerCase();
+if(k==="arrowleft" || k==="a") KEY.left = false;
+if(k==="arrowright"|| k==="d") KEY.right = false;
+if(k==="arrowup" || k==="w" || k===" ") KEY.up = false;
+});
+
+document.getElementById("restart").addEventListener("click", ()=>{ reset(); });
+
+// Start
+reset(); loop();
 </script>
 </body>
 </html>
-
 
