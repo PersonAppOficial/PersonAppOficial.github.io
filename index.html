@@ -76,6 +76,8 @@
 
   --card:#0a0f0a; --ring:#103b20; --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.6);
 
+  --neon:#ff7a00; --neon-soft:#ff9a3c;
+
 }
 
 *{box-sizing:border-box}
@@ -206,15 +208,21 @@ header{padding:56px 18px 8px; text-align:center}
 
 
 
-/* Sección música: contenedor relativo + canvas naranja */
+/* ===== Sección música: todo el texto en naranja neón ===== */
 
 #musica-ia{position:relative}
 
-#matrix-orange{
+#musica-ia, #musica-ia p, #musica-ia li, #musica-ia a, #musica-ia .desc, #musica-ia .name, #musica-ia h2, #musica-ia h3{
 
-  position:absolute; inset:0; z-index:-1; display:block; opacity:.35; pointer-events:none;
+  color:var(--neon);
 
 }
+
+#musica-ia .card{ border-color:#3d2200; background:linear-gradient(180deg,#0c0a04,#130f07) }
+
+#musica-ia .card:hover{ border-color:#ff8a2a; transform:translateY(-3px) }
+
+#musica-ia .logo{ background:#110b05; border-color:#3d2200 }
 
 .orange-title{
 
@@ -223,6 +231,14 @@ header{padding:56px 18px 8px; text-align:center}
   -webkit-background-clip:text; background-clip:text; color:transparent;
 
   text-shadow:0 0 18px rgba(255,122,0,.25), 0 0 3px rgba(255,122,0,.35);
+
+}
+
+/* Canvas lluvia naranja dentro de música */
+
+#matrix-orange{
+
+  position:absolute; inset:0; z-index:-1; display:block; opacity:.35; pointer-events:none;
 
 }
 
@@ -278,7 +294,7 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
           <div class="logo" aria-hidden="true">
 
-            <!-- SVG inline: isotipo estilo “flor” -->
+            <!-- SVG inline -->
 
             <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
@@ -432,23 +448,15 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
       ></iframe>
 
-      <noscript>
-
-        <a href="https://youtu.be/Ew7oZ0LO6AU" target="_blank" rel="noopener">Ver el video en YouTube</a>
-
-      </noscript>
-
     </div>
 
   </section>
 
 
 
-  <!-- ======== MÚSICA CON IA (con Matrix naranja) ======== -->
+  <!-- ======== MÚSICA CON IA (texto naranja + matrix naranja) ======== -->
 
   <section class="seo" aria-label="Crear canciones con IA" id="musica-ia">
-
-    <!-- Canvas naranja neón para esta sección -->
 
     <canvas id="matrix-orange" aria-hidden="true"></canvas>
 
@@ -470,13 +478,15 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
           <div class="logo" aria-hidden="true">
 
-            <!-- ícono nota musical -->
+            <!-- nota musical -->
 
             <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
-              <rect width="64" height="64" rx="14" fill="#02150c"/>
+              <rect width="64" height="64" rx="14" fill="#110b05"/>
 
-              <path d="M26 14v28a8 8 0 1 1-4-7V18l20-6v22a8 8 0 1 1-4-7V12z" fill="#00ff88"/>
+              <path d="M26 14v28a8 8 0 1 1-4-7V18l20-6v22a8 8 0 1 1-4-7V12z" fill="url(#ng1)"/>
+
+              <defs><linearGradient id="ng1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9a3c"/><stop offset="1" stop-color="#ff5a00"/></linearGradient></defs>
 
             </svg>
 
@@ -512,11 +522,11 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
             <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
-              <rect width="64" height="64" rx="14" fill="#031017"/>
+              <rect width="64" height="64" rx="14" fill="#110b05"/>
 
-              <circle cx="22" cy="32" r="6" fill="#00e0ff"/><circle cx="42" cy="32" r="6" fill="#80ffd7"/>
+              <circle cx="22" cy="32" r="6" fill="#ff7a00"/><circle cx="42" cy="32" r="6" fill="#ff9a3c"/>
 
-              <rect x="20" y="30" width="24" height="4" rx="2" fill="#b9ffd4"/>
+              <rect x="20" y="30" width="24" height="4" rx="2" fill="#ffd8a6"/>
 
             </svg>
 
@@ -552,9 +562,9 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
             <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
-              <rect width="64" height="64" rx="14" fill="#0b0b0b"/>
+              <rect width="64" height="64" rx="14" fill="#110b05"/>
 
-              <path d="M14 32h8l6-12 8 24 6-12h8" stroke="#e8ffe8" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 32h8l6-12 8 24 6-12h8" stroke="#ffb36b" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
 
             </svg>
 
@@ -590,9 +600,9 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
             <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
-              <rect width="64" height="64" rx="14" fill="#031017"/>
+              <rect width="64" height="64" rx="14" fill="#110b05"/>
 
-              <path d="M18 44V20h10v8h8v-8h10v24H36v-8h-8v8z" fill="#00ff88"/>
+              <path d="M18 44V20h10v8h8v-8h10v24H36v-8h-8v8z" fill="#ff7a00"/>
 
             </svg>
 
@@ -628,9 +638,9 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
             <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
-              <rect width="64" height="64" rx="14" fill="#02150c"/>
+              <rect width="64" height="64" rx="14" fill="#110b05"/>
 
-              <path d="M18 42l10-20 10 20 4-8h4" stroke="#00ff88" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18 42l10-20 10 20 4-8h4" stroke="#ff7a00" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
 
             </svg>
 
@@ -658,7 +668,7 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 
 
-    <!-- Ejemplo: NostalgIA (sin nombres propios) -->
+    <!-- Ejemplo: NostalgIA (con espejos y default el que enviaste) -->
 
     <div class="block" style="margin-top:16px">
 
@@ -666,13 +676,31 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
       <p>Una demostración viral del uso de IA en música. La pista recrea voces mediante técnicas de clonación de voz y producción generativa.</p>
 
-      <div class="video-wrap" style="margin-top:16px;">
+
+
+      <div class="actions" style="margin:10px 0;">
+
+        <button class="btn" data-mirror="0" type="button">Espejo 1</button>
+
+        <button class="btn" data-mirror="1" type="button">Espejo 2</button>
+
+        <button class="btn" data-mirror="2" type="button">Espejo 3</button>
+
+        <button class="btn" data-mirror="3" type="button">Espejo 4</button>
+
+      </div>
+
+
+
+      <div class="video-wrap" style="margin-top:8px;">
 
         <iframe
 
+          id="nostalgPlayer"
+
           loading="lazy"
 
-          src="https://www.youtube-nocookie.com/embed/JmqeF6Hn0kM?rel=0&modestbranding=1"
+          src="https://www.youtube-nocookie.com/embed/wtaqzMdBqZA?rel=0&modestbranding=1&playsinline=1"
 
           title="NostalgIA — Canción creada con IA"
 
@@ -684,13 +712,21 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
         ></iframe>
 
-        <noscript>
-
-          <a href="https://www.youtube.com/watch?v=JmqeF6Hn0kM" target="_blank" rel="noopener">Escuchar “NostalgIA” en YouTube</a>
-
-        </noscript>
-
       </div>
+
+
+
+      <p style="margin-top:10px">¿No se ve? Abre directo:
+
+        <a href="https://youtu.be/wtaqzMdBqZA" target="_blank" rel="noopener">Espejo 1</a> ·
+
+        <a href="https://www.youtube.com/watch?v=XIg9fNaw0rE" target="_blank" rel="noopener">Espejo 2</a> ·
+
+        <a href="https://www.youtube.com/watch?v=blvRvpslozQ" target="_blank" rel="noopener">Espejo 3</a> ·
+
+        <a href="https://www.youtube.com/watch?v=yRswYP93184" target="_blank" rel="noopener">Espejo 4</a>
+
+      </p>
 
     </div>
 
@@ -780,133 +816,23 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 
 
-<!-- ========= SCHEMA.ORG ========= -->
+<!-- ========= SCHEMA.ORG esencial ========= -->
 
 <script type="application/ld+json">
 
-{
-
-  "@context":"https://schema.org",
-
-  "@type":"WebSite",
-
-  "name":"PersonAPP.cl",
-
-  "url":"https://personapp.cl/",
-
-  "potentialAction":{
-
-    "@type":"SearchAction",
-
-    "target":"https://personapp.cl/?q={search_term_string}",
-
-    "query-input":"required name=search_term_string"
-
-  }
-
-}
+{"@context":"https://schema.org","@type":"WebSite","name":"PersonAPP.cl","url":"https://personapp.cl/","potentialAction":{"@type":"SearchAction","target":"https://personapp.cl/?q={search_term_string}","query-input":"required name=search_term_string"}}
 
 </script>
 
 <script type="application/ld+json">
 
-{
-
-  "@context":"https://schema.org",
-
-  "@type":"Organization",
-
-  "name":"PersonAPP.cl",
-
-  "url":"https://personapp.cl/",
-
-  "logo":"https://personapp.cl/img/preview.png",
-
-  "sameAs":[ "https://www.instagram.com/", "https://www.linkedin.com/" ]
-
-}
-
-</script>
-
-<script type="application/ld+json">
-
-{
-
-  "@context":"https://schema.org",
-
-  "@type":"ItemList",
-
-  "name":"Apps de IA destacadas",
-
-  "itemListElement":[
-
-    {"@type":"ListItem","position":1,"url":"https://chatgpt.com/","name":"ChatGPT"},
-
-    {"@type":"ListItem","position":2,"url":"https://gemini.google.com/","name":"Gemini"},
-
-    {"@type":"ListItem","position":3,"url":"https://x.ai/","name":"Grok"}
-
-  ]
-
-}
-
-</script>
-
-<script type="application/ld+json">
-
-{
-
-  "@context":"https://schema.org",
-
-  "@type":"ItemList",
-
-  "name":"Herramientas para crear canciones con IA",
-
-  "itemListElement":[
-
-    {"@type":"ListItem","position":1,"url":"https://suno.ai/","name":"Suno AI"},
-
-    {"@type":"ListItem","position":2,"url":"https://www.udio.com/","name":"Udio"},
-
-    {"@type":"ListItem","position":3,"url":"https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI","name":"RVC"},
-
-    {"@type":"ListItem","position":4,"url":"https://elevenlabs.io/","name":"ElevenLabs"},
-
-    {"@type":"ListItem","position":5,"url":"https://podcast.adobe.com/enhance","name":"Adobe Enhance"}
-
-  ]
-
-}
-
-</script>
-
-<script type="application/ld+json">
-
-{
-
-  "@context":"https://schema.org",
-
-  "@type":"VideoObject",
-
-  "name":"Publicidad generada 100% con IA",
-
-  "description":"Ejemplo de creatividad publicitaria realizada íntegramente con herramientas de inteligencia artificial.",
-
-  "thumbnailUrl":["https://i.ytimg.com/vi/Ew7oZ0LO6AU/maxresdefault.jpg"],
-
-  "uploadDate":"2024-01-01",
-
-  "embedUrl":"https://www.youtube-nocookie.com/embed/Ew7oZ0LO6AU",
-
-  "publisher": {"@type":"Organization","name":"PersonAPP.cl"}
-
-}
+{"@context":"https://schema.org","@type":"Organization","name":"PersonAPP.cl","url":"https://personapp.cl/","logo":"https://personapp.cl/img/preview.png"}
 
 </script>
 
 
 
-<!-- ========= JS: año + Matrix (verde global) + Matrix naranja por sección ========= -->
+<!-- ========= JS: año + Matrix (verde global) + Matrix naranja por sección + espejos NostalgIA ========= -->
 
 <script defer>
 
@@ -914,75 +840,43 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 
 
-/* ===== Matrix verde global ===== */
+/* Matrix verde global */
 
 (function(){
 
-  const c = document.getElementById('matrix');
+  const c = document.getElementById('matrix'); if (!c) return;
 
-  if (!c) return;
+  const ctx = c.getContext('2d'); let w,h,cols,drops,fontSize;
 
-  const ctx = c.getContext('2d');
-
-  let w, h, cols, drops, fontSize;
-
-  const chars = 'アイウエオカキクケコサシスセソタチツテト0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-
+  const chars='アイウエオカキクケコサシスセソタチツテト0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   function resize(){
 
-    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    const dpr=Math.max(1,Math.min(2,window.devicePixelRatio||1));
 
-    w = c.clientWidth = window.innerWidth;
+    w=c.clientWidth=window.innerWidth; h=c.clientHeight=window.innerHeight;
 
-    h = c.clientHeight = window.innerHeight;
+    c.width=Math.floor(w*dpr); c.height=Math.floor(h*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
 
-    c.width = Math.floor(w * dpr);
+    fontSize=Math.max(14,Math.min(22,Math.round(w/60))); ctx.font=fontSize+"px monospace";
 
-    c.height = Math.floor(h * dpr);
-
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-
-
-
-    fontSize = Math.max(14, Math.min(22, Math.round(w/60)));
-
-    ctx.font = fontSize + "px monospace";
-
-    cols = Math.ceil(w / fontSize);
-
-    drops = new Array(cols).fill(0).map(()=> Math.floor(Math.random()*h/fontSize));
+    cols=Math.ceil(w/fontSize); drops=new Array(cols).fill(0).map(()=>Math.floor(Math.random()*h/fontSize));
 
   }
 
-
-
   function tick(){
 
-    ctx.fillStyle = "rgba(0,0,0,0.08)";
-
-    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle="rgba(0,0,0,0.08)"; ctx.fillRect(0,0,w,h);
 
     for(let i=0;i<cols;i++){
 
-      const text = chars[Math.floor(Math.random()*chars.length)];
+      const t=chars[Math.floor(Math.random()*chars.length)], x=i*fontSize, y=drops[i]*fontSize;
 
-      const x = i * fontSize;
+      const g=ctx.createLinearGradient(x,y-20,x,y+20); g.addColorStop(0,"#00ff88"); g.addColorStop(1,"#b8ffde");
 
-      const y = drops[i] * fontSize;
+      ctx.fillStyle=g; ctx.fillText(t,x,y);
 
-      const grad = ctx.createLinearGradient(x,y-20,x,y+20);
-
-      grad.addColorStop(0,"#00ff88");
-
-      grad.addColorStop(1,"#b8ffde");
-
-      ctx.fillStyle = grad;
-
-      ctx.fillText(text, x, y);
-
-      if (y > h && Math.random() > 0.975) drops[i] = 0; else drops[i]++;
+      if (y>h && Math.random()>0.975) drops[i]=0; else drops[i]++;
 
     }
 
@@ -990,89 +884,51 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
   }
 
-  resize(); tick(); window.addEventListener('resize', resize, {passive:true});
+  resize(); tick(); window.addEventListener('resize',resize,{passive:true});
 
 })();
 
 
 
-/* ===== Matrix naranja solo dentro de #musica-ia ===== */
+/* Matrix naranja solo en #musica-ia */
 
 (function(){
 
-  const container = document.getElementById('musica-ia');
+  const container=document.getElementById('musica-ia'), c=document.getElementById('matrix-orange'); if(!container||!c) return;
 
-  const c = document.getElementById('matrix-orange');
+  const ctx=c.getContext('2d'); let w,h,cols,drops,fontSize,running=false;
 
-  if (!container || !c) return;
-
-  const ctx = c.getContext('2d');
-
-  let w, h, cols, drops, fontSize, running=false;
-
-  const chars = 'ｱｲｳｴｵｶｷｸｹｺﾀﾁﾂﾃﾄ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-
+  const chars='ｱｲｳｴｵｶｷｸｹｺﾀﾁﾂﾃﾄ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   function sizeToSection(){
 
-    const rect = container.getBoundingClientRect();
+    const rect=container.getBoundingClientRect(); const dpr=Math.max(1,Math.min(2,window.devicePixelRatio||1));
 
-    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    w=c.width=Math.floor(rect.width*dpr); h=c.height=Math.floor(rect.height*dpr);
 
-    w = c.width = Math.floor(rect.width * dpr);
+    c.style.width=rect.width+'px'; c.style.height=rect.height+'px'; ctx.setTransform(dpr,0,0,dpr,0,0);
 
-    h = c.height = Math.floor(rect.height * dpr);
+    fontSize=Math.max(12,Math.min(20,Math.round(rect.width/70))); ctx.font=fontSize+"px monospace";
 
-    c.style.width = rect.width + 'px';
-
-    c.style.height = rect.height + 'px';
-
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-
-
-
-    fontSize = Math.max(12, Math.min(20, Math.round(rect.width/70)));
-
-    ctx.font = fontSize + "px monospace";
-
-    cols = Math.max(1, Math.ceil(rect.width / fontSize));
-
-    drops = new Array(cols).fill(0).map(()=> Math.floor(Math.random()*rect.height/fontSize));
+    cols=Math.max(1,Math.ceil(rect.width/fontSize)); drops=new Array(cols).fill(0).map(()=>Math.floor(Math.random()*rect.height/fontSize));
 
   }
-
-
 
   function tick(){
 
     if(!running) return;
 
-    ctx.fillStyle = "rgba(0,0,0,0.10)";
-
-    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle="rgba(0,0,0,0.10)"; ctx.fillRect(0,0,w,h);
 
     for(let i=0;i<cols;i++){
 
-      const text = chars[Math.floor(Math.random()*chars.length)];
+      const t=chars[Math.floor(Math.random()*chars.length)], x=i*fontSize, y=drops[i]*fontSize;
 
-      const x = i * fontSize;
+      const g=ctx.createLinearGradient(x,y-18,x,y+18); g.addColorStop(0,"#ff9a3c"); g.addColorStop(1,"#ff5a00");
 
-      const y = drops[i] * fontSize;
+      ctx.fillStyle=g; ctx.fillText(t,x,y);
 
-      // Naranja neón
-
-      const grad = ctx.createLinearGradient(x,y-18,x,y+18);
-
-      grad.addColorStop(0,"#ff9a3c");
-
-      grad.addColorStop(1,"#ff5a00");
-
-      ctx.fillStyle = grad;
-
-      ctx.fillText(text, x, y);
-
-      if (y > (h/fontSize) && Math.random() > 0.975) drops[i] = 0; else drops[i]++;
+      if (y>(h/fontSize) && Math.random()>0.975) drops[i]=0; else drops[i]++;
 
     }
 
@@ -1080,33 +936,41 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
   }
 
+  const io=new IntersectionObserver(entries=>{
 
+    entries.forEach(en=>{ if(en.isIntersecting){running=true; sizeToSection(); tick();} else {running=false;} });
 
-  // Inicia/pausa según visibilidad de la sección
+  },{threshold:0.05}); io.observe(container);
 
-  const io = new IntersectionObserver(entries=>{
+  window.addEventListener('resize',()=>{ if(running) sizeToSection(); },{passive:true});
 
-    entries.forEach(en=>{
-
-      if (en.isIntersecting){
-
-        running = true; sizeToSection(); tick();
-
-      } else {
-
-        running = false;
-
-      }
-
-    });
-
-  }, {threshold: 0.05});
-
-  io.observe(container);
+})();
 
 
 
-  window.addEventListener('resize', ()=>{ if(running) sizeToSection(); }, {passive:true});
+/* Selector de espejos para NostalgIA */
+
+(function(){
+
+  const mirrors=[
+
+    "https://www.youtube-nocookie.com/embed/wtaqzMdBqZA?rel=0&modestbranding=1&playsinline=1",
+
+    "https://www.youtube-nocookie.com/embed/XIg9fNaw0rE?rel=0&modestbranding=1&playsinline=1",
+
+    "https://www.youtube-nocookie.com/embed/blvRvpslozQ?rel=0&modestbranding=1&playsinline=1",
+
+    "https://www.youtube-nocookie.com/embed/yRswYP93184?rel=0&modestbranding=1&playsinline=1"
+
+  ];
+
+  const frame=document.getElementById('nostalgPlayer'); if(!frame) return;
+
+  document.querySelectorAll('button[data-mirror]').forEach(btn=>{
+
+    btn.addEventListener('click',()=>{ const i=parseInt(btn.getAttribute('data-mirror'),10)||0; frame.src=mirrors[i]; });
+
+  });
 
 })();
 
@@ -1135,9 +999,5 @@ document.getElementById("year").textContent = new Date().getFullYear();
 </body>
 
 </html>
-
-
-
-
 
 
