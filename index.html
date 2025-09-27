@@ -1,386 +1,355 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="es">
+
 <head>
+
 <meta charset="utf-8" />
-<title>PersonAPP</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<title>PERSONAPP.CL — IA</title>
+
+<meta name="description" content="Directorio rápido a las principales apps de IA: ChatGPT, Gemini y Grok. Entra directo a sus sitios oficiales." />
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+
+
+
 <style>
-:root{ --bg:#2b2ee6; --text:#f4f6f8; --panel:#202225; --panel2:#151618; --accent:#4CAF50; --muted:#b9c0c7; --warn:#ffd166; }
+
+:root{
+
+  --bg:#000; --grid:#0c0c0c; --text:#e8ffe8; --muted:#a0b7a0; --accent:#00ff88; --card:#0a0f0a; --ring:#103b20;
+
+  --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.6);
+
+}
+
 *{box-sizing:border-box}
-body{margin:0; background:var(--bg); color:var(--text); font-family:'Montserrat','Segoe UI',Arial,sans-serif}
-a{color:inherit; text-decoration:none}
-.wrap{max-width:1200px; margin:0 auto; padding:20px}
-header{display:flex; align-items:center; justify-content:center; text-align:center; padding:40px 10px 10px}
-h1{font-size:2.2rem; margin:0 0 8px; text-shadow:0 2px 16px rgba(18,255,65,.7)}
-p.lead{margin:0; opacity:.9}
 
-/* Grilla Apps */
-.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; margin:32px 0 48px}
+html,body{height:100%}
+
+body{margin:0;background:var(--bg);color:var(--text);font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow-x:hidden}
+
+
+
+/* Fondo “Matrix rain” ligero (performante) */
+
+.canvas{
+
+  position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.22; background:
+
+    radial-gradient(1200px 600px at 10% -10%, #00ff8840, transparent 60%),
+
+    radial-gradient(1200px 600px at 90% -20%, #00ff8840, transparent 60%),
+
+    repeating-linear-gradient(#000 0 2px,#001a0a 2px 4px);
+
+}
+
+.rain{
+
+  position:fixed; inset:-200vh 0 0 0; z-index:-1; pointer-events:none; opacity:.28;
+
+  background:linear-gradient(180deg,transparent 0 60%, #00ff88 80%, transparent 100%);
+
+  mask: repeating-linear-gradient(90deg, #000 0 2px, transparent 2px 12px);
+
+  animation: fall 7s linear infinite;
+
+  filter: blur(.8px);
+
+}
+
+.rain.r2{ animation-duration:10s; opacity:.18; }
+
+@keyframes fall{ from{ transform:translateY(-60vh) } to{ transform:translateY(0) } }
+
+
+
+/* Header */
+
+header{padding:56px 18px 16px; text-align:center; position:relative}
+
+.title{
+
+  font-weight:800; letter-spacing:.06em; margin:0;
+
+  font-size:clamp(40px,7vw,96px);
+
+  color:transparent;
+
+  background:linear-gradient(180deg,#b9ffd4 0%, #64ffb0 35%, #00ff88 60%, #0aff6f 100%);
+
+  -webkit-background-clip:text; background-clip:text;
+
+  text-shadow:0 0 18px rgba(0,255,136,.25), 0 0 3px rgba(0,255,136,.35);
+
+}
+
+.subtitle{color:var(--muted); margin:8px 0 0; font-weight:600}
+
+
+
+/* Grid de apps */
+
+.wrap{max-width:1100px;margin:0 auto;padding:22px 16px 64px}
+
+.grid{
+
+  display:grid; gap:16px; margin-top:28px;
+
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+
+}
+
 .card{
-background:linear-gradient(135deg,var(--panel2) 60%,var(--panel) 100%);
-border:1px solid rgba(255,255,255,.06);
-border-radius:16px; padding:18px;
-box-shadow:0 2px 16px rgba(0,0,0,.25);
-transition:transform .2s, box-shadow .2s;
+
+  background:linear-gradient(180deg,#071108,#0b190f);
+
+  border:1px solid var(--ring); border-radius:var(--radius); box-shadow:var(--shadow);
+
+  padding:18px; display:flex; flex-direction:column; gap:12px; transition:.15s ease transform, .15s ease border-color;
+
 }
-.card:hover{transform:translateY(-6px); box-shadow:0 10px 24px rgba(0,0,0,.35)}
-.card img.logo{width:64px; height:64px; object-fit:contain; background:#111; border-radius:12px; box-shadow:0 1px 8px rgba(0,0,0,.3)}
-.card h3{margin:12px 0 8px; font-size:1.05rem}
-.card p{margin:0 0 12px; color:#dfe5ea}
-.stores{display:flex; gap:8px; flex-wrap:wrap}
-.btn{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:10px; border:none; cursor:pointer;
-background:linear-gradient(90deg,#232526 0%, var(--accent) 100%); color:#fff; font-weight:700; font-size:.9rem}
 
-/* Foro */
-#foro{background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:20px; margin:24px 0 80px}
-#foro h2{margin:0 0 6px}
-.hint{color:var(--muted); margin:0 0 16px}
-#postForm{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px}
-#postForm .full{grid-column:1/-1}
-input, select, textarea{width:100%; border:1px solid rgba(255,255,255,.15); background:#141516; color:#fff;
-border-radius:10px; padding:10px 12px; font-family:inherit; font-size:1rem}
-textarea{min-height:100px; resize:vertical}
-.actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-.progress{height:8px; background:#111; border-radius:6px; overflow:hidden; width:220px; display:none}
-.bar{height:100%; width:0%; background:var(--accent); transition:width .1s linear}
+.card:hover{ transform:translateY(-3px); border-color:#21ff9d; }
 
-.controls{display:flex; gap:8px; margin-bottom:12px; align-items:center; flex-wrap:wrap}
-.feed{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px}
-.post{
-background:linear-gradient(135deg,#1a1a1a 60%, #232323 100%);
-border:1px solid rgba(255,255,255,.08);
-border-radius:12px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.25)
+.top{display:flex; align-items:center; gap:12px}
+
+.logo{
+
+  width:56px;height:56px;border-radius:12px;flex:0 0 56px;
+
+  background:#031107;border:1px solid #123b23;display:grid;place-items:center;overflow:hidden;
+
 }
-.meta{font-size:.85rem; color:#c7ced6}
-.stars{color:var(--warn)}
-.media{margin-top:8px}
-.media img, .media video{width:100%; border-radius:10px; display:block}
 
-.comments{margin-top:10px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px}
-.comment{font-size:.95rem; margin:6px 0}
-.comment .by{color:#cbd2d9; font-size:.85rem}
-.comment-form{display:flex; gap:6px; margin-top:8px}
-.comment-form input{flex:1}
-.comment-form button{white-space:nowrap}
+.logo img{width:100%;height:100%;object-fit:contain}
 
-.more{display:flex; justify-content:center; margin-top:12px}
-.more button{background:#202225; color:#fff; border:1px solid #2b2d31; padding:8px 12px; border-radius:8px; cursor:pointer}
+.name{font-weight:800; font-size:1.05rem}
 
-/* Fijos */
-.brand{position:fixed; left:16px; bottom:16px; font-weight:800; letter-spacing:1px; opacity:.9}
-.contact{position:fixed; right:16px; bottom:16px; opacity:.9; background:rgba(0,0,0,.3); padding:6px 12px; border-radius:8px}
+.desc{color:#cfe7cf; margin-top:2px; line-height:1.35}
+
+.actions{display:flex; gap:10px; flex-wrap:wrap}
+
+.btn{
+
+  display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; border:1px solid #1f6a42;
+
+  background:linear-gradient(180deg,#17c972,#0aa65a); color:#05170f; text-decoration:none; font-weight:800; text-transform:uppercase; letter-spacing:.02em;
+
+}
+
+.btn:focus{outline:2px solid var(--accent); outline-offset:2px}
+
+
+
+/* Video */
+
+.video-block{margin-top:36px;border:1px solid var(--ring);border-radius:16px;overflow:hidden; background:#030c06}
+
+.video-block header{padding:16px; text-align:left}
+
+.video-title{margin:0; font-size:1.1rem}
+
+.video-wrap{position:relative; padding-top:56.25%; background:#000}
+
+.video-wrap iframe, .video-wrap video{position:absolute; inset:0; width:100%; height:100%; border:0}
+
+
+
+/* Footer */
+
+footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(--ring)}
+
+.small{font-size:.9rem}
+
 </style>
+
 </head>
+
 <body>
-<div class="wrap">
+
+<div class="canvas"></div>
+
+<div class="rain"></div>
+
+<div class="rain r2"></div>
+
+
+
 <header>
-<div>
-<h1>APP para emprendedores</h1>
-<p class="lead">Foro global con imágenes/videos en tiempo real. (Sin minijuego)</p>
-</div>
+
+  <h1 class="title">PERSONAPP.CL</h1>
+
+  <p class="subtitle">Directorio de IA — clic y vas al <strong>link oficial</strong>.</p>
+
 </header>
 
-<!-- Apps -->
-<section id="apps" class="grid" aria-label="apps">
-<article class="card">
-<img class="logo" src="Img/logo.busho.png" alt="BUSHO" />
-<h3>BUSHO</h3>
-<p>Arriendo flexible de espacios comerciales.</p>
-<div class="stores">
-<a class="btn" href="https://busho.cl/" target="_blank" rel="noopener noreferrer">Visitar</a>
-<a class="btn" href="https://apps.apple.com/cl/app/busho/id1665748711" target="_blank" rel="noopener noreferrer">iOS</a>
-<a class="btn" href="https://play.google.com/store/apps/details?id=app.busho.cl" target="_blank" rel="noopener noreferrer">Android</a>
-</div>
-</article>
 
-<article class="card">
-<img class="logo" src="Img/logo.canva.png" alt="Canva" />
-<h3>Canva</h3>
-<p>Diseños fáciles para redes y marca.</p>
-<div class="stores"><a class="btn" href="https://www.canva.com/" target="_blank" rel="noopener noreferrer">Visitar</a></div>
-</article>
 
-<article class="card">
-<img class="logo" src="Img/logo.shopify3.png" alt="Shopify" />
-<h3>Shopify</h3>
-<p>Tu tienda online en minutos.</p>
-<div class="stores"><a class="btn" href="https://www.shopify.com/" target="_blank" rel="noopener noreferrer">Visitar</a></div>
-</article>
+<main class="wrap">
 
-<article class="card">
-<img class="logo" src="Img/logo.zoom.png" alt="Zoom" />
-<h3>Zoom</h3>
-<p>Reuniones profesionales.</p>
-<div class="stores"><a class="btn" href="https://zoom.us/" target="_blank" rel="noopener noreferrer">Visitar</a></div>
-</article>
+  <section class="grid" aria-label="Apps de IA">
 
-<article class="card">
-<img class="logo" src="Img/logo.mercadopago.png" alt="Mercado Pago" />
-<h3>Mercado Pago</h3>
-<p>Cobra con tarjeta desde el celular.</p>
-<div class="stores"><a class="btn" href="https://www.mercadopago.cl/" target="_blank" rel="noopener noreferrer">Visitar</a></div>
-</article>
 
-<!-- NUEVA: YouTube -->
-<article class="card">
-<img class="logo" src="Img/logo.youtube.png" alt="YouTube" />
-<h3>YouTube</h3>
-<p>Videos, música y aprendizaje para todos. Sigue y apoya a tus creadores favoritos.</p>
-<div class="stores">
-<a class="btn" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Visitar</a>
-<a class="btn" href="https://apps.apple.com/app/youtube-watch-listen-stream/id544007664" target="_blank" rel="noopener noreferrer">iOS</a>
-<a class="btn" href="https://play.google.com/store/apps/details?id=com.google.android.youtube" target="_blank" rel="noopener noreferrer">Android</a>
-</div>
-</article>
-</section>
 
-<!-- Foro global -->
-<section id="foro">
-<h2>Foro & Reseñas</h2>
-<p class="hint">Todos pueden publicar y comentar. Imágenes o videos con barra de progreso. (Reseñas públicas visibles en cualquier dispositivo)</p>
+    <!-- ChatGPT -->
 
-<form id="postForm">
-<div>
-<label>App</label>
-<select id="fApp" required>
-<option value="BUSHO">BUSHO</option>
-<option value="Canva">Canva</option>
-<option value="Shopify">Shopify</option>
-<option value="Zoom">Zoom</option>
-<option value="Mercado Pago">Mercado Pago</option>
-<option value="YouTube">YouTube</option>
-</select>
-</div>
-<div><label>Tu nombre</label><input id="fName" type="text" placeholder="Ej: Raúl" required maxlength="40"/></div>
-<div>
-<label>Calificación</label>
-<select id="fRating" required>
-<option value="5">★★★★★ (5)</option><option value="4">★★★★☆ (4)</option>
-<option value="3">★★★☆☆ (3)</option><option value="2">★★☆☆☆ (2)</option>
-<option value="1">★☆☆☆☆ (1)</option>
-</select>
-</div>
-<div class="full"><label>Reseña</label><textarea id="fText" placeholder="¿Qué te gustó? ¿Qué mejorarías?" required maxlength="800"></textarea></div>
-<div class="full">
-<label>Imagen o video (opcional)</label>
-<input id="fFile" type="file" accept="image/*,video/*" />
-<div class="progress" id="progress"><div class="bar" id="bar"></div></div>
-</div>
-<div class="full actions">
-<button class="btn" type="submit" id="sendBtn">Publicar</button>
-<span id="status" class="hint"></span>
-</div>
-</form>
+    <article class="card" aria-label="ChatGPT">
 
-<div class="controls">
-<select id="filterApp">
-<option value="">Todas las apps</option>
-<option value="BUSHO">BUSHO</option>
-<option value="Canva">Canva</option>
-<option value="Shopify">Shopify</option>
-<option value="Zoom">Zoom</option>
-<option value="Mercado Pago">Mercado Pago</option>
-<option value="YouTube">YouTube</option>
-</select>
-<select id="orderSel">
-<option value="desc">Más nuevas primero</option>
-<option value="asc">Más antiguas primero</option>
-</select>
-</div>
+      <div class="top">
 
-<div id="feed" class="feed"></div>
-<div class="more"><button id="loadMore" style="display:none">Cargar más</button></div>
-</section>
-</div>
+        <div class="logo">
 
-<div class="brand">PersonAPP</div>
-<div class="contact">contacto: personappoficial@gmail.com</div>
+          <img src="https://chat.openai.com/apple-touch-icon.png" alt="Logo ChatGPT" loading="lazy">
 
-<!-- Firebase (compat) -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+        </div>
+
+        <div>
+
+          <div class="name">ChatGPT</div>
+
+          <div class="desc">Asistente conversacional para escribir, analizar, programar, crear ideas y más. Multiplataforma.</div>
+
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <a class="btn" href="https://chatgpt.com/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=chatgpt" target="_blank" rel="noopener">Web</a>
+
+        <a class="btn" href="https://apps.apple.com/app/openai-chatgpt/id6448311069?utm_source=personapp" target="_blank" rel="noopener">iOS</a>
+
+        <a class="btn" href="https://play.google.com/store/apps/details?id=com.openai.chatgpt&utm_source=personapp" target="_blank" rel="noopener">Android</a>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- Gemini -->
+
+    <article class="card" aria-label="Gemini">
+
+      <div class="top">
+
+        <div class="logo">
+
+          <img src="https://www.gstatic.com/ai/gemini/v1/favicon_192.png" alt="Logo Gemini" loading="lazy">
+
+        </div>
+
+        <div>
+
+          <div class="name">Gemini</div>
+
+          <div class="desc">Modelo de Google para búsqueda asistida, generación de contenido y ayuda en tareas con integración a ecosistema Google.</div>
+
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <a class="btn" href="https://gemini.google.com/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=gemini" target="_blank" rel="noopener">Acceder</a>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- Grok -->
+
+    <article class="card" aria-label="Grok">
+
+      <div class="top">
+
+        <div class="logo">
+
+          <img src="https://x.ai/favicon.ico" alt="Logo Grok (xAI)" loading="lazy">
+
+        </div>
+
+        <div>
+
+          <div class="name">Grok</div>
+
+          <div class="desc">Modelo de xAI con acceso en tiempo real a X. Enfocado en respuestas directas y tono desafiante.</div>
+
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <a class="btn" href="https://x.ai/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=grok" target="_blank" rel="noopener">Sitio oficial</a>
+
+      </div>
+
+    </article>
+
+
+
+  </section>
+
+
+
+  <!-- Video final -->
+
+  <section class="video-block" aria-label="Video demostrativo IA">
+
+    <header><h2 class="video-title">¿Qué puede hacer la IA? (demo)</h2></header>
+
+    <div class="video-wrap">
+
+      <!-- Reemplaza el VIDEO_ID por el que prefieras -->
+
+      <iframe
+
+        src="https://www.youtube.com/embed/2ePf9rue1Ao?rel=0&modestbranding=1"
+
+        title="Demostración de IA"
+
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+
+        allowfullscreen
+
+      ></iframe>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+
+<footer>
+
+  <div class="small">© <span id="year"></span> PERSONAPP.CL — Enlaces oficiales a apps de IA.</div>
+
+</footer>
+
+
+
 <script>
-/* 🔐 Pega aquí tus credenciales REALES (Firestore + Storage habilitados) */
-const firebaseConfig = {
-apiKey: "TU_API_KEY",
-authDomain: "TU_AUTH_DOMAIN",
-projectId: "TU_PROJECT_ID",
-storageBucket: "TU_STORAGE_BUCKET",
-messagingSenderId: "TU_SENDER_ID",
-appId: "TU_APP_ID"
-};
-if(!firebaseConfig.apiKey){ alert("Falta configurar Firebase: edita firebaseConfig."); }
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const storage = firebase.storage();
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
 </script>
 
-<script>
-/************ Foro en tiempo real con imagen/video + paginación ************/
-const allowedApps = ["BUSHO","Canva","Shopify","Zoom","Mercado Pago","YouTube"];
-const $ = s => document.querySelector(s);
-const feed = $("#feed"), statusEl=$("#status"), bar=$("#bar"), prog=$("#progress");
-const filterApp = $("#filterApp"), orderSel = $("#orderSel"), loadMoreBtn = $("#loadMore");
-
-const stars = n => "★".repeat(+n||0) + "☆".repeat(5-(+n||0));
-const escapeHTML = s => (s||"").replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-const PAGE = 20;
-let lastDoc = null, unsub = null;
-
-function tsToDate(ts){ try{ return ts?.toDate ? ts.toDate() : new Date(ts); }catch{ return new Date(); } }
-
-function postCard(doc){
-const p = doc.data(); const t = tsToDate(p.time);
-const el = document.createElement("article"); el.className="post"; el.id = `post-${doc.id}`;
-el.innerHTML = `
-<div class="meta"><strong>${escapeHTML(p.app||"")}</strong> · ${escapeHTML(p.name||"")} <span class="stars">${stars(p.rating||0)}</span></div>
-<div>${escapeHTML(p.text||"")}</div>
-<div class="media">
-${p.mediaUrl ? (p.mediaType==="video" ? `<video controls src="${escapeHTML(p.mediaUrl)}"></video>` : `<img loading="lazy" src="${escapeHTML(p.mediaUrl)}" alt="media">`) : ""}
-</div>
-<div class="meta">${t.toLocaleString()}</div>
-<div class="comments">
-<div class="comment-form">
-<input type="text" placeholder="Comentar..." maxlength="300" />
-<button class="btn">Comentar</button>
-</div>
-<div class="comment-list"></div>
-</div>
-`;
-// Comentarios en tiempo real
-const list = el.querySelector(".comment-list");
-db.collection("posts").doc(doc.id).collection("comments").orderBy("time","asc")
-.onSnapshot(s=>{
-list.innerHTML = "";
-s.forEach(c=>{
-const d=c.data(); const ct=tsToDate(d.time);
-const li=document.createElement("div"); li.className="comment";
-li.innerHTML = `<div>${escapeHTML(d.text||"")}</div><div class="by">${escapeHTML(d.name||"Invitado")} · ${ct.toLocaleString()}</div>`;
-list.appendChild(li);
-});
-});
-// Enviar comentario
-const [inp,btn]=el.querySelectorAll(".comment-form > *");
-btn.addEventListener("click", async ()=>{
-const text=inp.value.trim(); if(!text) return;
-await db.collection("posts").doc(doc.id).collection("comments").add({
-text, name:"Invitado", time: firebase.firestore.FieldValue.serverTimestamp()
-});
-inp.value="";
-});
-return el;
-}
-
-function stopLive(){ if(unsub){ unsub(); unsub=null; } }
-function startLive(q){
-stopLive();
-unsub = q.onSnapshot(snap=>{
-feed.innerHTML = "";
-const frag=document.createDocumentFragment();
-snap.forEach(doc=> frag.appendChild(postCard(doc)));
-feed.appendChild(frag);
-lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-}, async ()=>{
-stopLive(); // fallback a estático si el listener falla
-await loadStatic(q);
-});
-}
-async function loadStatic(q){
-const snap = await q.get();
-feed.innerHTML="";
-const frag=document.createDocumentFragment();
-snap.forEach(doc=> frag.appendChild(postCard(doc)));
-feed.appendChild(frag);
-lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-}
-async function loadMore(){
-if(!lastDoc) return;
-const q = baseQuery().startAfter(lastDoc).limit(PAGE);
-const snap = await q.get();
-const frag=document.createDocumentFragment();
-snap.forEach(doc=> frag.appendChild(postCard(doc)));
-feed.appendChild(frag);
-lastDoc = snap.docs.length ? snap.docs[snap.docs.length-1] : null;
-loadMoreBtn.style.display = lastDoc ? "" : "none";
-}
-function baseQuery(){
-const app = filterApp.value;
-const dir = orderSel.value === "asc" ? "asc" : "desc";
-let q = db.collection("posts").orderBy("time", dir);
-if(app) q = q.where("app","==",app);
-return q;
-}
-function refresh(){ startLive( baseQuery().limit(PAGE) ); }
-filterApp.addEventListener("change", refresh);
-orderSel.addEventListener("change", refresh);
-document.getElementById("loadMore").addEventListener("click", loadMore);
-
-// Subida con progreso
-async function uploadMedia(file){
-if(!file) return { url:"", type:"" };
-const MAX_MB = 25;
-if(file.size > MAX_MB*1024*1024) throw new Error("Archivo muy grande (máx " + MAX_MB + " MB).");
-const safe = file.name.replace(/[^a-z0-9.\-_]/gi,"_");
-const path = `media/${Date.now()}_${safe}`;
-const ref = storage.ref().child(path);
-prog.style.display="block";
-return await new Promise((resolve, reject)=>{
-const t = ref.put(file, {contentType:file.type});
-t.on('state_changed', snap=>{
-const pct = Math.round((snap.bytesTransferred/snap.totalBytes)*100);
-bar.style.width = pct + "%";
-}, err=>{
-prog.style.display="none"; bar.style.width="0%"; reject(err);
-}, async ()=>{
-const url = await ref.getDownloadURL();
-bar.style.width = "0%"; prog.style.display="none";
-resolve({ url, type: file.type.startsWith("video/") ? "video" : "image" });
-});
-});
-}
-
-// Publicar post
-document.getElementById("postForm").addEventListener("submit", async e=>{
-e.preventDefault();
-const btn = document.getElementById("sendBtn"); btn.disabled = true;
-statusEl.textContent = "Subiendo...";
-try{
-const app = document.getElementById("fApp").value;
-const name = document.getElementById("fName").value.trim();
-const rating = +document.getElementById("fRating").value;
-const text = document.getElementById("fText").value.trim();
-const file = document.getElementById("fFile").files[0] || null;
-if(!allowedApps.includes(app)) throw new Error("App no permitida.");
-if(!name || !text) throw new Error("Completa nombre y reseña.");
-
-let mediaUrl="", mediaType="";
-if(file){ ({url:mediaUrl, type:mediaType} = await uploadMedia(file)); }
-
-await db.collection("posts").add({
-app, name:name.slice(0,40), rating, text:text.slice(0,800),
-mediaUrl, mediaType,
-time: firebase.firestore.FieldValue.serverTimestamp()
-});
-
-e.target.reset();
-statusEl.textContent = "Publicado ✔️";
-}catch(err){
-console.error(err);
-statusEl.textContent = "Error: " + err.message;
-}finally{
-setTimeout(()=>statusEl.textContent="",1400);
-btn.disabled = false;
-}
-});
-
-// Arrancar el feed
-refresh();
-</script>
 </body>
+
 </html>
+
+
 
 
