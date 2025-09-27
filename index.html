@@ -256,11 +256,7 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
   "logo":"https://personapp.cl/img/preview.png",
 
-  "sameAs":[
-
-    "https://www.instagram.com/","https://www.linkedin.com/"
-
-  ]
+  "sameAs":[ "https://www.instagram.com/", "https://www.linkedin.com/" ]
 
 }
 
@@ -298,7 +294,7 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
         <div class="logo" aria-hidden="true">
 
-          <!-- SVG inline: isotipo estilo “flor” -->
+          <!-- SVG inline -->
 
           <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
@@ -532,25 +528,35 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
   <section class="video-block" aria-label="Video demostrativo IA">
 
-    <header><h2 class="video-title">¿Qué puede hacer la IA? (demo)</h2></header>
+    <header><h2 class="video-title">Publicidad generada 100% con IA</h2></header>
 
     <div class="video-wrap">
 
-      <!-- Cambia el VIDEO_ID por el que quieras -->
+      <!-- Embebido del video solicitado -->
 
       <iframe
 
         loading="lazy"
 
-        src="https://www.youtube.com/embed/2ePf9rue1Ao?rel=0&modestbranding=1"
+        src="https://www.youtube.com/embed/Ew7oZ0LO6AU?rel=0&modestbranding=1"
 
-        title="Demostración de IA"
+        title="Publicidad generada 100% con IA"
 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 
         allowfullscreen
 
       ></iframe>
+
+      <noscript>
+
+        <a href="https://youtu.be/Ew7oZ0LO6AU" target="_blank" rel="noopener">
+
+          Ver “Publicidad generada 100% con IA” en YouTube
+
+        </a>
+
+      </noscript>
 
     </div>
 
@@ -599,6 +605,40 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
     {"@type":"Question","name":"¿Cómo se mantiene actualizado el directorio?","acceptedAnswer":{"@type":"Answer","text":"Revisamos periódicamente los enlaces oficiales y añadimos nuevas herramientas de IA utilizadas en Chile y el mundo."}}
 
   ]
+
+}
+
+</script>
+
+
+
+<!-- VideoObject para SEO del video -->
+
+<script type="application/ld+json">
+
+{
+
+  "@context":"https://schema.org",
+
+  "@type":"VideoObject",
+
+  "name":"Publicidad generada 100% con IA",
+
+  "description":"Ejemplo de creatividad publicitaria realizada íntegramente con herramientas de inteligencia artificial.",
+
+  "uploadDate":"2024-01-01",
+
+  "thumbnailUrl":["https://i.ytimg.com/vi/Ew7oZ0LO6AU/maxresdefault.jpg"],
+
+  "embedUrl":"https://www.youtube.com/embed/Ew7oZ0LO6AU",
+
+  "publisher": {
+
+    "@type": "Organization",
+
+    "name": "PersonAPP.cl"
+
+  }
 
 }
 
@@ -706,7 +746,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 
 
-<!-- (Opcional) Google Analytics 4: reemplaza G-XXXX por tu ID -->
+<!-- (Opcional) Google Analytics 4 -->
 
 <!--
 
@@ -727,6 +767,8 @@ document.getElementById("year").textContent = new Date().getFullYear();
 </body>
 
 </html>
+
+
 
 
 
