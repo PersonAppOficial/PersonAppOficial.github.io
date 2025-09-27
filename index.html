@@ -1,4 +1,4 @@
-<!doctype html>
+doctype html>
 
 <html lang="es">
 
@@ -36,37 +36,17 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Montserrat,syst
 
 
 
-/* Fondo “Matrix rain” ligero (performante) */
+/* Canvas Matrix */
 
-.canvas{
+#matrix{
 
-  position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.22; background:
+  position:fixed; inset:0; z-index:-1; display:block;
 
-    radial-gradient(1200px 600px at 10% -10%, #00ff8840, transparent 60%),
+  background:#000 radial-gradient(1200px 600px at 15% -10%, #00ff8840, transparent 60%) no-repeat,
 
-    radial-gradient(1200px 600px at 90% -20%, #00ff8840, transparent 60%),
-
-    repeating-linear-gradient(#000 0 2px,#001a0a 2px 4px);
+             radial-gradient(1200px 600px at 85% -20%, #00ff8840, transparent 60%) no-repeat;
 
 }
-
-.rain{
-
-  position:fixed; inset:-200vh 0 0 0; z-index:-1; pointer-events:none; opacity:.28;
-
-  background:linear-gradient(180deg,transparent 0 60%, #00ff88 80%, transparent 100%);
-
-  mask: repeating-linear-gradient(90deg, #000 0 2px, transparent 2px 12px);
-
-  animation: fall 7s linear infinite;
-
-  filter: blur(.8px);
-
-}
-
-.rain.r2{ animation-duration:10s; opacity:.18; }
-
-@keyframes fall{ from{ transform:translateY(-60vh) } to{ transform:translateY(0) } }
 
 
 
@@ -128,8 +108,6 @@ header{padding:56px 18px 16px; text-align:center; position:relative}
 
 }
 
-.logo img{width:100%;height:100%;object-fit:contain}
-
 .name{font-weight:800; font-size:1.05rem}
 
 .desc{color:#cfe7cf; margin-top:2px; line-height:1.35}
@@ -168,17 +146,23 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 .small{font-size:.9rem}
 
+
+
+/* Reduce motion accessibility */
+
+@media (prefers-reduced-motion: reduce){
+
+  #matrix{display:none}
+
+}
+
 </style>
 
 </head>
 
 <body>
 
-<div class="canvas"></div>
-
-<div class="rain"></div>
-
-<div class="rain r2"></div>
+<canvas id="matrix" aria-hidden="true"></canvas>
 
 
 
@@ -204,9 +188,33 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
       <div class="top">
 
-        <div class="logo">
+        <div class="logo" aria-hidden="true">
 
-          <img src="https://chat.openai.com/apple-touch-icon.png" alt="Logo ChatGPT" loading="lazy">
+          <!-- SVG inline: “flor” minimalista -->
+
+          <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+            <defs>
+
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+
+                <stop offset="0" stop-color="#9fffd4"/><stop offset="1" stop-color="#00ff88"/>
+
+              </linearGradient>
+
+            </defs>
+
+            <rect x="0" y="0" width="64" height="64" rx="14" fill="#02150c"/>
+
+            <g fill="none" stroke="url(#g1)" stroke-width="4" stroke-linecap="round">
+
+              <path d="M32 10c-5 0-9 4-9 9 0 2 .6 3.9 1.7 5.5-4.9 1.5-8.5 6-8.5 11.3 0 6.5 5.3 11.7 11.7 11.7 2.5 0 4.8-.8 6.7-2.1 1.9 1.3 4.2 2.1 6.7 2.1 6.5 0 11.7-5.3 11.7-11.7 0-5.4-3.6-9.9-8.6-11.3 1.1-1.6 1.7-3.5 1.7-5.5 0-5-4-9-9-9"/>
+
+              <path d="M23 19l9 5 9-5M23 45l9-5 9 5M18 35h28"/>
+
+            </g>
+
+          </svg>
 
         </div>
 
@@ -240,9 +248,31 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
       <div class="top">
 
-        <div class="logo">
+        <div class="logo" aria-hidden="true">
 
-          <img src="https://www.gstatic.com/ai/gemini/v1/favicon_192.png" alt="Logo Gemini" loading="lazy">
+          <!-- SVG inline: “G” con destello -->
+
+          <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+            <defs>
+
+              <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+
+                <stop offset="0" stop-color="#80ffd7"/><stop offset="1" stop-color="#00e0ff"/>
+
+              </linearGradient>
+
+            </defs>
+
+            <rect x="0" y="0" width="64" height="64" rx="14" fill="#031017"/>
+
+            <circle cx="32" cy="32" r="20" fill="none" stroke="url(#g2)" stroke-width="5"/>
+
+            <path d="M25 33h13v9" fill="none" stroke="url(#g2)" stroke-width="5" stroke-linecap="round"/>
+
+            <circle cx="44" cy="20" r="4" fill="url(#g2)"/>
+
+          </svg>
 
         </div>
 
@@ -250,7 +280,7 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
           <div class="name">Gemini</div>
 
-          <div class="desc">Modelo de Google para búsqueda asistida, generación de contenido y ayuda en tareas con integración a ecosistema Google.</div>
+          <div class="desc">Modelo de Google para búsqueda asistida, generación de contenido y ayuda en tareas con integración a ecosfera Google.</div>
 
         </div>
 
@@ -272,9 +302,17 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
       <div class="top">
 
-        <div class="logo">
+        <div class="logo" aria-hidden="true">
 
-          <img src="https://x.ai/favicon.ico" alt="Logo Grok (xAI)" loading="lazy">
+          <!-- SVG inline: marca simple estilo xAI -->
+
+          <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+            <rect x="0" y="0" width="64" height="64" rx="14" fill="#0b0b0b"/>
+
+            <path d="M18 46L46 18M18 18l28 28" stroke="#e8ffe8" stroke-width="6" stroke-linecap="round" />
+
+          </svg>
 
         </div>
 
@@ -310,7 +348,7 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
     <div class="video-wrap">
 
-      <!-- Reemplaza el VIDEO_ID por el que prefieras -->
+      <!-- Cambia el VIDEO_ID por el que quieras -->
 
       <iframe
 
@@ -342,14 +380,116 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 <script>
 
+/* ===== Año en footer ===== */
+
 document.getElementById("year").textContent = new Date().getFullYear();
+
+
+
+/* ===== Matrix Rain (canvas) ===== */
+
+(function(){
+
+  const c = document.getElementById('matrix');
+
+  const ctx = c.getContext('2d');
+
+  let w, h, cols, drops, fontSize;
+
+  const chars = 'アイウエオカキクケコサシスセソタチツテト0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+
+
+  function resize(){
+
+    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+
+    w = c.clientWidth = window.innerWidth;
+
+    h = c.clientHeight = window.innerHeight;
+
+    c.width = Math.floor(w * dpr);
+
+    c.height = Math.floor(h * dpr);
+
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+
+
+    fontSize = Math.max(14, Math.min(22, Math.round(w/60)));
+
+    ctx.font = fontSize + "px monospace";
+
+    cols = Math.ceil(w / fontSize);
+
+    drops = new Array(cols).fill(0).map(()=> Math.floor(Math.random()*h/fontSize));
+
+  }
+
+
+
+  function tick(){
+
+    // Veladura para estela
+
+    ctx.fillStyle = "rgba(0,0,0,0.08)";
+
+    ctx.fillRect(0,0,w,h);
+
+
+
+    // Dibuja columnas
+
+    for(let i=0;i<cols;i++){
+
+      const text = chars[Math.floor(Math.random()*chars.length)];
+
+      const x = i * fontSize;
+
+      const y = drops[i] * fontSize;
+
+
+
+      // brillo cabeza
+
+      const grad = ctx.createLinearGradient(x,y-20,x,y+20);
+
+      grad.addColorStop(0,"#00ff88");
+
+      grad.addColorStop(1,"#b8ffde");
+
+      ctx.fillStyle = grad;
+
+      ctx.fillText(text, x, y);
+
+
+
+      // avanza
+
+      if (y > h && Math.random() > 0.975) drops[i] = 0;
+
+      else drops[i]++;
+
+    }
+
+    requestAnimationFrame(tick);
+
+  }
+
+
+
+  resize();
+
+  tick();
+
+  window.addEventListener('resize', resize, {passive:true});
+
+})();
 
 </script>
 
 </body>
 
 </html>
-
-
 
 
