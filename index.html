@@ -10,15 +10,15 @@
 
 
 
-<title>PersonAPP.cl — Directorio de Apps de Inteligencia Artificial (ChatGPT, Gemini, Grok)</title>
+<title>PersonAPP.cl — Directorio de Apps de Inteligencia Artificial (ChatGPT, Gemini, Grok) y Música con IA</title>
 
-<meta name="description" content="PersonAPP.cl es el directorio chileno de aplicaciones de inteligencia artificial. Accede directo a ChatGPT, Google Gemini y Grok. Guías, FAQs y enlaces oficiales." />
+<meta name="description" content="PersonAPP.cl: el directorio en español de apps de inteligencia artificial. Accede a ChatGPT, Google Gemini y Grok. Además, herramientas para crear canciones con IA (Suno, Udio, RVC, ElevenLabs, Adobe Enhance) y ejemplos." />
 
 <link rel="canonical" href="https://personapp.cl/" />
 
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
 
-<meta name="keywords" content="inteligencia artificial, apps IA, aplicaciones IA, ChatGPT, Google Gemini, Grok, xAI, descargar chatgpt, IA en Chile, mejores apps IA 2025, directorio de apps" />
+<meta name="keywords" content="inteligencia artificial, apps IA, ChatGPT, Google Gemini, Grok, xAI, IA en Chile, mejores apps IA 2025, crear música con IA, Suno, Udio, RVC, ElevenLabs, Adobe Enhance, NostalgIA" />
 
 <meta name="author" content="PersonAPP.cl" />
 
@@ -30,9 +30,9 @@
 
 <meta property="og:site_name" content="PersonAPP.cl" />
 
-<meta property="og:title" content="PersonAPP.cl — Directorio de Apps de IA" />
+<meta property="og:title" content="PersonAPP.cl — Directorio de Apps de IA y Música con IA" />
 
-<meta property="og:description" content="Encuentra y accede a ChatGPT, Google Gemini y Grok. Enlaces oficiales, en español." />
+<meta property="og:description" content="Accede a ChatGPT, Gemini y Grok. Aprende a crear canciones con IA: Suno, Udio, RVC, ElevenLabs y más." />
 
 <meta property="og:url" content="https://personapp.cl/" />
 
@@ -46,15 +46,19 @@
 
 <meta name="twitter:title" content="PersonAPP.cl — Directorio de Apps de IA" />
 
-<meta name="twitter:description" content="Accede directo a ChatGPT, Gemini y Grok con un clic." />
+<meta name="twitter:description" content="ChatGPT, Gemini, Grok y herramientas para hacer música con IA." />
 
 <meta name="twitter:image" content="https://personapp.cl/img/preview.png" />
 
 
 
+<!-- Favicon simple SVG embebido -->
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='12' ry='12' width='64' height='64' fill='%2300ff88'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='34' font-family='Montserrat,Arial' fill='%23000'%3EPA%3C/text%3E%3C/svg%3E" />
 
 
+
+<!-- Fuentes -->
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -122,15 +126,15 @@ header{padding:56px 18px 8px; text-align:center}
 
 }
 
-.subtitle{color:var(--muted); margin:10px auto 0; font-weight:600; max-width:900px}
+.subtitle{color:var(--muted); margin:10px auto 0; font-weight:600; max-width:980px}
 
-.wrap{max-width:1100px;margin:0 auto;padding:22px 16px 64px}
+.wrap{max-width:1150px;margin:0 auto;padding:22px 16px 64px}
 
 
 
-/* Cards */
+/* Grids y tarjetas */
 
-.grid{display:grid; gap:16px; margin-top:28px; grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.grid{display:grid; gap:16px; margin-top:28px; grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
 
 .card{
 
@@ -166,11 +170,11 @@ header{padding:56px 18px 8px; text-align:center}
 
 
 
-/* SEO sections */
+/* Bloques informativos */
 
-.seo{margin-top:40px}
+.section-title{margin-top:40px}
 
-.seo .block{background:linear-gradient(180deg,#071108,#0b190f); border:1px solid var(--ring); border-radius:16px; padding:18px; margin-bottom:16px}
+.seo .block{background:linear-gradient(180deg,#071108,#0b190f); border:1px solid var(--ring); border-radius:16px; padding:18px; margin:20px 0}
 
 .seo ul{margin:10px 0 0 18px}
 
@@ -188,7 +192,7 @@ header{padding:56px 18px 8px; text-align:center}
 
 
 
-/* Video */
+/* Videos */
 
 .video-block{margin-top:36px;border:1px solid var(--ring);border-radius:16px;overflow:hidden; background:#030c06}
 
@@ -212,9 +216,535 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 </style>
 
+</head>
 
 
-<!-- Schema.org JSON-LD -->
+
+<body>
+
+<canvas id="matrix" aria-hidden="true"></canvas>
+
+
+
+<header>
+
+  <h1 class="title">PersonAPP.cl</h1>
+
+  <p class="subtitle">Directorio de <strong>aplicaciones de inteligencia artificial</strong> en español. Accede con un clic a <strong>ChatGPT</strong>, <strong>Google Gemini</strong> y <strong>Grok</strong> — y descubre cómo <strong>crear canciones con IA</strong> (Suno, Udio, RVC, ElevenLabs, Adobe Enhance).</p>
+
+</header>
+
+
+
+<main class="wrap">
+
+
+
+  <!-- ======== LISTA PRINCIPAL: APPS IA ======== -->
+
+  <section aria-label="Apps de IA">
+
+    <h2 class="section-title">Apps de IA destacadas (ChatGPT, Gemini, Grok)</h2>
+
+    <div class="grid" id="apps-ia">
+
+      <!-- ChatGPT -->
+
+      <article class="card" aria-label="ChatGPT — Inteligencia Artificial Conversacional">
+
+        <div class="top">
+
+          <div class="logo" aria-hidden="true">
+
+            <!-- SVG inline: isotipo estilo “flor” -->
+
+            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+              <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fffd4"/><stop offset="1" stop-color="#00ff88"/></linearGradient></defs>
+
+              <rect width="64" height="64" rx="14" fill="#02150c"/>
+
+              <g fill="none" stroke="url(#g1)" stroke-width="4" stroke-linecap="round">
+
+                <path d="M32 10c-5 0-9 4-9 9 0 2 .6 3.9 1.7 5.5-4.9 1.5-8.5 6-8.5 11.3 0 6.5 5.3 11.7 11.7 11.7 2.5 0 4.8-.8 6.7-2.1 1.9 1.3 4.2 2.1 6.7 2.1 6.5 0 11.7-5.3 11.7-11.7 0-5.4-3.6-9.9-8.6-11.3 1.1-1.6 1.7-3.5 1.7-5.5 0-5-4-9-9-9"/>
+
+                <path d="M23 19l9 5 9-5M23 45l9-5 9 5M18 35h28"/>
+
+              </g>
+
+            </svg>
+
+          </div>
+
+          <div>
+
+            <h3 class="name">ChatGPT — IA conversacional</h3>
+
+            <p class="desc">Asistente para escribir, analizar, programar y crear ideas. Disponible en web, iOS y Android.</p>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <a class="btn" href="https://chatgpt.com/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=chatgpt" target="_blank" rel="noopener">Web</a>
+
+          <a class="btn" href="https://apps.apple.com/app/openai-chatgpt/id6448311069?utm_source=personapp" target="_blank" rel="noopener">iOS</a>
+
+          <a class="btn" href="https://play.google.com/store/apps/details?id=com.openai.chatgpt&utm_source=personapp" target="_blank" rel="noopener">Android</a>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- Gemini -->
+
+      <article class="card" aria-label="Gemini — IA de Google para búsqueda y creación">
+
+        <div class="top">
+
+          <div class="logo" aria-hidden="true">
+
+            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+              <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#80ffd7"/><stop offset="1" stop-color="#00e0ff"/></linearGradient></defs>
+
+              <rect width="64" height="64" rx="14" fill="#031017"/>
+
+              <circle cx="32" cy="32" r="20" fill="none" stroke="url(#g2)" stroke-width="5"/>
+
+              <path d="M25 33h13v9" fill="none" stroke="url(#g2)" stroke-width="5" stroke-linecap="round"/>
+
+              <circle cx="44" cy="20" r="4" fill="url(#g2)"/>
+
+            </svg>
+
+          </div>
+
+          <div>
+
+            <h3 class="name">Gemini — IA de Google</h3>
+
+            <p class="desc">Modelo para búsqueda asistida y generación de contenido con integración al ecosistema Google.</p>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <a class="btn" href="https://gemini.google.com/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=gemini" target="_blank" rel="noopener">Acceder</a>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- Grok -->
+
+      <article class="card" aria-label="Grok — xAI con acceso a X en tiempo real">
+
+        <div class="top">
+
+          <div class="logo" aria-hidden="true">
+
+            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+              <rect width="64" height="64" rx="14" fill="#0b0b0b"/>
+
+              <path d="M18 46L46 18M18 18l28 28" stroke="#e8ffe8" stroke-width="6" stroke-linecap="round" />
+
+            </svg>
+
+          </div>
+
+          <div>
+
+            <h3 class="name">Grok — xAI</h3>
+
+            <p class="desc">Modelo con acceso en tiempo real a X. Respuestas directas y tono desafiante.</p>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <a class="btn" href="https://x.ai/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=grok" target="_blank" rel="noopener">Sitio oficial</a>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ======== VIDEO PUBLICIDAD IA ======== -->
+
+  <section class="video-block" aria-label="Video demostrativo IA">
+
+    <header><h2 class="video-title">Publicidad generada 100% con IA</h2></header>
+
+    <div class="video-wrap">
+
+      <iframe
+
+        loading="lazy"
+
+        src="https://www.youtube.com/embed/Ew7oZ0LO6AU?rel=0&modestbranding=1"
+
+        title="Publicidad generada 100% con IA"
+
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+
+        allowfullscreen
+
+      ></iframe>
+
+      <noscript>
+
+        <a href="https://youtu.be/Ew7oZ0LO6AU" target="_blank" rel="noopener">Ver el video en YouTube</a>
+
+      </noscript>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ======== MÚSICA CON IA ======== -->
+
+  <section class="seo" aria-label="Crear canciones con IA" id="musica-ia">
+
+    <h2 class="section-title">🎶 Para crear canciones con IA</h2>
+
+    <p>Estas <strong>herramientas de inteligencia artificial musical</strong> permiten generar voces, beats e instrumentales. Elige una y prueba:</p>
+
+
+
+    <div class="grid" id="tools-music-ia">
+
+      <!-- Suno -->
+
+      <article class="card">
+
+        <div class="top">
+
+          <div class="logo" aria-hidden="true">
+
+            <!-- ícono genérico nota musical -->
+
+            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+              <rect width="64" height="64" rx="14" fill="#02150c"/>
+
+              <path d="M26 14v28a8 8 0 1 1-4-7V18l20-6v22a8 8 0 1 1-4-7V12z" fill="#00ff88"/>
+
+            </svg>
+
+          </div>
+
+          <div>
+
+            <h3 class="name">Suno AI — Text-to-Music</h3>
+
+            <p class="desc">Escribe un prompt y genera canciones con letra, melodía e instrumental de alta calidad.</p>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <a class="btn" href="https://suno.ai/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=suno" target="_blank" rel="noopener">Probar</a>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- Udio -->
+
+      <article class="card">
+
+        <div class="top">
+
+          <div class="logo" aria-hidden="true">
+
+            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+              <rect width="64" height="64" rx="14" fill="#031017"/>
+
+              <circle cx="22" cy="32" r="6" fill="#00e0ff"/><circle cx="42" cy="32" r="6" fill="#80ffd7"/>
+
+              <rect x="20" y="30" width="24" height="4" rx="2" fill="#b9ffd4"/>
+
+            </svg>
+
+          </div>
+
+          <div>
+
+            <h3 class="name">Udio — Música generativa</h3>
+
+            <p class="desc">Genera música a partir de texto y estilos. Ideal para canciones virales en TikTok y Spotify.</p>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <a class="btn" href="https://www.udio.com/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=udio" target="_blank" rel="noopener">Probar</a>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- RVC -->
+
+      <article class="card">
+
+        <div class="top">
+
+          <div class="logo" aria-hidden="true">
+
+            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+              <rect width="64" height="64" rx="14" fill="#0b0b0b"/>
+
+              <path d="M14 32h8l6-12 8 24 6-12h8" stroke="#e8ffe8" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+            </svg>
+
+          </div>
+
+          <div>
+
+            <h3 class="name">RVC — Voice Conversion</h3>
+
+            <p class="desc">Convierte tu voz para imitar timbres famosos (covers). Requiere instalación local y dataset de voz.</p>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <a class="btn" href="https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI" target="_blank" rel="noopener">Ver proyecto</a>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- ElevenLabs -->
+
+      <article class="card">
+
+        <div class="top">
+
+          <div class="logo" aria-hidden="true">
+
+            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+              <rect width="64" height="64" rx="14" fill="#031017"/>
+
+              <path d="M18 44V20h10v8h8v-8h10v24H36v-8h-8v8z" fill="#00ff88"/>
+
+            </svg>
+
+          </div>
+
+          <div>
+
+            <h3 class="name">ElevenLabs — Clonación de voz</h3>
+
+            <p class="desc">Voces hiperrealistas para narración y canto. Útil para maquetas y demos vocales.</p>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <a class="btn" href="https://elevenlabs.io/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=elevenlabs" target="_blank" rel="noopener">Probar</a>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- Adobe Enhance -->
+
+      <article class="card">
+
+        <div class="top">
+
+          <div class="logo" aria-hidden="true">
+
+            <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+
+              <rect width="64" height="64" rx="14" fill="#02150c"/>
+
+              <path d="M18 42l10-20 10 20 4-8h4" stroke="#00ff88" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+            </svg>
+
+          </div>
+
+          <div>
+
+            <h3 class="name">Adobe Enhance — Limpieza y master</h3>
+
+            <p class="desc">Mejora voces y mezcla final con IA. Elimina ruido y pule el audio para publicación.</p>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <a class="btn" href="https://podcast.adobe.com/enhance?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=enhance" target="_blank" rel="noopener">Probar</a>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+
+    <!-- Ejemplo: NostalgIA -->
+
+    <div class="block" style="margin-top:16px">
+
+      <h3>Ejemplo de canción creada con IA: “NostalgIA” (Mauricio Bustos)</h3>
+
+      <p>Una demostración viral del uso de IA en música. La pista recrea voces de artistas mediante técnicas de clonación de voz y producción generativa.</p>
+
+      <div class="video-wrap" style="margin-top:16px;">
+
+        <iframe
+
+          loading="lazy"
+
+          src="https://www.youtube.com/embed/JmqeF6Hn0kM?rel=0&modestbranding=1"
+
+          title="NostalgIA — Canción creada con IA"
+
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+
+          allowfullscreen
+
+        ></iframe>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ======== INFORMACIÓN & FAQ ======== -->
+
+  <section class="seo" aria-label="Información sobre PersonAPP e IA">
+
+    <div class="block">
+
+      <h2>¿Qué es PersonAPP.cl?</h2>
+
+      <p><strong>PersonAPP.cl</strong> es un directorio en español de <strong>aplicaciones de inteligencia artificial</strong>. Aquí encuentras, comparas y accedes de forma segura a <strong>ChatGPT</strong>, <strong>Google Gemini</strong> y <strong>Grok</strong> mediante enlaces oficiales.</p>
+
+      <p>Nuestro objetivo es acercar la <em>IA en Chile y Latinoamérica</em> a emprendedores, estudiantes y profesionales, con una experiencia rápida, clara y confiable.</p>
+
+    </div>
+
+
+
+    <div class="block faq" id="faqs">
+
+      <h2>Preguntas frecuentes (FAQ)</h2>
+
+
+
+      <details>
+
+        <summary>¿PersonAPP.cl es gratuito?</summary>
+
+        <p>Sí. PersonAPP.cl es un directorio gratuito que te redirige a las páginas oficiales de cada app de IA.</p>
+
+      </details>
+
+      <details>
+
+        <summary>¿Puedo descargar ChatGPT en iOS y Android?</summary>
+
+        <p>Sí. En las tarjetas encontrarás los botones directos a App Store y Google Play.</p>
+
+      </details>
+
+      <details>
+
+        <summary>¿Cuál es la diferencia entre ChatGPT, Gemini y Grok?</summary>
+
+        <p>ChatGPT es un asistente conversacional versátil; Gemini integra servicios de Google; Grok destaca por su conexión a X y respuestas directas.</p>
+
+      </details>
+
+      <details>
+
+        <summary>¿Cómo se mantiene actualizado el directorio?</summary>
+
+        <p>Revisamos periódicamente los enlaces oficiales y añadimos nuevas herramientas de IA utilizadas en Chile y el mundo.</p>
+
+      </details>
+
+    </div>
+
+  </section>
+
+
+
+</main>
+
+
+
+<footer>
+
+  <nav class="navfoot" aria-label="Enlaces del sitio">
+
+    <a href="#apps-ia">Apps de IA</a>
+
+    <a href="#musica-ia">Música con IA</a>
+
+    <a href="#faqs">Preguntas frecuentes</a>
+
+    <a href="mailto:hola@personapp.cl">Contacto</a>
+
+  </nav>
+
+  <div class="small">© <span id="year"></span> PersonAPP.cl — Enlaces oficiales a apps de IA en Chile y el mundo.</div>
+
+</footer>
+
+
+
+<!-- ========= SCHEMA.ORG ========= -->
 
 <script type="application/ld+json">
 
@@ -262,347 +792,23 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 </script>
 
-</head>
-
-
-
-<body>
-
-<canvas id="matrix" aria-hidden="true"></canvas>
-
-
-
-<header>
-
-  <h1 class="title">PersonAPP.cl</h1>
-
-  <p class="subtitle">Directorio de <strong>aplicaciones de inteligencia artificial</strong> en español. Accede con un clic a <strong>ChatGPT</strong>, <strong>Google Gemini</strong> y <strong>Grok</strong> desde Chile para el mundo.</p>
-
-</header>
-
-
-
-<main class="wrap">
-
-  <section class="grid" aria-label="Apps de IA">
-
-    <!-- ChatGPT -->
-
-    <article class="card" aria-label="ChatGPT — Inteligencia Artificial Conversacional">
-
-      <div class="top">
-
-        <div class="logo" aria-hidden="true">
-
-          <!-- SVG inline -->
-
-          <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
-
-            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fffd4"/><stop offset="1" stop-color="#00ff88"/></linearGradient></defs>
-
-            <rect width="64" height="64" rx="14" fill="#02150c"/>
-
-            <g fill="none" stroke="url(#g1)" stroke-width="4" stroke-linecap="round">
-
-              <path d="M32 10c-5 0-9 4-9 9 0 2 .6 3.9 1.7 5.5-4.9 1.5-8.5 6-8.5 11.3 0 6.5 5.3 11.7 11.7 11.7 2.5 0 4.8-.8 6.7-2.1 1.9 1.3 4.2 2.1 6.7 2.1 6.5 0 11.7-5.3 11.7-11.7 0-5.4-3.6-9.9-8.6-11.3 1.1-1.6 1.7-3.5 1.7-5.5 0-5-4-9-9-9"/>
-
-              <path d="M23 19l9 5 9-5M23 45l9-5 9 5M18 35h28"/>
-
-            </g>
-
-          </svg>
-
-        </div>
-
-        <div>
-
-          <h2 class="name">ChatGPT — IA conversacional</h2>
-
-          <p class="desc">Asistente para escribir, analizar, programar y crear ideas. Disponible en web, iOS y Android.</p>
-
-        </div>
-
-      </div>
-
-      <div class="actions">
-
-        <a class="btn" href="https://chatgpt.com/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=chatgpt" target="_blank" rel="noopener">Web</a>
-
-        <a class="btn" href="https://apps.apple.com/app/openai-chatgpt/id6448311069?utm_source=personapp" target="_blank" rel="noopener">iOS</a>
-
-        <a class="btn" href="https://play.google.com/store/apps/details?id=com.openai.chatgpt&utm_source=personapp" target="_blank" rel="noopener">Android</a>
-
-      </div>
-
-    </article>
-
-
-
-    <!-- Gemini -->
-
-    <article class="card" aria-label="Gemini — IA de Google para búsqueda y creación">
-
-      <div class="top">
-
-        <div class="logo" aria-hidden="true">
-
-          <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
-
-            <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#80ffd7"/><stop offset="1" stop-color="#00e0ff"/></linearGradient></defs>
-
-            <rect width="64" height="64" rx="14" fill="#031017"/>
-
-            <circle cx="32" cy="32" r="20" fill="none" stroke="url(#g2)" stroke-width="5"/>
-
-            <path d="M25 33h13v9" fill="none" stroke="url(#g2)" stroke-width="5" stroke-linecap="round"/>
-
-            <circle cx="44" cy="20" r="4" fill="url(#g2)"/>
-
-          </svg>
-
-        </div>
-
-        <div>
-
-          <h2 class="name">Gemini — IA de Google</h2>
-
-          <p class="desc">Modelo para búsqueda asistida y generación de contenido con integración al ecosistema Google.</p>
-
-        </div>
-
-      </div>
-
-      <div class="actions">
-
-        <a class="btn" href="https://gemini.google.com/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=gemini" target="_blank" rel="noopener">Acceder</a>
-
-      </div>
-
-    </article>
-
-
-
-    <!-- Grok -->
-
-    <article class="card" aria-label="Grok — xAI con acceso a X en tiempo real">
-
-      <div class="top">
-
-        <div class="logo" aria-hidden="true">
-
-          <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
-
-            <rect width="64" height="64" rx="14" fill="#0b0b0b"/>
-
-            <path d="M18 46L46 18M18 18l28 28" stroke="#e8ffe8" stroke-width="6" stroke-linecap="round" />
-
-          </svg>
-
-        </div>
-
-        <div>
-
-          <h2 class="name">Grok — xAI</h2>
-
-          <p class="desc">Modelo con acceso en tiempo real a X. Respuestas directas y tono desafiante.</p>
-
-        </div>
-
-      </div>
-
-      <div class="actions">
-
-        <a class="btn" href="https://x.ai/?utm_source=personapp&utm_medium=directory&utm_campaign=outbound&utm_content=grok" target="_blank" rel="noopener">Sitio oficial</a>
-
-      </div>
-
-    </article>
-
-  </section>
-
-
-
-  <!-- CONTENIDO SEO -->
-
-  <section class="seo" aria-label="Información sobre PersonAPP e IA">
-
-    <div class="block">
-
-      <h2>¿Qué es PersonAPP.cl?</h2>
-
-      <p><strong>PersonAPP.cl</strong> es un directorio en español de <strong>aplicaciones de inteligencia artificial</strong>. Aquí encuentras, comparas y accedes de forma segura a <strong>ChatGPT</strong>, <strong>Google Gemini</strong> y <strong>Grok</strong> mediante enlaces oficiales.</p>
-
-      <p>Nuestro objetivo es acercar la <em>IA en Chile y Latinoamérica</em> a emprendedores, estudiantes y profesionales, con una experiencia rápida, clara y confiable.</p>
-
-    </div>
-
-
-
-    <div class="block">
-
-      <h2>Beneficios de usar apps de IA</h2>
-
-      <ul>
-
-        <li><strong>Productividad:</strong> redactar textos, resumir documentos, crear presentaciones y código.</li>
-
-        <li><strong>Creatividad:</strong> lluvia de ideas, guiones, copies para marketing y contenido para redes.</li>
-
-        <li><strong>Aprendizaje:</strong> tutor personal en múltiples temas con ejemplos y explicaciones paso a paso.</li>
-
-      </ul>
-
-    </div>
-
-
-
-    <div class="block">
-
-      <h2>Casos de uso populares</h2>
-
-      <ul>
-
-        <li>“<strong>Cómo usar ChatGPT en el celular</strong>” — descarga iOS/Android desde los enlaces oficiales.</li>
-
-        <li>“<strong>Acceder a Gemini</strong>” — inicia sesión con tu cuenta de Google.</li>
-
-        <li>“<strong>Qué es Grok</strong>” — conoce el modelo de xAI y su conexión a X en tiempo real.</li>
-
-      </ul>
-
-    </div>
-
-
-
-    <div class="block faq" id="faqs">
-
-      <h2>Preguntas frecuentes (FAQ)</h2>
-
-
-
-      <details>
-
-        <summary>¿PersonAPP.cl es gratuito?</summary>
-
-        <p>Sí. PersonAPP.cl es un directorio gratuito que te redirige a las páginas oficiales de cada app de IA.</p>
-
-      </details>
-
-
-
-      <details>
-
-        <summary>¿Puedo descargar ChatGPT en iOS y Android?</summary>
-
-        <p>Sí. En las tarjetas encontrarás los botones directos a App Store y Google Play.</p>
-
-      </details>
-
-
-
-      <details>
-
-        <summary>¿Cuál es la diferencia entre ChatGPT, Gemini y Grok?</summary>
-
-        <p>ChatGPT es un asistente conversacional muy versátil; Gemini integra servicios de Google; Grok destaca por su conexión a X y respuestas directas.</p>
-
-      </details>
-
-
-
-      <details>
-
-        <summary>¿Cómo se mantiene actualizado el directorio?</summary>
-
-        <p>Revisamos periódicamente los enlaces oficiales y añadimos nuevas herramientas de IA utilizadas en Chile y el mundo.</p>
-
-      </details>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- Video final -->
-
-  <section class="video-block" aria-label="Video demostrativo IA">
-
-    <header><h2 class="video-title">Publicidad generada 100% con IA</h2></header>
-
-    <div class="video-wrap">
-
-      <!-- Embebido del video solicitado -->
-
-      <iframe
-
-        loading="lazy"
-
-        src="https://www.youtube.com/embed/Ew7oZ0LO6AU?rel=0&modestbranding=1"
-
-        title="Publicidad generada 100% con IA"
-
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-
-        allowfullscreen
-
-      ></iframe>
-
-      <noscript>
-
-        <a href="https://youtu.be/Ew7oZ0LO6AU" target="_blank" rel="noopener">
-
-          Ver “Publicidad generada 100% con IA” en YouTube
-
-        </a>
-
-      </noscript>
-
-    </div>
-
-  </section>
-
-</main>
-
-
-
-<footer>
-
-  <nav class="navfoot" aria-label="Enlaces del sitio">
-
-    <a href="https://personapp.cl/">Inicio</a>
-
-    <a href="#faqs">Preguntas frecuentes</a>
-
-    <a href="mailto:hola@personapp.cl">Contacto</a>
-
-  </nav>
-
-  <div class="small">© <span id="year"></span> PersonAPP.cl — Enlaces oficiales a apps de IA en Chile y el mundo.</div>
-
-</footer>
-
-
-
-<!-- FAQ Schema -->
-
 <script type="application/ld+json">
 
 {
 
   "@context":"https://schema.org",
 
-  "@type":"FAQPage",
+  "@type":"ItemList",
 
-  "mainEntity":[
+  "name":"Apps de IA destacadas",
 
-    {"@type":"Question","name":"¿PersonAPP.cl es gratuito?","acceptedAnswer":{"@type":"Answer","text":"Sí, PersonAPP.cl es un directorio gratuito que redirige a las páginas oficiales de cada app de IA."}},
+  "itemListElement":[
 
-    {"@type":"Question","name":"¿Puedo descargar ChatGPT en iOS y Android?","acceptedAnswer":{"@type":"Answer","text":"Sí. En las tarjetas encontrarás enlaces directos a App Store y Google Play."}},
+    {"@type":"ListItem","position":1,"url":"https://chatgpt.com/","name":"ChatGPT"},
 
-    {"@type":"Question","name":"¿Cuál es la diferencia entre ChatGPT, Gemini y Grok?","acceptedAnswer":{"@type":"Answer","text":"ChatGPT es un asistente conversacional versátil; Gemini integra servicios de Google; Grok destaca por su conexión a X y respuestas directas."}},
+    {"@type":"ListItem","position":2,"url":"https://gemini.google.com/","name":"Gemini"},
 
-    {"@type":"Question","name":"¿Cómo se mantiene actualizado el directorio?","acceptedAnswer":{"@type":"Answer","text":"Revisamos periódicamente los enlaces oficiales y añadimos nuevas herramientas de IA utilizadas en Chile y el mundo."}}
+    {"@type":"ListItem","position":3,"url":"https://x.ai/","name":"Grok"}
 
   ]
 
@@ -610,9 +816,33 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 </script>
 
+<script type="application/ld+json">
 
+{
 
-<!-- VideoObject para SEO del video -->
+  "@context":"https://schema.org",
+
+  "@type":"ItemList",
+
+  "name":"Herramientas para crear canciones con IA",
+
+  "itemListElement":[
+
+    {"@type":"ListItem","position":1,"url":"https://suno.ai/","name":"Suno AI"},
+
+    {"@type":"ListItem","position":2,"url":"https://www.udio.com/","name":"Udio"},
+
+    {"@type":"ListItem","position":3,"url":"https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI","name":"RVC"},
+
+    {"@type":"ListItem","position":4,"url":"https://elevenlabs.io/","name":"ElevenLabs"},
+
+    {"@type":"ListItem","position":5,"url":"https://podcast.adobe.com/enhance","name":"Adobe Enhance"}
+
+  ]
+
+}
+
+</script>
 
 <script type="application/ld+json">
 
@@ -626,19 +856,13 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
   "description":"Ejemplo de creatividad publicitaria realizada íntegramente con herramientas de inteligencia artificial.",
 
-  "uploadDate":"2024-01-01",
-
   "thumbnailUrl":["https://i.ytimg.com/vi/Ew7oZ0LO6AU/maxresdefault.jpg"],
+
+  "uploadDate":"2024-01-01",
 
   "embedUrl":"https://www.youtube.com/embed/Ew7oZ0LO6AU",
 
-  "publisher": {
-
-    "@type": "Organization",
-
-    "name": "PersonAPP.cl"
-
-  }
+  "publisher": {"@type":"Organization","name":"PersonAPP.cl"}
 
 }
 
@@ -646,7 +870,7 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 
 
-<!-- Año + Matrix canvas -->
+<!-- ========= JS: año + Matrix ========= -->
 
 <script defer>
 
@@ -654,7 +878,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 
 
-(function(){
+(function(){  // Matrix
 
   const c = document.getElementById('matrix');
 
@@ -767,6 +991,8 @@ document.getElementById("year").textContent = new Date().getFullYear();
 </body>
 
 </html>
+
+
 
 
 
