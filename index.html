@@ -1,6 +1,6 @@
-doctype html>
+<!doctype html>
 
-<html lang="es">
+<html lang="es" dir="ltr">
 
 <head>
 
@@ -8,13 +8,59 @@ doctype html>
 
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-<title>PERSONAPP.CL — IA</title>
 
-<meta name="description" content="Directorio rápido a las principales apps de IA: ChatGPT, Gemini y Grok. Entra directo a sus sitios oficiales." />
+
+<title>PersonAPP.cl — Directorio de Apps de Inteligencia Artificial (ChatGPT, Gemini, Grok)</title>
+
+<meta name="description" content="PersonAPP.cl es el directorio chileno de aplicaciones de inteligencia artificial. Accede directo a ChatGPT, Google Gemini y Grok. Guías, FAQs y enlaces oficiales." />
+
+<link rel="canonical" href="https://personapp.cl/" />
+
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+
+<meta name="keywords" content="inteligencia artificial, apps IA, aplicaciones IA, ChatGPT, Google Gemini, Grok, xAI, descargar chatgpt, IA en Chile, mejores apps IA 2025, directorio de apps" />
+
+<meta name="author" content="PersonAPP.cl" />
+
+
+
+<!-- Open Graph -->
+
+<meta property="og:type" content="website" />
+
+<meta property="og:site_name" content="PersonAPP.cl" />
+
+<meta property="og:title" content="PersonAPP.cl — Directorio de Apps de IA" />
+
+<meta property="og:description" content="Encuentra y accede a ChatGPT, Google Gemini y Grok. Enlaces oficiales, en español." />
+
+<meta property="og:url" content="https://personapp.cl/" />
+
+<meta property="og:image" content="https://personapp.cl/img/preview.png" />
+
+
+
+<!-- Twitter -->
+
+<meta name="twitter:card" content="summary_large_image" />
+
+<meta name="twitter:title" content="PersonAPP.cl — Directorio de Apps de IA" />
+
+<meta name="twitter:description" content="Accede directo a ChatGPT, Gemini y Grok con un clic." />
+
+<meta name="twitter:image" content="https://personapp.cl/img/preview.png" />
+
+
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='12' ry='12' width='64' height='64' fill='%2300ff88'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='34' font-family='Montserrat,Arial' fill='%23000'%3EPA%3C/text%3E%3C/svg%3E" />
+
+
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap">
 
 
 
@@ -22,9 +68,9 @@ doctype html>
 
 :root{
 
-  --bg:#000; --grid:#0c0c0c; --text:#e8ffe8; --muted:#a0b7a0; --accent:#00ff88; --card:#0a0f0a; --ring:#103b20;
+  --bg:#000; --text:#e8ffe8; --muted:#a0b7a0; --accent:#00ff88;
 
-  --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.6);
+  --card:#0a0f0a; --ring:#103b20; --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.6);
 
 }
 
@@ -32,7 +78,11 @@ doctype html>
 
 html,body{height:100%}
 
-body{margin:0;background:var(--bg);color:var(--text);font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow-x:hidden}
+body{margin:0;background:#000;color:var(--text);font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow-x:hidden}
+
+a{color:inherit}
+
+h1,h2{line-height:1.15}
 
 
 
@@ -48,11 +98,13 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Montserrat,syst
 
 }
 
+@media (prefers-reduced-motion: reduce){ #matrix{display:none} }
 
 
-/* Header */
 
-header{padding:56px 18px 16px; text-align:center; position:relative}
+/* Layout */
+
+header{padding:56px 18px 8px; text-align:center}
 
 .title{
 
@@ -70,21 +122,15 @@ header{padding:56px 18px 16px; text-align:center; position:relative}
 
 }
 
-.subtitle{color:var(--muted); margin:8px 0 0; font-weight:600}
-
-
-
-/* Grid de apps */
+.subtitle{color:var(--muted); margin:10px auto 0; font-weight:600; max-width:900px}
 
 .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 64px}
 
-.grid{
 
-  display:grid; gap:16px; margin-top:28px;
 
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+/* Cards */
 
-}
+.grid{display:grid; gap:16px; margin-top:28px; grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 
 .card{
 
@@ -100,13 +146,7 @@ header{padding:56px 18px 16px; text-align:center; position:relative}
 
 .top{display:flex; align-items:center; gap:12px}
 
-.logo{
-
-  width:56px;height:56px;border-radius:12px;flex:0 0 56px;
-
-  background:#031107;border:1px solid #123b23;display:grid;place-items:center;overflow:hidden;
-
-}
+.logo{width:56px;height:56px;border-radius:12px;flex:0 0 56px;background:#031107;border:1px solid #123b23;display:grid;place-items:center;overflow:hidden}
 
 .name{font-weight:800; font-size:1.05rem}
 
@@ -126,6 +166,28 @@ header{padding:56px 18px 16px; text-align:center; position:relative}
 
 
 
+/* SEO sections */
+
+.seo{margin-top:40px}
+
+.seo .block{background:linear-gradient(180deg,#071108,#0b190f); border:1px solid var(--ring); border-radius:16px; padding:18px; margin-bottom:16px}
+
+.seo ul{margin:10px 0 0 18px}
+
+.seo p{margin:8px 0}
+
+
+
+/* FAQ */
+
+.faq details{background:#071108;border:1px solid var(--ring);border-radius:12px;margin:10px 0;padding:12px}
+
+.faq summary{cursor:pointer;font-weight:700}
+
+.faq p{margin:8px 0 0}
+
+
+
 /* Video */
 
 .video-block{margin-top:36px;border:1px solid var(--ring);border-radius:16px;overflow:hidden; background:#030c06}
@@ -136,7 +198,7 @@ header{padding:56px 18px 16px; text-align:center; position:relative}
 
 .video-wrap{position:relative; padding-top:56.25%; background:#000}
 
-.video-wrap iframe, .video-wrap video{position:absolute; inset:0; width:100%; height:100%; border:0}
+.video-wrap iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
 
 
 
@@ -144,21 +206,69 @@ header{padding:56px 18px 16px; text-align:center; position:relative}
 
 footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(--ring)}
 
+.navfoot{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-top:8px; font-size:.95rem}
+
 .small{font-size:.9rem}
-
-
-
-/* Reduce motion accessibility */
-
-@media (prefers-reduced-motion: reduce){
-
-  #matrix{display:none}
-
-}
 
 </style>
 
+
+
+<!-- Schema.org JSON-LD -->
+
+<script type="application/ld+json">
+
+{
+
+  "@context":"https://schema.org",
+
+  "@type":"WebSite",
+
+  "name":"PersonAPP.cl",
+
+  "url":"https://personapp.cl/",
+
+  "potentialAction":{
+
+    "@type":"SearchAction",
+
+    "target":"https://personapp.cl/?q={search_term_string}",
+
+    "query-input":"required name=search_term_string"
+
+  }
+
+}
+
+</script>
+
+<script type="application/ld+json">
+
+{
+
+  "@context":"https://schema.org",
+
+  "@type":"Organization",
+
+  "name":"PersonAPP.cl",
+
+  "url":"https://personapp.cl/",
+
+  "logo":"https://personapp.cl/img/preview.png",
+
+  "sameAs":[
+
+    "https://www.instagram.com/","https://www.linkedin.com/"
+
+  ]
+
+}
+
+</script>
+
 </head>
+
+
 
 <body>
 
@@ -168,9 +278,9 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 <header>
 
-  <h1 class="title">PERSONAPP.CL</h1>
+  <h1 class="title">PersonAPP.cl</h1>
 
-  <p class="subtitle">Directorio de IA — clic y vas al <strong>link oficial</strong>.</p>
+  <p class="subtitle">Directorio de <strong>aplicaciones de inteligencia artificial</strong> en español. Accede con un clic a <strong>ChatGPT</strong>, <strong>Google Gemini</strong> y <strong>Grok</strong> desde Chile para el mundo.</p>
 
 </header>
 
@@ -180,31 +290,21 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
   <section class="grid" aria-label="Apps de IA">
 
-
-
     <!-- ChatGPT -->
 
-    <article class="card" aria-label="ChatGPT">
+    <article class="card" aria-label="ChatGPT — Inteligencia Artificial Conversacional">
 
       <div class="top">
 
         <div class="logo" aria-hidden="true">
 
-          <!-- SVG inline: “flor” minimalista -->
+          <!-- SVG inline: isotipo estilo “flor” -->
 
           <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
-            <defs>
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fffd4"/><stop offset="1" stop-color="#00ff88"/></linearGradient></defs>
 
-              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-
-                <stop offset="0" stop-color="#9fffd4"/><stop offset="1" stop-color="#00ff88"/>
-
-              </linearGradient>
-
-            </defs>
-
-            <rect x="0" y="0" width="64" height="64" rx="14" fill="#02150c"/>
+            <rect width="64" height="64" rx="14" fill="#02150c"/>
 
             <g fill="none" stroke="url(#g1)" stroke-width="4" stroke-linecap="round">
 
@@ -220,9 +320,9 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
         <div>
 
-          <div class="name">ChatGPT</div>
+          <h2 class="name">ChatGPT — IA conversacional</h2>
 
-          <div class="desc">Asistente conversacional para escribir, analizar, programar, crear ideas y más. Multiplataforma.</div>
+          <p class="desc">Asistente para escribir, analizar, programar y crear ideas. Disponible en web, iOS y Android.</p>
 
         </div>
 
@@ -244,27 +344,17 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
     <!-- Gemini -->
 
-    <article class="card" aria-label="Gemini">
+    <article class="card" aria-label="Gemini — IA de Google para búsqueda y creación">
 
       <div class="top">
 
         <div class="logo" aria-hidden="true">
 
-          <!-- SVG inline: “G” con destello -->
-
           <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
-            <defs>
+            <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#80ffd7"/><stop offset="1" stop-color="#00e0ff"/></linearGradient></defs>
 
-              <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
-
-                <stop offset="0" stop-color="#80ffd7"/><stop offset="1" stop-color="#00e0ff"/>
-
-              </linearGradient>
-
-            </defs>
-
-            <rect x="0" y="0" width="64" height="64" rx="14" fill="#031017"/>
+            <rect width="64" height="64" rx="14" fill="#031017"/>
 
             <circle cx="32" cy="32" r="20" fill="none" stroke="url(#g2)" stroke-width="5"/>
 
@@ -278,9 +368,9 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
         <div>
 
-          <div class="name">Gemini</div>
+          <h2 class="name">Gemini — IA de Google</h2>
 
-          <div class="desc">Modelo de Google para búsqueda asistida, generación de contenido y ayuda en tareas con integración a ecosfera Google.</div>
+          <p class="desc">Modelo para búsqueda asistida y generación de contenido con integración al ecosistema Google.</p>
 
         </div>
 
@@ -298,17 +388,15 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
     <!-- Grok -->
 
-    <article class="card" aria-label="Grok">
+    <article class="card" aria-label="Grok — xAI con acceso a X en tiempo real">
 
       <div class="top">
 
         <div class="logo" aria-hidden="true">
 
-          <!-- SVG inline: marca simple estilo xAI -->
-
           <svg viewBox="0 0 64 64" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
 
-            <rect x="0" y="0" width="64" height="64" rx="14" fill="#0b0b0b"/>
+            <rect width="64" height="64" rx="14" fill="#0b0b0b"/>
 
             <path d="M18 46L46 18M18 18l28 28" stroke="#e8ffe8" stroke-width="6" stroke-linecap="round" />
 
@@ -318,9 +406,9 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
         <div>
 
-          <div class="name">Grok</div>
+          <h2 class="name">Grok — xAI</h2>
 
-          <div class="desc">Modelo de xAI con acceso en tiempo real a X. Enfocado en respuestas directas y tono desafiante.</div>
+          <p class="desc">Modelo con acceso en tiempo real a X. Respuestas directas y tono desafiante.</p>
 
         </div>
 
@@ -334,7 +422,107 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
     </article>
 
+  </section>
 
+
+
+  <!-- CONTENIDO SEO -->
+
+  <section class="seo" aria-label="Información sobre PersonAPP e IA">
+
+    <div class="block">
+
+      <h2>¿Qué es PersonAPP.cl?</h2>
+
+      <p><strong>PersonAPP.cl</strong> es un directorio en español de <strong>aplicaciones de inteligencia artificial</strong>. Aquí encuentras, comparas y accedes de forma segura a <strong>ChatGPT</strong>, <strong>Google Gemini</strong> y <strong>Grok</strong> mediante enlaces oficiales.</p>
+
+      <p>Nuestro objetivo es acercar la <em>IA en Chile y Latinoamérica</em> a emprendedores, estudiantes y profesionales, con una experiencia rápida, clara y confiable.</p>
+
+    </div>
+
+
+
+    <div class="block">
+
+      <h2>Beneficios de usar apps de IA</h2>
+
+      <ul>
+
+        <li><strong>Productividad:</strong> redactar textos, resumir documentos, crear presentaciones y código.</li>
+
+        <li><strong>Creatividad:</strong> lluvia de ideas, guiones, copies para marketing y contenido para redes.</li>
+
+        <li><strong>Aprendizaje:</strong> tutor personal en múltiples temas con ejemplos y explicaciones paso a paso.</li>
+
+      </ul>
+
+    </div>
+
+
+
+    <div class="block">
+
+      <h2>Casos de uso populares</h2>
+
+      <ul>
+
+        <li>“<strong>Cómo usar ChatGPT en el celular</strong>” — descarga iOS/Android desde los enlaces oficiales.</li>
+
+        <li>“<strong>Acceder a Gemini</strong>” — inicia sesión con tu cuenta de Google.</li>
+
+        <li>“<strong>Qué es Grok</strong>” — conoce el modelo de xAI y su conexión a X en tiempo real.</li>
+
+      </ul>
+
+    </div>
+
+
+
+    <div class="block faq" id="faqs">
+
+      <h2>Preguntas frecuentes (FAQ)</h2>
+
+
+
+      <details>
+
+        <summary>¿PersonAPP.cl es gratuito?</summary>
+
+        <p>Sí. PersonAPP.cl es un directorio gratuito que te redirige a las páginas oficiales de cada app de IA.</p>
+
+      </details>
+
+
+
+      <details>
+
+        <summary>¿Puedo descargar ChatGPT en iOS y Android?</summary>
+
+        <p>Sí. En las tarjetas encontrarás los botones directos a App Store y Google Play.</p>
+
+      </details>
+
+
+
+      <details>
+
+        <summary>¿Cuál es la diferencia entre ChatGPT, Gemini y Grok?</summary>
+
+        <p>ChatGPT es un asistente conversacional muy versátil; Gemini integra servicios de Google; Grok destaca por su conexión a X y respuestas directas.</p>
+
+      </details>
+
+
+
+      <details>
+
+        <summary>¿Cómo se mantiene actualizado el directorio?</summary>
+
+        <p>Revisamos periódicamente los enlaces oficiales y añadimos nuevas herramientas de IA utilizadas en Chile y el mundo.</p>
+
+      </details>
+
+    </div>
 
   </section>
 
@@ -351,6 +539,8 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
       <!-- Cambia el VIDEO_ID por el que quieras -->
 
       <iframe
+
+        loading="lazy"
 
         src="https://www.youtube.com/embed/2ePf9rue1Ao?rel=0&modestbranding=1"
 
@@ -372,25 +562,63 @@ footer{color:#9fb69f; text-align:center; padding:18px; border-top:1px solid var(
 
 <footer>
 
-  <div class="small">© <span id="year"></span> PERSONAPP.CL — Enlaces oficiales a apps de IA.</div>
+  <nav class="navfoot" aria-label="Enlaces del sitio">
+
+    <a href="https://personapp.cl/">Inicio</a>
+
+    <a href="#faqs">Preguntas frecuentes</a>
+
+    <a href="mailto:hola@personapp.cl">Contacto</a>
+
+  </nav>
+
+  <div class="small">© <span id="year"></span> PersonAPP.cl — Enlaces oficiales a apps de IA en Chile y el mundo.</div>
 
 </footer>
 
 
 
-<script>
+<!-- FAQ Schema -->
 
-/* ===== Año en footer ===== */
+<script type="application/ld+json">
+
+{
+
+  "@context":"https://schema.org",
+
+  "@type":"FAQPage",
+
+  "mainEntity":[
+
+    {"@type":"Question","name":"¿PersonAPP.cl es gratuito?","acceptedAnswer":{"@type":"Answer","text":"Sí, PersonAPP.cl es un directorio gratuito que redirige a las páginas oficiales de cada app de IA."}},
+
+    {"@type":"Question","name":"¿Puedo descargar ChatGPT en iOS y Android?","acceptedAnswer":{"@type":"Answer","text":"Sí. En las tarjetas encontrarás enlaces directos a App Store y Google Play."}},
+
+    {"@type":"Question","name":"¿Cuál es la diferencia entre ChatGPT, Gemini y Grok?","acceptedAnswer":{"@type":"Answer","text":"ChatGPT es un asistente conversacional versátil; Gemini integra servicios de Google; Grok destaca por su conexión a X y respuestas directas."}},
+
+    {"@type":"Question","name":"¿Cómo se mantiene actualizado el directorio?","acceptedAnswer":{"@type":"Answer","text":"Revisamos periódicamente los enlaces oficiales y añadimos nuevas herramientas de IA utilizadas en Chile y el mundo."}}
+
+  ]
+
+}
+
+</script>
+
+
+
+<!-- Año + Matrix canvas -->
+
+<script defer>
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
 
 
-/* ===== Matrix Rain (canvas) ===== */
-
 (function(){
 
   const c = document.getElementById('matrix');
+
+  if (!c) return;
 
   const ctx = c.getContext('2d');
 
@@ -430,15 +658,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
   function tick(){
 
-    // Veladura para estela
-
     ctx.fillStyle = "rgba(0,0,0,0.08)";
 
     ctx.fillRect(0,0,w,h);
 
 
-
-    // Dibuja columnas
 
     for(let i=0;i<cols;i++){
 
@@ -449,8 +673,6 @@ document.getElementById("year").textContent = new Date().getFullYear();
       const y = drops[i] * fontSize;
 
 
-
-      // brillo cabeza
 
       const grad = ctx.createLinearGradient(x,y-20,x,y+20);
 
@@ -464,11 +686,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 
 
-      // avanza
-
-      if (y > h && Math.random() > 0.975) drops[i] = 0;
-
-      else drops[i]++;
+      if (y > h && Math.random() > 0.975) drops[i] = 0; else drops[i]++;
 
     }
 
@@ -478,9 +696,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 
 
-  resize();
-
-  tick();
+  resize(); tick();
 
   window.addEventListener('resize', resize, {passive:true});
 
@@ -488,8 +704,29 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 </script>
 
+
+
+<!-- (Opcional) Google Analytics 4: reemplaza G-XXXX por tu ID -->
+
+<!--
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>
+
+<script>
+
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag(){dataLayer.push(arguments)}
+
+  gtag('js', new Date()); gtag('config','G-XXXX');
+
+</script>
+
+-->
+
 </body>
 
 </html>
+
 
 
