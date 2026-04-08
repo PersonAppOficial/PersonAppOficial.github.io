@@ -3,11 +3,9 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DocuVoz Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-
-<!-- LIBRARIES -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
@@ -15,421 +13,209 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.2.0/docx.umd.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
 
 <style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 :root {
---bg: #f0f4ff;
---white: #ffffff;
---card: #ffffff;
---primary: #4f46e5;
---primary-light: #eef2ff;
---secondary: #06b6d4;
---success: #10b981;
---warning: #f59e0b;
---danger: #ef4444;
---excel: #217346;
---word: #2b579a;
---pdf: #dc2626;
---voice: #7c3aed;
---text: #1e1b4b;
---muted: #6b7280;
---border: #e0e7ff;
---shadow: 0 4px 24px rgba(79,70,229,0.10);
---shadow-lg: 0 8px 40px rgba(79,70,229,0.18);
---radius: 20px;
---radius-sm: 12px;
+--bg:#f0f2ff; --white:#fff; --primary:#4f46e5; --pri-lt:#eef2ff;
+--cyan:#0891b2; --green:#059669; --red:#dc2626; --blue:#1d4ed8;
+--purple:#7c3aed; --text:#1e1b4b; --muted:#6b7280;
+--border:#c7d2fe; --sh:0 2px 16px rgba(79,70,229,.10);
+--sh2:0 6px 32px rgba(79,70,229,.18); --r:18px; --r2:11px;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
+html { scroll-behavior:smooth; }
 body {
-font-family: 'Nunito', sans-serif;
-background: var(--bg);
-color: var(--text);
-min-height: 100vh;
-padding-bottom: 40px;
+font-family:'Nunito',sans-serif; background:var(--bg);
+color:var(--text); min-height:100vh; padding-bottom:50px;
 }
-
-/* BG DECORATION */
 body::before {
-content: '';
-position: fixed;
-top: -120px; right: -120px;
-width: 500px; height: 500px;
-background: radial-gradient(circle, rgba(79,70,229,0.12), transparent 70%);
-pointer-events: none; z-index: 0;
+content:''; position:fixed; top:-150px; right:-150px;
+width:500px; height:500px; border-radius:50%;
+background:radial-gradient(circle,rgba(79,70,229,.13),transparent 70%);
+pointer-events:none; z-index:0;
 }
-body::after {
-content: '';
-position: fixed;
-bottom: -100px; left: -100px;
-width: 400px; height: 400px;
-background: radial-gradient(circle, rgba(6,182,212,0.10), transparent 70%);
-pointer-events: none; z-index: 0;
-}
-
-.app {
-position: relative; z-index: 1;
-max-width: 680px;
-margin: 0 auto;
-padding: 0 16px;
-}
+.app { position:relative; z-index:1; max-width:660px; margin:0 auto; padding:0 15px; }
 
 /* HEADER */
-.header {
-text-align: center;
-padding: 36px 0 28px;
-animation: slideDown 0.5s ease;
-}
-.header-emoji { font-size: 3rem; display: block; margin-bottom: 8px; }
-.header h1 {
-font-size: 2.2rem;
-font-weight: 900;
-color: var(--primary);
-letter-spacing: -1px;
-}
-.header h1 span { color: var(--secondary); }
-.header p {
-color: var(--muted);
-font-size: 0.95rem;
-margin-top: 6px;
-font-weight: 600;
-}
+.hdr { text-align:center; padding:32px 0 24px; animation:up .5s ease; }
+.hdr-ico { font-size:2.8rem; display:block; margin-bottom:6px; }
+.hdr h1 { font-size:2rem; font-weight:900; color:var(--primary); letter-spacing:-1px; }
+.hdr h1 b { color:var(--cyan); font-weight:900; }
+.hdr p { color:var(--muted); font-size:.9rem; margin-top:5px; font-weight:600; }
 
-/* UPLOAD ZONE */
-.upload-card {
-background: var(--white);
-border-radius: var(--radius);
-box-shadow: var(--shadow);
-padding: 28px 24px;
-margin-bottom: 20px;
-animation: slideUp 0.5s ease 0.1s both;
+/* CARDS */
+.card {
+background:var(--white); border-radius:var(--r); box-shadow:var(--sh);
+padding:22px 20px; margin-bottom:18px;
 }
+.card-title { font-size:.95rem; font-weight:800; color:var(--text); margin-bottom:14px; display:flex; align-items:center; gap:7px; }
 
-.upload-label {
-font-size: 1rem;
-font-weight: 800;
-color: var(--text);
-margin-bottom: 14px;
-display: flex;
-align-items: center;
-gap: 8px;
+/* DROP ZONE */
+.drop-zone {
+border:2.5px dashed var(--border); border-radius:var(--r2);
+padding:30px 16px; text-align:center; cursor:pointer;
+position:relative; background:var(--pri-lt);
+transition:all .2s ease; user-select:none; -webkit-user-select:none;
 }
+.drop-zone.over, .drop-zone:focus-within { border-color:var(--primary); background:#e0e7ff; }
+.drop-zone:active { transform:scale(.97); }
+.drop-zone input[type=file] {
+position:absolute; inset:0; opacity:0; width:100%; height:100%; cursor:pointer; z-index:2;
+}
+.dz-ico { font-size:2.4rem; display:block; margin-bottom:8px; pointer-events:none; }
+.dz-txt { font-size:.95rem; font-weight:700; color:var(--primary); pointer-events:none; }
+.dz-sub { font-size:.78rem; color:var(--muted); margin-top:3px; font-weight:600; pointer-events:none; }
+.dz-pills { display:flex; gap:5px; justify-content:center; flex-wrap:wrap; margin-top:10px; pointer-events:none; }
+.pill { padding:3px 11px; border-radius:20px; font-size:.7rem; font-weight:800; letter-spacing:.4px; text-transform:uppercase; }
+.p-pdf { background:#fee2e2; color:var(--red); }
+.p-word { background:#dbeafe; color:var(--blue); }
+.p-img { background:#d1fae5; color:var(--green); }
 
-.drop-area {
-border: 2.5px dashed var(--border);
-border-radius: var(--radius-sm);
-padding: 36px 20px;
-text-align: center;
-cursor: pointer;
-position: relative;
-background: var(--primary-light);
-transition: all 0.22s ease;
-user-select: none;
+/* FILE CHIP */
+.file-chip {
+display:none; align-items:center; gap:10px; margin-top:12px;
+padding:12px 14px; background:#f5f3ff; border:1.5px solid #a5b4fc; border-radius:var(--r2);
 }
-.drop-area:active, .drop-area.over {
-border-color: var(--primary);
-background: #e0e7ff;
-transform: scale(0.98);
+.file-chip.on { display:flex; animation:pop .25s ease; }
+.fc-ico { font-size:1.8rem; flex-shrink:0; }
+.fc-info { flex:1; min-width:0; }
+.fc-name { font-weight:800; font-size:.88rem; color:var(--primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.fc-size { font-size:.75rem; color:var(--muted); font-weight:600; margin-top:2px; }
+.fc-del {
+background:#fee2e2; color:var(--red); border:none; border-radius:50%;
+width:28px; height:28px; flex-shrink:0; font-size:.9rem; cursor:pointer;
+display:flex; align-items:center; justify-content:center; transition:transform .15s;
 }
-.drop-area input[type=file] {
-position: absolute; inset: 0;
-opacity: 0; width: 100%; height: 100%; cursor: pointer;
-}
-.drop-icon { font-size: 2.6rem; display: block; margin-bottom: 10px; }
-.drop-text { font-size: 1rem; font-weight: 700; color: var(--primary); }
-.drop-sub { font-size: 0.82rem; color: var(--muted); margin-top: 4px; font-weight: 600; }
-.drop-types {
-display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
-margin-top: 12px;
-}
-.type-pill {
-padding: 4px 12px; border-radius: 20px; font-size: 0.73rem; font-weight: 800;
-letter-spacing: 0.5px; text-transform: uppercase;
-}
-.tp-pdf { background: #fee2e2; color: var(--pdf); }
-.tp-word { background: #dbeafe; color: var(--word); }
-.tp-img { background: #d1fae5; color: var(--success); }
+.fc-del:active { transform:scale(.82); }
 
-/* FILE PREVIEW */
-.file-preview {
-display: none;
-margin-top: 14px;
-background: #f5f3ff;
-border: 1.5px solid #c4b5fd;
-border-radius: var(--radius-sm);
-padding: 14px 16px;
-align-items: center;
-gap: 12px;
+/* ACTIONS GRID */
+.actions-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:14px; }
+.act-btn {
+display:flex; flex-direction:column; align-items:center; gap:5px; padding:15px 8px;
+border-radius:var(--r2); border:2.5px solid transparent; cursor:pointer;
+font-family:'Nunito',sans-serif; font-weight:800; font-size:.82rem;
+transition:all .18s ease;
 }
-.file-preview.show { display: flex; animation: pop 0.25s ease; }
-.file-icon { font-size: 2rem; }
-.file-info { flex: 1; }
-.file-name { font-weight: 800; font-size: 0.9rem; color: var(--primary); word-break: break-all; }
-.file-size { font-size: 0.78rem; color: var(--muted); margin-top: 2px; font-weight: 600; }
-.file-remove {
-background: #fee2e2; color: var(--danger);
-border: none; border-radius: 50%; width: 30px; height: 30px;
-font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
-transition: transform 0.15s;
-}
-.file-remove:active { transform: scale(0.85); }
+.act-btn:active { transform:scale(.93); }
+.act-btn .ae { font-size:1.5rem; }
+.a-pdf { background:#fee2e2; color:var(--red); border-color:#fca5a5; }
+.a-word { background:#dbeafe; color:var(--blue); border-color:#93c5fd; }
+.a-excel { background:#d1fae5; color:#166534; border-color:#86efac; }
+.a-voice { background:#ede9fe; color:var(--purple); border-color:#c4b5fd; }
+.act-btn.sel { box-shadow:0 0 0 3px currentColor; filter:brightness(.93); }
 
-/* CONVERT SECTION */
-.convert-card {
-background: var(--white);
-border-radius: var(--radius);
-box-shadow: var(--shadow);
-padding: 24px;
-margin-bottom: 20px;
-animation: slideUp 0.5s ease 0.2s both;
+/* MAIN BUTTON */
+.main-btn {
+width:100%; padding:17px; border-radius:var(--r2); border:none;
+background:linear-gradient(135deg,#4f46e5,#6366f1); color:#fff;
+font-family:'Nunito',sans-serif; font-size:1rem; font-weight:900;
+cursor:pointer; display:flex; align-items:center; justify-content:center;
+gap:9px; box-shadow:0 5px 20px rgba(79,70,229,.35); transition:all .2s ease;
 }
-.section-title {
-font-size: 1rem; font-weight: 800; color: var(--text);
-margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
-}
-
-/* FORMAT GRID */
-.format-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin-bottom: 16px;
-}
-
-.fmt-btn {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-gap: 6px;
-padding: 16px 10px;
-border-radius: var(--radius-sm);
-border: 2.5px solid transparent;
-cursor: pointer;
-font-family: 'Nunito', sans-serif;
-font-weight: 800;
-font-size: 0.85rem;
-transition: all 0.18s ease;
-position: relative;
-overflow: hidden;
-}
-.fmt-btn::after {
-content: '';
-position: absolute;
-inset: 0;
-background: rgba(255,255,255,0);
-transition: background 0.15s;
-}
-.fmt-btn:active::after { background: rgba(255,255,255,0.3); }
-.fmt-btn:active { transform: scale(0.94); }
-
-.fmt-btn .fmt-emoji { font-size: 1.6rem; }
-.fmt-btn .fmt-label { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.5px; }
-
-.fmt-pdf { background: #fee2e2; color: var(--pdf); border-color: #fca5a5; }
-.fmt-word { background: #dbeafe; color: var(--word); border-color: #93c5fd; }
-.fmt-excel{ background: #d1fae5; color: var(--excel); border-color: #6ee7b7; }
-.fmt-voice{ background: #ede9fe; color: var(--voice); border-color: #c4b5fd; }
-
-.fmt-btn.selected { box-shadow: 0 0 0 3px currentColor; }
-
-/* BIG ACTION BUTTON */
-.action-btn {
-width: 100%;
-padding: 18px;
-border-radius: var(--radius-sm);
-border: none;
-background: linear-gradient(135deg, var(--primary), #6366f1);
-color: white;
-font-family: 'Nunito', sans-serif;
-font-size: 1.05rem;
-font-weight: 900;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 10px;
-box-shadow: 0 6px 24px rgba(79,70,229,0.35);
-transition: all 0.2s ease;
-letter-spacing: 0.3px;
-}
-.action-btn:active { transform: scale(0.97); box-shadow: 0 2px 10px rgba(79,70,229,0.25); }
-.action-btn:disabled {
-background: #d1d5db; box-shadow: none; cursor: not-allowed; color: #9ca3af;
-}
+.main-btn:active { transform:scale(.97); box-shadow:0 2px 8px rgba(79,70,229,.2); }
+.main-btn:disabled { background:#d1d5db; box-shadow:none; cursor:not-allowed; color:#9ca3af; }
 
 /* PROGRESS */
-.progress-wrap {
-display: none;
-margin-top: 14px;
-}
-.progress-wrap.show { display: block; animation: fadeIn 0.3s ease; }
-.progress-label {
-font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 6px;
-display: flex; justify-content: space-between;
-}
-.progress-track {
-height: 10px; background: #e0e7ff; border-radius: 10px; overflow: hidden;
-}
-.progress-fill {
-height: 100%;
-background: linear-gradient(90deg, var(--primary), var(--secondary));
-border-radius: 10px;
-width: 0%;
-transition: width 0.35s ease;
-}
+.prog-wrap { display:none; margin-top:12px; }
+.prog-wrap.on { display:block; animation:fadeIn .3s ease; }
+.prog-head { display:flex; justify-content:space-between; font-size:.78rem; font-weight:700; color:var(--muted); margin-bottom:5px; }
+.prog-track { height:9px; background:#e0e7ff; border-radius:9px; overflow:hidden; }
+.prog-fill { height:100%; background:linear-gradient(90deg,var(--primary),var(--cyan)); border-radius:9px; width:0%; transition:width .3s ease; }
 
-/* TOAST */
-.toast {
-position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-padding: 14px 24px; border-radius: 50px;
-font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.92rem;
-color: white; box-shadow: var(--shadow-lg);
-transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-z-index: 999; white-space: nowrap; max-width: 90vw;
-text-align: center;
+/* ALERTS */
+.alert { display:none; margin-top:10px; padding:11px 14px; border-radius:var(--r2); font-size:.83rem; font-weight:700; line-height:1.5; }
+.alert.on { display:block; animation:fadeIn .3s ease; }
+.alert-warn { background:#fef3c7; color:#92400e; border:1px solid #fde68a; }
+.alert-ok { background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; }
+.alert-err { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+
+/* RESULT BOX */
+.result-box {
+display:none; margin-top:12px; background:#f5f3ff; border:1.5px solid #a5b4fc;
+border-radius:var(--r2); padding:14px; font-size:.85rem; line-height:1.75;
+color:var(--text); max-height:220px; overflow-y:auto; white-space:pre-wrap; word-break:break-word;
 }
-.toast.show { transform: translateX(-50%) translateY(0); }
-.toast.success { background: linear-gradient(135deg, #10b981, #059669); }
-.toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
-.toast.info { background: linear-gradient(135deg, #4f46e5, #6366f1); }
+.result-box.on { display:block; animation:fadeIn .3s ease; }
+.result-box::-webkit-scrollbar { width:5px; }
+.result-box::-webkit-scrollbar-thumb { background:#a5b4fc; border-radius:5px; }
 
 /* VOICE CARD */
-.voice-card {
-background: var(--white);
-border-radius: var(--radius);
-box-shadow: var(--shadow);
-padding: 24px;
-margin-bottom: 20px;
-animation: slideUp 0.5s ease 0.3s both;
-display: none;
-}
-.voice-card.show { display: block; }
+.voice-card { display:none; background:var(--white); border-radius:var(--r); box-shadow:var(--sh); padding:22px 20px; margin-bottom:18px; }
+.voice-card.on { display:block; animation:up .4s ease; }
 
-.extracted-text {
-background: #f5f3ff;
-border: 1.5px solid #c4b5fd;
-border-radius: var(--radius-sm);
-padding: 16px;
-font-size: 0.88rem;
-line-height: 1.75;
-color: var(--text);
-max-height: 200px;
-overflow-y: auto;
-white-space: pre-wrap;
-word-break: break-word;
-margin-bottom: 16px;
-font-family: 'Nunito', sans-serif;
-}
+.sliders { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+.sl-box { background:#f5f3ff; border-radius:var(--r2); padding:11px; }
+.sl-box label { font-size:.72rem; font-weight:800; color:var(--purple); text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:5px; }
+.sl-box input[type=range] { width:100%; accent-color:var(--purple); cursor:pointer; }
+.sl-val { font-size:.78rem; font-weight:800; color:var(--purple); float:right; }
 
-/* VOICE CONTROLS */
-.voice-controls {
-display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
-}
-.ctrl-box {
-background: #f5f3ff; border-radius: var(--radius-sm); padding: 12px;
-}
-.ctrl-box label {
-font-size: 0.75rem; font-weight: 800; color: var(--voice); text-transform: uppercase;
-letter-spacing: 0.5px; display: block; margin-bottom: 6px;
-}
-.ctrl-box input[type=range] {
-width: 100%; accent-color: var(--voice); cursor: pointer; height: 4px;
-}
-.ctrl-box .ctrl-val {
-font-size: 0.82rem; font-weight: 800; color: var(--voice); text-align: right; display: block; margin-top: 4px;
-}
-.voice-select-box { grid-column: span 2; }
-.voice-select-box select {
-width: 100%;
-padding: 10px 14px;
-background: #f5f3ff;
-border: 1.5px solid #c4b5fd;
-border-radius: var(--radius-sm);
-font-family: 'Nunito', sans-serif;
-font-size: 0.88rem; font-weight: 700;
-color: var(--voice); outline: none; cursor: pointer;
+.voice-sel-wrap { margin-bottom:14px; }
+.voice-sel-wrap label { font-size:.78rem; font-weight:800; color:var(--purple); text-transform:uppercase; letter-spacing:.4px; display:block; margin-bottom:6px; }
+.voice-sel-wrap select {
+width:100%; padding:10px 12px; background:#f5f3ff; border:1.5px solid #c4b5fd;
+border-radius:var(--r2); font-family:'Nunito',sans-serif; font-size:.88rem;
+font-weight:700; color:var(--purple); outline:none; cursor:pointer;
 }
 
 /* WAVEFORM */
-.waveform {
-display: flex; align-items: center; justify-content: center;
-gap: 4px; height: 48px; margin: 12px 0;
-}
-.wb { width: 5px; background: var(--voice); border-radius: 3px; height: 6px; transition: height 0.1s; }
-.waveform.playing .wb { animation: wavePulse 0.9s ease-in-out infinite; }
-.wb:nth-child(1){animation-delay:0s}.wb:nth-child(2){animation-delay:.08s}
-.wb:nth-child(3){animation-delay:.16s}.wb:nth-child(4){animation-delay:.24s}
-.wb:nth-child(5){animation-delay:.32s}.wb:nth-child(6){animation-delay:.24s}
-.wb:nth-child(7){animation-delay:.16s}.wb:nth-child(8){animation-delay:.08s}
-.wb:nth-child(9){animation-delay:0s}.wb:nth-child(10){animation-delay:.08s}
-.wb:nth-child(11){animation-delay:.16s}
-
-@keyframes wavePulse {
-0%,100%{height:5px;opacity:.4} 50%{height:38px;opacity:1}
-}
+.wave { display:flex; align-items:center; justify-content:center; gap:3px; height:40px; margin:10px 0; }
+.wb { width:4px; background:var(--purple); border-radius:3px; height:5px; }
+.wave.on .wb { animation:wavePulse .85s ease-in-out infinite; }
+.wb:nth-child(1){animation-delay:0s}.wb:nth-child(2){animation-delay:.07s}
+.wb:nth-child(3){animation-delay:.14s}.wb:nth-child(4){animation-delay:.21s}
+.wb:nth-child(5){animation-delay:.28s}.wb:nth-child(6){animation-delay:.21s}
+.wb:nth-child(7){animation-delay:.14s}.wb:nth-child(8){animation-delay:.07s}
+.wb:nth-child(9){animation-delay:0s}
 
 /* VOICE BUTTONS */
-.voice-btn-row {
-display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+.vbtns { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+.vb {
+padding:14px 8px; border-radius:var(--r2); border:none;
+font-family:'Nunito',sans-serif; font-weight:800; font-size:.88rem; cursor:pointer;
+display:flex; align-items:center; justify-content:center; gap:7px; transition:all .18s ease;
 }
-.v-btn {
-padding: 15px; border-radius: var(--radius-sm); border: none;
-font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.92rem;
-cursor: pointer; display: flex; align-items: center; justify-content: center;
-gap: 8px; transition: all 0.18s ease;
-}
-.v-btn:active { transform: scale(0.94); }
-.v-btn-play {
-background: linear-gradient(135deg, var(--voice), #6d28d9);
-color: white; box-shadow: 0 4px 16px rgba(124,58,237,0.35);
-grid-column: span 2;
-}
-.v-btn-stop { background: #fee2e2; color: var(--danger); }
-.v-btn-pause { background: #fef3c7; color: #92400e; }
-.v-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+.vb:active { transform:scale(.93); }
+.vb:disabled { opacity:.4; cursor:not-allowed; transform:none !important; }
+.vb-play { grid-column:span 2; background:linear-gradient(135deg,var(--purple),#5b21b6); color:#fff; box-shadow:0 4px 14px rgba(124,58,237,.35); }
+.vb-pause { background:#fef3c7; color:#92400e; }
+.vb-stop { background:#fee2e2; color:var(--red); }
 
-/* MANUAL TEXT */
-.manual-card {
-background: var(--white);
-border-radius: var(--radius);
-box-shadow: var(--shadow);
-padding: 24px;
-animation: slideUp 0.5s ease 0.35s both;
-}
+/* MANUAL CARD */
+.manual-card { background:var(--white); border-radius:var(--r); box-shadow:var(--sh); padding:22px 20px; margin-bottom:18px; }
 .manual-card textarea {
-width: 100%; min-height: 100px;
-background: #f5f3ff; border: 1.5px solid #c4b5fd;
-border-radius: var(--radius-sm); padding: 14px;
-font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 600;
-color: var(--text); line-height: 1.7; resize: vertical; outline: none;
-transition: border-color 0.2s;
+width:100%; min-height:90px; background:#f5f3ff; border:1.5px solid #c4b5fd;
+border-radius:var(--r2); padding:12px; font-family:'Nunito',sans-serif;
+font-size:.9rem; font-weight:600; color:var(--text); line-height:1.7;
+resize:vertical; outline:none; transition:border-color .2s;
 }
-.manual-card textarea:focus { border-color: var(--voice); }
-.manual-card textarea::placeholder { color: #a78bfa; }
+.manual-card textarea:focus { border-color:var(--purple); }
+.manual-card textarea::placeholder { color:#a78bfa; }
 
-/* FOOTER */
-.footer {
-text-align: center; padding: 20px 0;
-color: var(--muted); font-size: 0.78rem; font-weight: 600; line-height: 1.8;
+/* TOAST */
+.toast {
+position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(90px);
+padding:12px 22px; border-radius:50px; font-family:'Nunito',sans-serif;
+font-weight:700; font-size:.88rem; color:#fff; box-shadow:var(--sh2);
+transition:transform .35s cubic-bezier(.34,1.56,.64,1); z-index:9999;
+white-space:nowrap; max-width:88vw; text-align:center; pointer-events:none;
 }
+.toast.on { transform:translateX(-50%) translateY(0); }
+.toast.ok { background:linear-gradient(135deg,#10b981,#059669); }
+.toast.err { background:linear-gradient(135deg,#ef4444,#dc2626); }
+.toast.inf { background:linear-gradient(135deg,#4f46e5,#6366f1); }
 
-/* ANIMATIONS */
-@keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
-@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.footer { text-align:center; padding:16px 0; color:var(--muted); font-size:.74rem; font-weight:600; line-height:1.8; }
+
+@keyframes up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-@keyframes pop { 0%{transform:scale(0.8);opacity:0} 100%{transform:scale(1);opacity:1} }
+@keyframes pop { 0%{transform:scale(.85);opacity:0} 100%{transform:scale(1);opacity:1} }
+@keyframes wavePulse { 0%,100%{height:4px;opacity:.35} 50%{height:34px;opacity:1} }
 
-/* RESPONSIVE */
-@media(max-width:400px){
-.header h1{font-size:1.8rem}
-.format-grid{grid-template-columns:1fr 1fr}
-.voice-controls{grid-template-columns:1fr}
-.voice-select-box{grid-column:span 1}
+@media(max-width:380px) {
+.hdr h1 { font-size:1.7rem; }
+.act-btn { padding:12px 5px; font-size:.75rem; }
+.sliders { grid-template-columns:1fr; }
 }
 </style>
 
@@ -437,526 +223,689 @@ color: var(--muted); font-size: 0.78rem; font-weight: 600; line-height: 1.8;
 <body>
 <div class="app">
 
-<!-- HEADER -->
-
-<div class="header">
-<span class="header-emoji">🚀</span>
-<h1>Docu<span>Voz</span> Pro</h1>
-<p>Sube tu archivo · Elige el formato · ¡Listo!</p>
+<div class="hdr">
+<span class="hdr-ico">🗂️</span>
+<h1>Docu<b>Voz</b> Pro</h1>
+<p>Sube tu archivo → Elige qué hacer → ¡Listo! Gratis y sin registro</p>
 </div>
 
-<!-- UPLOAD CARD -->
+<!-- PASO 1 -->
 
-<div class="upload-card">
-<div class="upload-label">📂 Paso 1 — Sube tu archivo</div>
-<div class="drop-area" id="dropArea"
-ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-<input type="file" id="fileInput"
+<div class="card">
+<div class="card-title">📂 Paso 1 — Selecciona tu archivo</div>
+<div class="drop-zone" id="dz"
+ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
+<input type="file" id="fileIn"
 accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tiff"
-onchange="onFileSelected(this.files[0])">
-<span class="drop-icon">☁️</span>
-<div class="drop-text">Toca para seleccionar archivo</div>
-<div class="drop-sub">o arrastra aquí</div>
-<div class="drop-types">
-<span class="type-pill tp-pdf">PDF</span>
-<span class="type-pill tp-word">WORD</span>
-<span class="type-pill tp-img">JPG/PNG</span>
+onchange="pickFile(this.files[0])">
+<span class="dz-ico">☁️</span>
+<div class="dz-txt">Toca aquí para elegir archivo</div>
+<div class="dz-sub">o arrastra y suelta</div>
+<div class="dz-pills">
+<span class="pill p-pdf">PDF</span>
+<span class="pill p-word">DOC · DOCX</span>
+<span class="pill p-img">JPG · PNG · WEBP</span>
+</div>
+</div>
+<div class="file-chip" id="fileChip">
+<div class="fc-ico" id="fcIco">📄</div>
+<div class="fc-info">
+<div class="fc-name" id="fcName">—</div>
+<div class="fc-size" id="fcSize">—</div>
+</div>
+<button class="fc-del" onclick="clearFile()">✕</button>
 </div>
 </div>
 
-<div class="file-preview" id="filePreview">
-<div class="file-icon" id="fileIcon">📄</div>
-<div class="file-info">
-<div class="file-name" id="fileName">—</div>
-<div class="file-size" id="fileSize">—</div>
-</div>
-<button class="file-remove" onclick="removeFile()" title="Quitar archivo">✕</button>
-</div>
-</div>
+<!-- PASO 2 -->
 
-<!-- CONVERT CARD -->
-
-<div class="convert-card">
-<div class="section-title">⚡ Paso 2 — ¿Qué quieres hacer?</div>
-
-<div class="format-grid">
-<button class="fmt-btn fmt-pdf" onclick="selectAction('pdf')" id="btn-pdf">
-<span class="fmt-emoji">📕</span>
-<span class="fmt-label">Convertir a PDF</span>
+<div class="card">
+<div class="card-title">⚡ Paso 2 — ¿Qué deseas hacer?</div>
+<div class="actions-grid">
+<button class="act-btn a-pdf" id="a-pdf" onclick="pickAction('pdf')">
+<span class="ae">📕</span>Guardar como PDF
 </button>
-<button class="fmt-btn fmt-word" onclick="selectAction('word')" id="btn-word">
-<span class="fmt-emoji">📘</span>
-<span class="fmt-label">Convertir a Word</span>
+<button class="act-btn a-word" id="a-word" onclick="pickAction('word')">
+<span class="ae">📘</span>Convertir a Word
 </button>
-<button class="fmt-btn fmt-excel" onclick="selectAction('excel')" id="btn-excel">
-<span class="fmt-emoji">📗</span>
-<span class="fmt-label">Convertir a Excel</span>
+<button class="act-btn a-excel" id="a-excel" onclick="pickAction('excel')">
+<span class="ae">📗</span>Convertir a Excel
 </button>
-<button class="fmt-btn fmt-voice" onclick="selectAction('voice')" id="btn-voice">
-<span class="fmt-emoji">🔊</span>
-<span class="fmt-label">Leer en Voz</span>
+<button class="act-btn a-voice" id="a-voice" onclick="pickAction('voice')">
+<span class="ae">🔊</span>Leer en Voz Alta
 </button>
 </div>
 
-<button class="action-btn" id="actionBtn" onclick="executeAction()" disabled>
-👆 Elige un archivo primero
+<button class="main-btn" id="mainBtn" onclick="run()" disabled>
+👆 Sube un archivo y elige acción
 </button>
 
-<div class="progress-wrap" id="progressWrap">
-<div class="progress-label">
-<span id="progressLabel">Procesando…</span>
-<span id="progressPct">0%</span>
+<div class="prog-wrap" id="progWrap">
+<div class="prog-head">
+<span id="progLbl">Procesando…</span>
+<span id="progPct">0%</span>
 </div>
-<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-</div>
+<div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
 </div>
 
-<!-- VOICE CARD -->
+<div class="alert" id="mainAlert"></div>
+<div class="result-box" id="resultBox"></div>
+</div>
+
+<!-- LECTOR DE VOZ -->
 
 <div class="voice-card" id="voiceCard">
-<div class="section-title">🎙️ Lector de Voz</div>
-
-<div class="extracted-text" id="extractedText">El texto extraído aparecerá aquí…</div>
-
-<div class="voice-controls">
-<div class="ctrl-box">
-<label>⚡ Velocidad</label>
-<input type="range" min="0.5" max="2" step="0.05" value="0.9" id="rateSlider"
-oninput="rateVal.textContent=parseFloat(this.value).toFixed(1)+'x'">
-<span class="ctrl-val" id="rateVal">0.9x</span>
+<div class="card-title">🎙️ Lector de Voz en Español</div>
+<div class="voice-sel-wrap">
+<label>🗣️ Voz del sistema</label>
+<select id="voiceSel"><option>Cargando voces…</option></select>
 </div>
-<div class="ctrl-box">
-<label>🎵 Tono</label>
-<input type="range" min="0.5" max="2" step="0.1" value="1" id="pitchSlider"
-oninput="pitchVal.textContent=parseFloat(this.value).toFixed(1)">
-<span class="ctrl-val" id="pitchVal">1.0</span>
+<div class="sliders">
+<div class="sl-box">
+<label>⚡ Velocidad <span class="sl-val" id="rateVal">0.9x</span></label>
+<input type="range" id="rateR" min=".5" max="2" step=".05" value=".9"
+oninput="document.getElementById('rateVal').textContent=parseFloat(this.value).toFixed(1)+'x'">
 </div>
-<div class="ctrl-box voice-select-box">
-<label>🗣️ Voz en Español</label>
-<select id="voiceSelect"></select>
+<div class="sl-box">
+<label>🎵 Tono <span class="sl-val" id="pitchVal">1.0</span></label>
+<input type="range" id="pitchR" min=".5" max="2" step=".1" value="1"
+oninput="document.getElementById('pitchVal').textContent=parseFloat(this.value).toFixed(1)">
 </div>
 </div>
-
-<div class="waveform" id="waveform">
+<div class="wave" id="wave">
 <div class="wb"></div><div class="wb"></div><div class="wb"></div>
 <div class="wb"></div><div class="wb"></div><div class="wb"></div>
 <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-<div class="wb"></div><div class="wb"></div>
 </div>
-
-<div class="voice-btn-row">
-<button class="v-btn v-btn-play" id="btnPlay" onclick="startSpeech()">▶ Leer en voz alta</button>
-<button class="v-btn v-btn-pause" id="btnPause" onclick="pauseSpeech()" disabled>⏸ Pausar</button>
-<button class="v-btn v-btn-stop" id="btnStop" onclick="stopSpeech()" disabled>⏹ Detener</button>
+<div class="vbtns">
+<button class="vb vb-play" id="btnPlay" onclick="vPlay()">▶ Leer en voz alta</button>
+<button class="vb vb-pause" id="btnPause" onclick="vPause()" disabled>⏸ Pausar</button>
+<button class="vb vb-stop" id="btnStop" onclick="vStop()" disabled>⏹ Detener</button>
 </div>
 </div>
 
-<!-- MANUAL TEXT -->
+<!-- TEXTO MANUAL -->
 
 <div class="manual-card">
-<div class="section-title">✍️ O escribe texto para leer</div>
-<textarea id="manualText" placeholder="Escribe o pega aquí cualquier texto y pulsa 🔊 Leer en Voz arriba…"></textarea>
-<button class="action-btn" style="margin-top:12px" onclick="readManualText()">
+<div class="card-title">✍️ O escribe texto para leer directamente</div>
+<textarea id="manualTxt" placeholder="Pega o escribe cualquier texto aquí y pulsa el botón…"></textarea>
+<button class="main-btn" style="margin-top:11px" onclick="readManual()">
 🔊 Leer este texto en voz alta
 </button>
 </div>
 
 <div class="footer">
-🔒 Todo se procesa en tu navegador · Ningún archivo se envía a internet<br>
-PDF.js · Mammoth.js · XLSX.js · Docx.js · Tesseract.js · Web Speech API
+🔒 Procesamiento 100% local en tu navegador · Sin servidores · Sin registro<br>
+PDF.js · Mammoth.js · XLSX.js · docx.js · Web Speech API · Tesseract.js
 </div>
-
-</div><!-- /app -->
-
-<!-- TOAST -->
+</div>
 
 <div class="toast" id="toast"></div>
 
+<!-- Tesseract cargado al final para no bloquear -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+
 <script>
-// ─── SETUP ───────────────────────────────────────────────
+/* ── CONFIG ── */
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-let currentFile = null;
-let selectedAction = null;
-let voices = [];
-let utterance = null;
-let paused = false;
+/* ── ESTADO ── */
+var gFile = null;
+var gAction = null;
+var gText = '';
+var gVoices = [];
+var gUtt = null;
+var gPaused = false;
+var keepAliveTimer = null;
 
-// ─── TOAST ───────────────────────────────────────────────
-function toast(msg, type = 'info') {
-const el = document.getElementById('toast');
+/* ════════════════════════════════════════
+TOAST
+════════════════════════════════════════ */
+function showToast(msg, type) {
+var el = document.getElementById('toast');
 el.textContent = msg;
-el.className = 'toast ' + type;
+el.className = 'toast ' + (type || 'inf');
 void el.offsetWidth;
-el.classList.add('show');
-clearTimeout(el._t);
-el._t = setTimeout(() => el.classList.remove('show'), 3200);
+el.classList.add('on');
+clearTimeout(el._tid);
+el._tid = setTimeout(function() { el.classList.remove('on'); }, 3200);
 }
 
-// ─── DRAG & DROP ─────────────────────────────────────────
-function onDragOver(e) { e.preventDefault(); document.getElementById('dropArea').classList.add('over'); }
-function onDragLeave(e) { document.getElementById('dropArea').classList.remove('over'); }
-function onDrop(e) {
-e.preventDefault();
-document.getElementById('dropArea').classList.remove('over');
-if (e.dataTransfer.files[0]) onFileSelected(e.dataTransfer.files[0]);
+/* ════════════════════════════════════════
+DRAG & DROP
+════════════════════════════════════════ */
+function dzOver(e) { e.preventDefault(); document.getElementById('dz').classList.add('over'); }
+function dzOut() { document.getElementById('dz').classList.remove('over'); }
+function dzDrop(e) {
+e.preventDefault(); dzOut();
+var files = e.dataTransfer && e.dataTransfer.files;
+if (files && files[0]) pickFile(files[0]);
 }
 
-// ─── FILE SELECTED ────────────────────────────────────────
-function onFileSelected(file) {
-if (!file) return;
-const allowed = ['pdf','doc','docx','png','jpg','jpeg','webp','bmp','gif','tiff'];
-const ext = file.name.split('.').pop().toLowerCase();
-if (!allowed.includes(ext)) { toast('❌ Formato no soportado', 'error'); return; }
+/* ════════════════════════════════════════
+ARCHIVO
+════════════════════════════════════════ */
+var EXT_ICONS = {pdf:'📕',doc:'📘',docx:'📘',png:'🖼️',jpg:'🖼️',jpeg:'🖼️',webp:'🖼️',bmp:'🖼️',gif:'🖼️',tiff:'🖼️'};
+var EXT_OK = ['pdf','doc','docx','png','jpg','jpeg','webp','bmp','gif','tiff'];
 
-currentFile = file;
-const icons = {pdf:'📕',doc:'📘',docx:'📘',png:'🖼️',jpg:'🖼️',jpeg:'🖼️',webp:'🖼️',bmp:'🖼️',gif:'🖼️',tiff:'🖼️'};
-document.getElementById('fileIcon').textContent = icons[ext] || '📄';
-document.getElementById('fileName').textContent = file.name;
-document.getElementById('fileSize').textContent = formatSize(file.size);
-document.getElementById('filePreview').classList.add('show');
-updateActionBtn();
-toast('✅ Archivo cargado: ' + file.name, 'success');
+function pickFile(f) {
+if (!f) return;
+var ext = f.name.split('.').pop().toLowerCase();
+if (!EXT_OK.includes(ext)) { showToast('❌ Formato no soportado', 'err'); return; }
+
+gFile = f; gText = '';
+document.getElementById('fcIco').textContent = EXT_ICONS[ext] || '📄';
+document.getElementById('fcName').textContent = f.name;
+document.getElementById('fcSize').textContent = fmtSize(f.size);
+document.getElementById('fileChip').classList.add('on');
+document.getElementById('resultBox').classList.remove('on');
+document.getElementById('resultBox').textContent = '';
+hideAlert();
+refreshBtn();
+showToast('✅ ' + f.name + ' listo', 'ok');
 }
 
-function removeFile() {
-currentFile = null;
-document.getElementById('fileInput').value = '';
-document.getElementById('filePreview').classList.remove('show');
-document.getElementById('voiceCard').classList.remove('show');
-updateActionBtn();
+function clearFile() {
+gFile = null; gText = '';
+document.getElementById('fileIn').value = '';
+document.getElementById('fileChip').classList.remove('on');
+document.getElementById('resultBox').classList.remove('on');
+document.getElementById('voiceCard').classList.remove('on');
+hideAlert();
+refreshBtn();
 }
 
-function formatSize(b) {
+function fmtSize(b) {
 if (b < 1024) return b + ' B';
-if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
-return (b/1048576).toFixed(1) + ' MB';
+if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+return (b / 1048576).toFixed(1) + ' MB';
 }
 
-// ─── ACTION SELECTION ─────────────────────────────────────
-function selectAction(action) {
-selectedAction = action;
-document.querySelectorAll('.fmt-btn').forEach(b => b.classList.remove('selected'));
-document.getElementById('btn-' + action).classList.add('selected');
-updateActionBtn();
+/* ════════════════════════════════════════
+ACCIÓN
+════════════════════════════════════════ */
+function pickAction(a) {
+gAction = a;
+['pdf','word','excel','voice'].forEach(function(k) {
+document.getElementById('a-' + k).classList.toggle('sel', k === a);
+});
+refreshBtn();
 }
 
-function updateActionBtn() {
-const btn = document.getElementById('actionBtn');
-if (!currentFile && !selectedAction) {
-btn.disabled = true; btn.textContent = '👆 Elige un archivo primero'; return;
-}
-if (!currentFile) {
-btn.disabled = true; btn.textContent = '👆 Primero sube un archivo'; return;
-}
-if (!selectedAction) {
-btn.disabled = true; btn.textContent = '👆 Elige qué hacer con el archivo'; return;
-}
-btn.disabled = false;
-const labels = {
-pdf:'📕 Convertir a PDF',
-word:'📘 Convertir a Word (.docx)',
-excel:'📗 Convertir a Excel (.xlsx)',
-voice:'🔊 Extraer texto y leer en voz'
+var BTN_LABELS = {
+pdf: '📕 Generar PDF',
+word: '📘 Convertir a Word (.docx)',
+excel: '📗 Convertir a Excel (.xlsx)',
+voice: '🔊 Extraer texto y leer'
 };
-btn.textContent = labels[selectedAction];
+
+function refreshBtn() {
+var btn = document.getElementById('mainBtn');
+if (!gFile) { btn.disabled = true; btn.textContent = !gAction ? '👆 Sube un archivo y elige acción' : '👆 Sube un archivo primero'; return; }
+if (!gAction) { btn.disabled = true; btn.textContent = '👆 Elige qué hacer con el archivo'; return; }
+btn.disabled = false;
+btn.textContent = BTN_LABELS[gAction];
 }
 
-// ─── EXECUTE ──────────────────────────────────────────────
-async function executeAction() {
-if (!currentFile || !selectedAction) return;
-const ext = currentFile.name.split('.').pop().toLowerCase();
+/* ════════════════════════════════════════
+PROGRESO
+════════════════════════════════════════ */
+function setP(pct, lbl) {
+document.getElementById('progWrap').classList.add('on');
+document.getElementById('progFill').style.width = Math.min(pct, 100) + '%';
+document.getElementById('progLbl').textContent = lbl || 'Procesando…';
+document.getElementById('progPct').textContent = Math.round(Math.min(pct, 100)) + '%';
+}
+function hideP() { document.getElementById('progWrap').classList.remove('on'); }
 
-setProgress(0, 'Iniciando…');
+/* ════════════════════════════════════════
+ALERTAS
+════════════════════════════════════════ */
+function showAlert(msg, type) {
+var el = document.getElementById('mainAlert');
+el.textContent = msg;
+el.className = 'alert on alert-' + (type || 'warn');
+}
+function hideAlert() {
+document.getElementById('mainAlert').className = 'alert';
+}
+
+/* ════════════════════════════════════════
+EJECUTAR
+════════════════════════════════════════ */
+async function run() {
+if (!gFile || !gAction) return;
+hideAlert();
+document.getElementById('resultBox').classList.remove('on');
+document.getElementById('mainBtn').disabled = true;
 
 try {
-// Step 1: Extract text
-let text = '';
-if (['png','jpg','jpeg','webp','bmp','gif','tiff'].includes(ext)) {
-text = await ocrImage(currentFile);
-} else if (ext === 'pdf') {
-text = await extractPdfText(currentFile);
-} else if (['doc','docx'].includes(ext)) {
-text = await extractDocxText(currentFile);
+/* 1. Extraer texto */
+gText = await extractText(gFile);
+
+if (!gText || gText.trim().length < 2) {
+throw new Error('No se encontró texto legible en el archivo. Si es una imagen, asegúrate de que el texto sea claro y nítido.');
 }
 
-setProgress(70, 'Generando archivo…');
+setP(80, 'Generando archivo…');
 
-if (selectedAction === 'pdf') await doConvertToPdf(text, currentFile.name);
-else if (selectedAction === 'word') await doConvertToWord(text, currentFile.name);
-else if (selectedAction === 'excel') await doConvertToExcel(text, currentFile.name);
-else if (selectedAction === 'voice') showVoiceCard(text);
+/* 2. Acción */
+if (gAction === 'pdf') await doPdf(gText, gFile.name);
+if (gAction === 'word') await doWord(gText, gFile.name);
+if (gAction === 'excel') doExcel(gText, gFile.name);
+if (gAction === 'voice') doVoice(gText);
 
-setProgress(100, 'Completado');
-setTimeout(() => hideProgress(), 1000);
+setP(100, '¡Completado!');
+setTimeout(hideP, 900);
 
-if (selectedAction !== 'voice') toast('✅ ¡Archivo descargado correctamente!', 'success');
+if (gAction !== 'voice')
+showAlert('✅ Archivo descargado correctamente en tu dispositivo.', 'ok');
 
-} catch(err) {
-hideProgress();
-toast('❌ Error: ' + err.message, 'error');
-console.error(err);
-}
-}
-
-// ─── PROGRESS ─────────────────────────────────────────────
-function setProgress(pct, label) {
-document.getElementById('progressWrap').classList.add('show');
-document.getElementById('progressFill').style.width = pct + '%';
-document.getElementById('progressLabel').textContent = label;
-document.getElementById('progressPct').textContent = Math.round(pct) + '%';
-}
-function hideProgress() {
-document.getElementById('progressWrap').classList.remove('show');
+} catch (err) {
+hideP();
+showAlert('❌ ' + err.message, 'err');
+showToast('❌ Error: ' + err.message, 'err');
+console.error('[DocuVoz]', err);
 }
 
-// ─── EXTRACT TEXT FROM PDF ────────────────────────────────
-async function extractPdfText(file) {
-const buf = await file.arrayBuffer();
-const pdf = await pdfjsLib.getDocument({data: buf}).promise;
-let text = '';
-for (let i = 1; i <= pdf.numPages; i++) {
-const page = await pdf.getPage(i);
-const content = await page.getTextContent();
-text += content.items.map(it => it.str).join(' ') + '\n\n';
-setProgress(10 + (i / pdf.numPages) * 55, `Leyendo página ${i} de ${pdf.numPages}…`);
-}
-return text.trim();
+document.getElementById('mainBtn').disabled = false;
 }
 
-// ─── EXTRACT TEXT FROM DOCX ───────────────────────────────
-async function extractDocxText(file) {
-setProgress(20, 'Leyendo Word…');
-const buf = await file.arrayBuffer();
-const result = await mammoth.extractRawText({arrayBuffer: buf});
-setProgress(60, 'Texto extraído…');
-return result.value.trim();
+/* ════════════════════════════════════════
+EXTRACCIÓN DE TEXTO
+════════════════════════════════════════ */
+async function extractText(file) {
+var ext = file.name.split('.').pop().toLowerCase();
+if (ext === 'pdf') return extractPDF(file);
+if (ext === 'doc' || ext === 'docx') return extractDOCX(file);
+if (['png','jpg','jpeg','webp','bmp','gif','tiff'].includes(ext)) return extractIMG(file);
+throw new Error('Tipo no soportado: ' + ext);
 }
 
-// ─── OCR IMAGE ────────────────────────────────────────────
-async function ocrImage(file) {
-setProgress(5, 'Iniciando OCR…');
-const url = URL.createObjectURL(file);
-const result = await Tesseract.recognize(url, 'spa+eng', {
-logger: m => {
+/* ── PDF con manejo correcto de encoding ── */
+async function extractPDF(file) {
+setP(5, 'Abriendo PDF…');
+var buf = await file.arrayBuffer();
+
+var pdf = await pdfjsLib.getDocument({
+data: new Uint8Array(buf),
+useSystemFonts: true,
+disableFontFace: false,
+isEvalSupported: false,
+cMapPacked: true
+}).promise;
+
+var total = pdf.numPages;
+var out = [];
+
+for (var i = 1; i <= total; i++) {
+setP(5 + (i / total) * 62, 'Página ' + i + ' de ' + total + '…');
+var page = await pdf.getPage(i);
+var content = await page.getTextContent({ normalizeWhitespace: true, disableCombineTextItems: false });
+
+/* reconstruir líneas por posición Y */
+var lineMap = {};
+content.items.forEach(function(item) {
+if (typeof item.str !== 'string') return;
+var y = item.transform ? Math.round(item.transform[5]) : 0;
+if (!lineMap[y]) lineMap[y] = [];
+lineMap[y].push(item.str);
+});
+
+/* ordenar por Y descendente (PDF Y crece hacia arriba) */
+var ys = Object.keys(lineMap).map(Number).sort(function(a,b){ return b-a; });
+var pageLines = ys.map(function(y){ return lineMap[y].join(' ').trim(); }).filter(Boolean);
+out.push(pageLines.join('\n'));
+}
+
+var raw = out.join('\n\n');
+return cleanPDF(raw);
+}
+
+/* Limpiar artefactos comunes de PDF */
+function cleanPDF(str) {
+return str
+.replace(/ﬁ/g,'fi').replace(/ﬂ/g,'fl').replace(/ﬀ/g,'ff').replace(/ﬃ/g,'ffi').replace(/ﬄ/g,'ffl')
+.replace(/\u2013/g,'–').replace(/\u2014/g,'—')
+.replace(/[\u201C\u201D]/g,'"').replace(/[\u2018\u2019]/g,"'")
+.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g,'')
+.replace(/[ \t]{3,}/g,' ')
+.replace(/\n{4,}/g,'\n\n')
+.trim();
+}
+
+/* ── DOCX ── */
+async function extractDOCX(file) {
+setP(15, 'Leyendo documento Word…');
+var buf = await file.arrayBuffer();
+var result = await mammoth.extractRawText({ arrayBuffer: buf });
+setP(68, 'Texto extraído…');
+return (result.value || '').trim();
+}
+
+/* ── IMAGEN → OCR ── */
+async function extractIMG(file) {
+setP(5, 'Iniciando OCR (puede tardar un momento)…');
+
+if (typeof Tesseract === 'undefined') {
+throw new Error('Tesseract OCR no está disponible. Comprueba tu conexión a internet.');
+}
+
+var url = URL.createObjectURL(file);
+try {
+var result = await Tesseract.recognize(url, 'spa+eng', {
+logger: function(m) {
 if (m.status === 'recognizing text')
-setProgress(5 + m.progress * 55, 'Reconociendo texto… ' + Math.round(m.progress*100) + '%');
+setP(5 + m.progress * 62, 'OCR: ' + Math.round(m.progress * 100) + '%…');
+if (m.status === 'loading tesseract core' || m.status === 'initializing tesseract')
+setP(5, 'Cargando motor OCR…');
 }
 });
+var text = (result.data.text || '').trim();
+if (!text) throw new Error('No se detectó texto en la imagen. Usa una imagen con texto claro y sin distorsión.');
+return text;
+} finally {
 URL.revokeObjectURL(url);
-return result.data.text.trim();
+}
 }
 
-// ─── CONVERT TO WORD ──────────────────────────────────────
-async function doConvertToWord(text, origName) {
-const {Document, Packer, Paragraph, TextRun} = docx;
-const lines = text.split('\n');
-const children = lines.map(line =>
-new Paragraph({
-children:[new TextRun({text: line || ' ', size: 22, font:'Calibri'})],
-spacing:{after:160}
-})
-);
-const document = new Document({sections:[{properties:{}, children}]});
-const blob = await Packer.toBlob(document);
-download(blob, baseName(origName) + '_convertido.docx',
-'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+/* ════════════════════════════════════════
+CONVERTIR A PDF
+════════════════════════════════════════ */
+async function doPdf(text, origName) {
+function escHtml(s) {
+return String(s)
+.replace(/&/g,'&amp;').replace(/</g,'&lt;')
+.replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ─── CONVERT TO EXCEL ─────────────────────────────────────
-async function doConvertToExcel(text, origName) {
-const lines = text.split('\n').filter(l => l.trim());
-const rows = lines.map(line => {
-// Try to split by common delimiters
-const parts = line.split(/\t| {2,}|;/).map(s => s.trim());
-return parts.length > 1 ? parts : [line];
-});
-const wb = XLSX.utils.book_new();
-const ws = XLSX.utils.aoa_to_sheet(rows);
+var lines = text.split('\n');
+var bodyHtml = lines.map(function(l) {
+return '<p>' + (l.trim() ? escHtml(l) : '&nbsp;') + '</p>';
+}).join('');
 
-// Style column widths
-ws['!cols'] = [{wch:50},{wch:30},{wch:30},{wch:30}];
-
-XLSX.utils.book_append_sheet(wb, ws, 'Contenido');
-const buf = XLSX.write(wb, {bookType:'xlsx', type:'array'});
-download(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),
-baseName(origName) + '_convertido.xlsx');
-}
-
-// ─── CONVERT TO PDF (print dialog) ───────────────────────
-async function doConvertToPdf(text, origName) {
-setProgress(75, 'Preparando PDF…');
-const html = text.split('\n').map(l => `<p>${l || '&nbsp;'}</p>`).join('');
-const win = window.open('','_blank','width=800,height=900');
-if (!win) { toast('⚠️ Activa ventanas emergentes para PDF', 'error'); return; }
-win.document.write(`<!DOCTYPE html><html><head>
-<meta charset="UTF-8">
-<title>${baseName(origName)}</title>
-<style>
-body{font-family:'Times New Roman',serif;font-size:12pt;line-height:1.8;
-padding:60px;color:#000;background:#fff;max-width:780px;margin:auto;}
-p{margin-bottom:8px;}
-@media print{body{padding:40px}}
-</style>
-
-</head><body>${html}
-<script>
-window.onload=function(){
-setTimeout(function(){window.print();},400);
-};
-<\/script></body></html>`);
-win.document.close();
-}
-
-// ─── SHOW VOICE CARD ──────────────────────────────────────
-function showVoiceCard(text) {
-document.getElementById(‘voiceCard’).classList.add(‘show’);
-document.getElementById(‘extractedText’).textContent = text || ‘(No se pudo extraer texto)’;
-initVoices();
-document.getElementById(‘voiceCard’).scrollIntoView({behavior:‘smooth’, block:‘start’});
-toast(‘📖 Texto extraído. Pulsa ▶ para escuchar’, ‘info’);
-}
-
-// ─── VOICE / SPEECH ───────────────────────────────────────
-function initVoices() {
-const load = () => {
-const all = speechSynthesis.getVoices();
-voices = all.filter(v =>
-v.lang.toLowerCase().startsWith(‘es’) ||
-v.name.toLowerCase().includes(‘spanish’) ||
-v.name.toLowerCase().includes(‘español’)
-);
-if (voices.length === 0) voices = all.slice(0, 15);
+var name = escHtml(baseName(origName));
+var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + name + '</title>' +
+'<style>*{margin:0;padding:0;box-sizing:border-box}' +
+'body{font-family:Arial,Helvetica,sans-serif;font-size:11.5pt;line-height:1.8;' +
+'padding:55px 65px;color:#111;background:#fff;max-width:800px;margin:auto}' +
+'h2{font-size:13pt;margin-bottom:18px;color:#1e1b4b;border-bottom:2px solid #e0e7ff;padding-bottom:8px}' +
+'p{margin-bottom:6px}@media print{body{padding:25px 35px}@page{margin:12mm}}' +
+'</style></head><body><h2>' + name + '</h2>' + bodyHtml +
 
 ```
-const sel = document.getElementById('voiceSelect');
-sel.innerHTML = voices.map((v,i) =>
-`<option value="${i}">${v.name} [${v.lang}]</option>`
-).join('');
-
-// Prefer Latin American
-const preferred = voices.findIndex(v =>
-['es-MX','es-AR','es-CO','es-CL','es-PE','es-US'].some(l => v.lang === l)
-);
-if (preferred >= 0) sel.value = preferred;
+'<script>window.addEventListener("load",function(){setTimeout(function(){window.print();},600);})<\/script>' +
+'</body></html>';
 ```
 
-};
+var blob = new Blob([html], { type: ‘text/html;charset=utf-8’ });
+var burl = URL.createObjectURL(blob);
+var win = window.open(burl, ‘_blank’);
 
-if (speechSynthesis.getVoices().length > 0) load();
-speechSynthesis.addEventListener(‘voiceschanged’, load);
-}
-
-function getTextToRead() {
-const card = document.getElementById(‘extractedText’).textContent;
-const manual = document.getElementById(‘manualText’).value.trim();
-return (card && card !== ‘El texto extraído aparecerá aquí…’) ? card : manual;
-}
-
-function startSpeech(customText) {
-const text = customText || getTextToRead();
-if (!text || text === ‘El texto extraído aparecerá aquí…’) {
-toast(‘⚠️ No hay texto para leer’, ‘error’); return;
-}
-
-speechSynthesis.cancel();
-paused = false;
-
-utterance = new SpeechSynthesisUtterance(text);
-
-const idx = parseInt(document.getElementById(‘voiceSelect’).value) || 0;
-if (voices[idx]) {
-utterance.voice = voices[idx];
-utterance.lang = voices[idx].lang;
+if (!win) {
+/* Fallback: descargar HTML */
+download(blob, baseName(origName) + ‘.html’);
+showAlert(‘⚠️ Ventanas emergentes bloqueadas. Se descargó como HTML: ábrelo en el navegador y usa Archivo → Imprimir → Guardar como PDF.’, ‘warn’);
 } else {
-utterance.lang = ‘es-MX’;
+setTimeout(function() { URL.revokeObjectURL(burl); }, 6000);
+showToast(‘🖨️ Usa “Guardar como PDF” en el diálogo de impresión’, ‘inf’);
+}
 }
 
-utterance.rate = parseFloat(document.getElementById(‘rateSlider’).value);
-utterance.pitch = parseFloat(document.getElementById(‘pitchSlider’).value);
-utterance.volume = 1;
+/* ════════════════════════════════════════
+CONVERTIR A WORD
+════════════════════════════════════════ */
+async function doWord(text, origName) {
+if (!window.docx) throw new Error(‘La librería docx.js no cargó. Verifica tu conexión a internet y recarga la página.’);
 
-utterance.onstart = () => {
-document.getElementById(‘waveform’).classList.add(‘playing’);
+var D = window.docx;
+var lines = text.split(’\n’);
+var children = lines.map(function(line) {
+return new D.Paragraph({
+children: [new D.TextRun({ text: line || ’ ’, size: 24, font: ‘Arial’ })],
+spacing: { after: 120 }
+});
+});
+
+var doc = new D.Document({ creator:‘DocuVoz Pro’, title: baseName(origName), sections:[{ properties:{}, children:children }] });
+var blob = await D.Packer.toBlob(doc);
+download(blob, baseName(origName) + ‘_convertido.docx’,
+‘application/vnd.openxmlformats-officedocument.wordprocessingml.document’);
+}
+
+/* ════════════════════════════════════════
+CONVERTIR A EXCEL
+════════════════════════════════════════ */
+function doExcel(text, origName) {
+var lines = text.split(’\n’).filter(function(l){ return l.trim(); });
+if (!lines.length) throw new Error(‘Sin contenido para exportar.’);
+
+/* Detectar separadores */
+var rows = lines.map(function(line) {
+var byTab = line.split(’\t’);
+var bySemi = line.split(’;’);
+var bySpc = line.split(/ +/);
+if (byTab.length > 1) return byTab.map(function(s){ return s.trim(); });
+if (bySemi.length > 1) return bySemi.map(function(s){ return s.trim(); });
+if (bySpc.length > 1) return bySpc.map(function(s){ return s.trim(); });
+return [line.trim()];
+});
+
+/* Anchos automáticos */
+var colW = [];
+rows.forEach(function(row) {
+row.forEach(function(cell, ci) {
+var l = cell ? cell.length : 8;
+if (!colW[ci] || colW[ci] < l) colW[ci] = l;
+});
+});
+
+var wb = XLSX.utils.book_new();
+var ws = XLSX.utils.aoa_to_sheet(rows);
+ws[’!cols’] = colW.map(function(w){ return { wch: Math.min(w + 3, 60) }; });
+XLSX.utils.book_append_sheet(wb, ws, ‘Contenido’);
+
+/* Segunda hoja con texto completo */
+var ws2 = XLSX.utils.aoa_to_sheet(
+[[‘Texto completo’]].concat(lines.map(function(l){ return [l]; }))
+);
+ws2[’!cols’] = [{ wch: 80 }];
+XLSX.utils.book_append_sheet(wb, ws2, ‘Texto completo’);
+
+var buf = XLSX.write(wb, { bookType:‘xlsx’, type:‘array’ });
+download(
+new Blob([buf], { type:‘application/vnd.openxmlformats-officedocument.spreadsheetml.sheet’ }),
+baseName(origName) + ‘_convertido.xlsx’
+);
+}
+
+/* ════════════════════════════════════════
+VOZ
+════════════════════════════════════════ */
+function doVoice(text) {
+var card = document.getElementById(‘voiceCard’);
+card.classList.add(‘on’);
+var rb = document.getElementById(‘resultBox’);
+rb.textContent = text;
+rb.classList.add(‘on’);
+loadVoices();
+card.scrollIntoView({ behavior:‘smooth’, block:‘start’ });
+showToast(‘📖 Texto listo. Pulsa ▶ para escuchar’, ‘inf’);
+}
+
+function loadVoices() {
+function fill() {
+var all = window.speechSynthesis.getVoices();
+gVoices = all.filter(function(v) {
+return v.lang.toLowerCase().startsWith(‘es’) ||
+v.name.toLowerCase().includes(‘spanish’) ||
+v.name.toLowerCase().includes(‘español’);
+});
+if (!gVoices.length) gVoices = all;
+
+```
+var sel = document.getElementById('voiceSel');
+if (!gVoices.length) {
+sel.innerHTML = '<option>Sin voces disponibles en este dispositivo</option>';
+return;
+}
+sel.innerHTML = gVoices.map(function(v, i) {
+return '<option value="' + i + '">' + v.name + ' (' + v.lang + ')</option>';
+}).join('');
+
+/* Preferir voz latinoamericana */
+var pref = ['es-MX','es-AR','es-CO','es-CL','es-PE','es-VE','es-US','es-ES'];
+var best = -1;
+pref.forEach(function(lang) {
+if (best >= 0) return;
+gVoices.forEach(function(v, i) {
+if (best < 0 && v.lang === lang) best = i;
+});
+});
+if (best >= 0) sel.value = best;
+```
+
+}
+
+var stt = window.speechSynthesis;
+if (stt.getVoices().length > 0) fill();
+/* onvoiceschanged dispara en Chrome/Edge al cargar */
+stt.onvoiceschanged = fill;
+/* Polyfill: Safari/Firefox no siempre dispara el evento */
+setTimeout(fill, 500);
+setTimeout(fill, 1500);
+}
+
+function vPlay() {
+var text = gText || document.getElementById(‘manualTxt’).value.trim();
+if (!text) { showToast(‘⚠️ No hay texto para leer’, ‘err’); return; }
+
+var stt = window.speechSynthesis;
+stt.cancel();
+gPaused = false;
+clearInterval(keepAliveTimer);
+
+gUtt = new SpeechSynthesisUtterance(text);
+
+var idx = parseInt(document.getElementById(‘voiceSel’).value);
+if (!isNaN(idx) && gVoices[idx]) {
+gUtt.voice = gVoices[idx];
+gUtt.lang = gVoices[idx].lang;
+} else {
+gUtt.lang = ‘es-MX’;
+}
+
+gUtt.rate = parseFloat(document.getElementById(‘rateR’).value);
+gUtt.pitch = parseFloat(document.getElementById(‘pitchR’).value);
+gUtt.volume = 1;
+
+gUtt.onstart = function() {
+document.getElementById(‘wave’).classList.add(‘on’);
 document.getElementById(‘btnPlay’).disabled = true;
 document.getElementById(‘btnPause’).disabled = false;
 document.getElementById(‘btnStop’).disabled = false;
-toast(‘🔊 Leyendo en voz alta…’, ‘info’);
+showToast(‘🔊 Leyendo en voz alta…’, ‘inf’);
+};
+gUtt.onend = vReset;
+gUtt.onerror = function(e) {
+if (e.error !== ‘interrupted’ && e.error !== ‘canceled’)
+showToast(’Error de voz: ’ + e.error, ‘err’);
+vReset();
 };
 
-utterance.onend = () => onSpeechEnd();
-utterance.onerror = (e) => {
-if (e.error !== ‘interrupted’) toast(’❌ Error de voz: ’ + e.error, ‘error’);
-onSpeechEnd();
-};
+stt.speak(gUtt);
 
-speechSynthesis.speak(utterance);
+/* Workaround Chrome Android: síntesis se corta en textos largos */
+keepAliveTimer = setInterval(function() {
+if (!stt.speaking) { clearInterval(keepAliveTimer); return; }
+if (!gPaused) { stt.pause(); stt.resume(); }
+}, 12000);
 }
 
-function onSpeechEnd() {
-document.getElementById(‘waveform’).classList.remove(‘playing’);
+function vPause() {
+if (!gPaused) {
+window.speechSynthesis.pause();
+gPaused = true;
+document.getElementById(‘btnPause’).textContent = ‘▶ Continuar’;
+document.getElementById(‘wave’).classList.remove(‘on’);
+showToast(‘⏸ Pausado’, ‘inf’);
+} else {
+window.speechSynthesis.resume();
+gPaused = false;
+document.getElementById(‘btnPause’).textContent = ‘⏸ Pausar’;
+document.getElementById(‘wave’).classList.add(‘on’);
+showToast(‘▶ Continuando…’, ‘inf’);
+}
+}
+
+function vStop() {
+clearInterval(keepAliveTimer);
+window.speechSynthesis.cancel();
+vReset();
+showToast(‘⏹ Detenido’, ‘inf’);
+}
+
+function vReset() {
+clearInterval(keepAliveTimer);
+gPaused = false;
+document.getElementById(‘wave’).classList.remove(‘on’);
 document.getElementById(‘btnPlay’).disabled = false;
 document.getElementById(‘btnPause’).disabled = true;
 document.getElementById(‘btnStop’).disabled = true;
-paused = false;
-}
-
-function pauseSpeech() {
-if (!paused) {
-speechSynthesis.pause();
-paused = true;
-document.getElementById(‘btnPause’).textContent = ‘▶ Continuar’;
-document.getElementById(‘waveform’).classList.remove(‘playing’);
-toast(‘⏸ En pausa’, ‘info’);
-} else {
-speechSynthesis.resume();
-paused = false;
 document.getElementById(‘btnPause’).textContent = ‘⏸ Pausar’;
-document.getElementById(‘waveform’).classList.add(‘playing’);
-toast(‘▶ Continuando…’, ‘info’);
-}
 }
 
-function stopSpeech() {
-speechSynthesis.cancel();
-onSpeechEnd();
-toast(‘⏹ Detenido’, ‘info’);
+function readManual() {
+var text = document.getElementById(‘manualTxt’).value.trim();
+if (!text) { showToast(‘✏️ Escribe texto primero’, ‘err’); return; }
+gText = text;
+document.getElementById(‘voiceCard’).classList.add(‘on’);
+document.getElementById(‘resultBox’).textContent = text;
+document.getElementById(‘resultBox’).classList.add(‘on’);
+loadVoices();
+document.getElementById(‘voiceCard’).scrollIntoView({ behavior:‘smooth’ });
+/* Esperar voces */
+setTimeout(vPlay, 600);
 }
 
-function readManualText() {
-const text = document.getElementById(‘manualText’).value.trim();
-if (!text) { toast(‘✏️ Escribe algo primero’, ‘error’); return; }
-document.getElementById(‘voiceCard’).classList.add(‘show’);
-document.getElementById(‘extractedText’).textContent = text;
-initVoices();
-startSpeech(text);
-document.getElementById(‘voiceCard’).scrollIntoView({behavior:‘smooth’});
-}
-
-// ─── UTILS ────────────────────────────────────────────────
-function baseName(fname) {
-return fname.replace(/.[^.]+$/, ‘’);
-}
+/* ════════════════════════════════════════
+UTILIDADES
+════════════════════════════════════════ */
+function baseName(fname) { return fname.replace(/.[^.]+$/, ‘’); }
 
 function download(blob, filename) {
-const url = URL.createObjectURL(blob);
-const a = document.createElement(‘a’);
-a.href = url; a.download = filename;
-document.body.appendChild(a); a.click();
-setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 600);
+var url = URL.createObjectURL(blob);
+var a = document.createElement(‘a’);
+a.href = url;
+a.download = filename;
+document.body.appendChild(a);
+a.click();
+setTimeout(function() {
+document.body.removeChild(a);
+URL.revokeObjectURL(url);
+}, 1000);
 }
 
-// ─── INIT ─────────────────────────────────────────────────
-window.addEventListener(‘load’, () => {
-initVoices();
+/* ════════════════════════════════════════
+INIT
+════════════════════════════════════════ */
+window.addEventListener(‘load’, function() {
+loadVoices();
 
-// Touch feedback on all buttons
-document.querySelectorAll(‘button, .fmt-btn, .drop-area’).forEach(el => {
-el.addEventListener(‘touchstart’, () => el.style.opacity = ‘0.75’, {passive:true});
-el.addEventListener(‘touchend’, () => el.style.opacity = ‘’, {passive:true});
-el.addEventListener(‘touchcancel’,() => el.style.opacity = ‘’, {passive:true});
+/* Feedback táctil */
+document.querySelectorAll(‘button, .act-btn, .drop-zone’).forEach(function(el) {
+el.addEventListener(‘touchstart’, function() { this.style.opacity = ‘.7’; }, { passive:true });
+el.addEventListener(‘touchend’, function() { this.style.opacity = ‘’; }, { passive:true });
+el.addEventListener(‘touchcancel’,function() { this.style.opacity = ‘’; }, { passive:true });
 });
+
+/* Verificar soporte */
+if (!(‘speechSynthesis’ in window)) {
+document.getElementById(‘voiceCard’).insertAdjacentHTML(‘afterbegin’,
+‘<div class="alert on alert-err">⚠️ Tu navegador no soporta síntesis de voz. Usa Google Chrome o Microsoft Edge.</div>’);
+}
 });
 </script>
 
