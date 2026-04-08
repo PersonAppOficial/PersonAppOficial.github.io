@@ -1,913 +1,186 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DocuVoz Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
+<title>DocuVoz Pro — Convertidor + Lector de Voz</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
 <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
 
 <style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&display=swap');
+
 :root {
---bg:#f0f2ff; --white:#fff; --primary:#4f46e5; --pri-lt:#eef2ff;
---cyan:#0891b2; --green:#059669; --red:#dc2626; --blue:#1d4ed8;
---purple:#7c3aed; --text:#1e1b4b; --muted:#6b7280;
---border:#c7d2fe; --sh:0 2px 16px rgba(79,70,229,.10);
---sh2:0 6px 32px rgba(79,70,229,.18); --r:18px; --r2:11px;
+--primary: #6366f1;
 }
-html { scroll-behavior:smooth; }
-body {
-font-family:'Nunito',sans-serif; background:var(--bg);
-color:var(--text); min-height:100vh; padding-bottom:50px;
-}
-body::before {
-content:''; position:fixed; top:-150px; right:-150px;
-width:500px; height:500px; border-radius:50%;
-background:radial-gradient(circle,rgba(79,70,229,.13),transparent 70%);
-pointer-events:none; z-index:0;
-}
-.app { position:relative; z-index:1; max-width:660px; margin:0 auto; padding:0 15px; }
 
-/* HEADER */
-.hdr { text-align:center; padding:32px 0 24px; animation:up .5s ease; }
-.hdr-ico { font-size:2.8rem; display:block; margin-bottom:6px; }
-.hdr h1 { font-size:2rem; font-weight:900; color:var(--primary); letter-spacing:-1px; }
-.hdr h1 b { color:var(--cyan); font-weight:900; }
-.hdr p { color:var(--muted); font-size:.9rem; margin-top:5px; font-weight:600; }
+* { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
 
-/* CARDS */
-.card {
-background:var(--white); border-radius:var(--r); box-shadow:var(--sh);
-padding:22px 20px; margin-bottom:18px;
+.app {
+font-family: 'Inter', system_ui, sans-serif;
 }
-.card-title { font-size:.95rem; font-weight:800; color:var(--text); margin-bottom:14px; display:flex; align-items:center; gap:7px; }
 
-/* DROP ZONE */
+.title-font {
+font-family: 'Space Grotesk', sans-serif;
+}
+
+.glass {
+background: rgba(255,255,255,0.95);
+backdrop-filter: blur(16px);
+}
+
 .drop-zone {
-border:2.5px dashed var(--border); border-radius:var(--r2);
-padding:30px 16px; text-align:center; cursor:pointer;
-position:relative; background:var(--pri-lt);
-transition:all .2s ease; user-select:none; -webkit-user-select:none;
-}
-.drop-zone.over, .drop-zone:focus-within { border-color:var(--primary); background:#e0e7ff; }
-.drop-zone:active { transform:scale(.97); }
-.drop-zone input[type=file] {
-position:absolute; inset:0; opacity:0; width:100%; height:100%; cursor:pointer; z-index:2;
-}
-.dz-ico { font-size:2.4rem; display:block; margin-bottom:8px; pointer-events:none; }
-.dz-txt { font-size:.95rem; font-weight:700; color:var(--primary); pointer-events:none; }
-.dz-sub { font-size:.78rem; color:var(--muted); margin-top:3px; font-weight:600; pointer-events:none; }
-.dz-pills { display:flex; gap:5px; justify-content:center; flex-wrap:wrap; margin-top:10px; pointer-events:none; }
-.pill { padding:3px 11px; border-radius:20px; font-size:.7rem; font-weight:800; letter-spacing:.4px; text-transform:uppercase; }
-.p-pdf { background:#fee2e2; color:var(--red); }
-.p-word { background:#dbeafe; color:var(--blue); }
-.p-img { background:#d1fae5; color:var(--green); }
-
-/* FILE CHIP */
-.file-chip {
-display:none; align-items:center; gap:10px; margin-top:12px;
-padding:12px 14px; background:#f5f3ff; border:1.5px solid #a5b4fc; border-radius:var(--r2);
-}
-.file-chip.on { display:flex; animation:pop .25s ease; }
-.fc-ico { font-size:1.8rem; flex-shrink:0; }
-.fc-info { flex:1; min-width:0; }
-.fc-name { font-weight:800; font-size:.88rem; color:var(--primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.fc-size { font-size:.75rem; color:var(--muted); font-weight:600; margin-top:2px; }
-.fc-del {
-background:#fee2e2; color:var(--red); border:none; border-radius:50%;
-width:28px; height:28px; flex-shrink:0; font-size:.9rem; cursor:pointer;
-display:flex; align-items:center; justify-content:center; transition:transform .15s;
-}
-.fc-del:active { transform:scale(.82); }
-
-/* ACTIONS GRID */
-.actions-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:14px; }
-.act-btn {
-display:flex; flex-direction:column; align-items:center; gap:5px; padding:15px 8px;
-border-radius:var(--r2); border:2.5px solid transparent; cursor:pointer;
-font-family:'Nunito',sans-serif; font-weight:800; font-size:.82rem;
-transition:all .18s ease;
-}
-.act-btn:active { transform:scale(.93); }
-.act-btn .ae { font-size:1.5rem; }
-.a-pdf { background:#fee2e2; color:var(--red); border-color:#fca5a5; }
-.a-word { background:#dbeafe; color:var(--blue); border-color:#93c5fd; }
-.a-excel { background:#d1fae5; color:#166534; border-color:#86efac; }
-.a-voice { background:#ede9fe; color:var(--purple); border-color:#c4b5fd; }
-.act-btn.sel { box-shadow:0 0 0 3px currentColor; filter:brightness(.93); }
-
-/* MAIN BUTTON */
-.main-btn {
-width:100%; padding:17px; border-radius:var(--r2); border:none;
-background:linear-gradient(135deg,#4f46e5,#6366f1); color:#fff;
-font-family:'Nunito',sans-serif; font-size:1rem; font-weight:900;
-cursor:pointer; display:flex; align-items:center; justify-content:center;
-gap:9px; box-shadow:0 5px 20px rgba(79,70,229,.35); transition:all .2s ease;
-}
-.main-btn:active { transform:scale(.97); box-shadow:0 2px 8px rgba(79,70,229,.2); }
-.main-btn:disabled { background:#d1d5db; box-shadow:none; cursor:not-allowed; color:#9ca3af; }
-
-/* PROGRESS */
-.prog-wrap { display:none; margin-top:12px; }
-.prog-wrap.on { display:block; animation:fadeIn .3s ease; }
-.prog-head { display:flex; justify-content:space-between; font-size:.78rem; font-weight:700; color:var(--muted); margin-bottom:5px; }
-.prog-track { height:9px; background:#e0e7ff; border-radius:9px; overflow:hidden; }
-.prog-fill { height:100%; background:linear-gradient(90deg,var(--primary),var(--cyan)); border-radius:9px; width:0%; transition:width .3s ease; }
-
-/* ALERTS */
-.alert { display:none; margin-top:10px; padding:11px 14px; border-radius:var(--r2); font-size:.83rem; font-weight:700; line-height:1.5; }
-.alert.on { display:block; animation:fadeIn .3s ease; }
-.alert-warn { background:#fef3c7; color:#92400e; border:1px solid #fde68a; }
-.alert-ok { background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; }
-.alert-err { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
-
-/* RESULT BOX */
-.result-box {
-display:none; margin-top:12px; background:#f5f3ff; border:1.5px solid #a5b4fc;
-border-radius:var(--r2); padding:14px; font-size:.85rem; line-height:1.75;
-color:var(--text); max-height:220px; overflow-y:auto; white-space:pre-wrap; word-break:break-word;
-}
-.result-box.on { display:block; animation:fadeIn .3s ease; }
-.result-box::-webkit-scrollbar { width:5px; }
-.result-box::-webkit-scrollbar-thumb { background:#a5b4fc; border-radius:5px; }
-
-/* VOICE CARD */
-.voice-card { display:none; background:var(--white); border-radius:var(--r); box-shadow:var(--sh); padding:22px 20px; margin-bottom:18px; }
-.voice-card.on { display:block; animation:up .4s ease; }
-
-.sliders { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
-.sl-box { background:#f5f3ff; border-radius:var(--r2); padding:11px; }
-.sl-box label { font-size:.72rem; font-weight:800; color:var(--purple); text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:5px; }
-.sl-box input[type=range] { width:100%; accent-color:var(--purple); cursor:pointer; }
-.sl-val { font-size:.78rem; font-weight:800; color:var(--purple); float:right; }
-
-.voice-sel-wrap { margin-bottom:14px; }
-.voice-sel-wrap label { font-size:.78rem; font-weight:800; color:var(--purple); text-transform:uppercase; letter-spacing:.4px; display:block; margin-bottom:6px; }
-.voice-sel-wrap select {
-width:100%; padding:10px 12px; background:#f5f3ff; border:1.5px solid #c4b5fd;
-border-radius:var(--r2); font-family:'Nunito',sans-serif; font-size:.88rem;
-font-weight:700; color:var(--purple); outline:none; cursor:pointer;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* WAVEFORM */
-.wave { display:flex; align-items:center; justify-content:center; gap:3px; height:40px; margin:10px 0; }
-.wb { width:4px; background:var(--purple); border-radius:3px; height:5px; }
-.wave.on .wb { animation:wavePulse .85s ease-in-out infinite; }
-.wb:nth-child(1){animation-delay:0s}.wb:nth-child(2){animation-delay:.07s}
-.wb:nth-child(3){animation-delay:.14s}.wb:nth-child(4){animation-delay:.21s}
-.wb:nth-child(5){animation-delay:.28s}.wb:nth-child(6){animation-delay:.21s}
-.wb:nth-child(7){animation-delay:.14s}.wb:nth-child(8){animation-delay:.07s}
-.wb:nth-child(9){animation-delay:0s}
-
-/* VOICE BUTTONS */
-.vbtns { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
-.vb {
-padding:14px 8px; border-radius:var(--r2); border:none;
-font-family:'Nunito',sans-serif; font-weight:800; font-size:.88rem; cursor:pointer;
-display:flex; align-items:center; justify-content:center; gap:7px; transition:all .18s ease;
+.wave {
+animation: wavePulse 1.2s ease-in-out infinite;
 }
-.vb:active { transform:scale(.93); }
-.vb:disabled { opacity:.4; cursor:not-allowed; transform:none !important; }
-.vb-play { grid-column:span 2; background:linear-gradient(135deg,var(--purple),#5b21b6); color:#fff; box-shadow:0 4px 14px rgba(124,58,237,.35); }
-.vb-pause { background:#fef3c7; color:#92400e; }
-.vb-stop { background:#fee2e2; color:var(--red); }
 
-/* MANUAL CARD */
-.manual-card { background:var(--white); border-radius:var(--r); box-shadow:var(--sh); padding:22px 20px; margin-bottom:18px; }
-.manual-card textarea {
-width:100%; min-height:90px; background:#f5f3ff; border:1.5px solid #c4b5fd;
-border-radius:var(--r2); padding:12px; font-family:'Nunito',sans-serif;
-font-size:.9rem; font-weight:600; color:var(--text); line-height:1.7;
-resize:vertical; outline:none; transition:border-color .2s;
+@keyframes wavePulse {
+0%, 100% { height: 6px; opacity: 0.4; }
+50% { height: 36px; opacity: 1; }
 }
-.manual-card textarea:focus { border-color:var(--purple); }
-.manual-card textarea::placeholder { color:#a78bfa; }
 
-/* TOAST */
 .toast {
-position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(90px);
-padding:12px 22px; border-radius:50px; font-family:'Nunito',sans-serif;
-font-weight:700; font-size:.88rem; color:#fff; box-shadow:var(--sh2);
-transition:transform .35s cubic-bezier(.34,1.56,.64,1); z-index:9999;
-white-space:nowrap; max-width:88vw; text-align:center; pointer-events:none;
-}
-.toast.on { transform:translateX(-50%) translateY(0); }
-.toast.ok { background:linear-gradient(135deg,#10b981,#059669); }
-.toast.err { background:linear-gradient(135deg,#ef4444,#dc2626); }
-.toast.inf { background:linear-gradient(135deg,#4f46e5,#6366f1); }
-
-.footer { text-align:center; padding:16px 0; color:var(--muted); font-size:.74rem; font-weight:600; line-height:1.8; }
-
-@keyframes up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-@keyframes pop { 0%{transform:scale(.85);opacity:0} 100%{transform:scale(1);opacity:1} }
-@keyframes wavePulse { 0%,100%{height:4px;opacity:.35} 50%{height:34px;opacity:1} }
-
-@media(max-width:380px) {
-.hdr h1 { font-size:1.7rem; }
-.act-btn { padding:12px 5px; font-size:.75rem; }
-.sliders { grid-template-columns:1fr; }
+animation: toastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 </style>
-
 </head>
-<body>
-<div class="app">
+<body class="app bg-gradient-to-br from-indigo-50 via-white to-cyan-50 min-h-screen pb-12">
+<div class="max-w-2xl mx-auto px-4 pt-8">
 
-<div class="hdr">
-<span class="hdr-ico">🗂️</span>
-<h1>Docu<b>Voz</b> Pro</h1>
-<p>Sube tu archivo → Elige qué hacer → ¡Listo! Gratis y sin registro</p>
-</div>
-
-<!-- PASO 1 -->
-
-<div class="card">
-<div class="card-title">📂 Paso 1 — Selecciona tu archivo</div>
-<div class="drop-zone" id="dz"
-ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
-<input type="file" id="fileIn"
-accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tiff"
-onchange="pickFile(this.files[0])">
-<span class="dz-ico">☁️</span>
-<div class="dz-txt">Toca aquí para elegir archivo</div>
-<div class="dz-sub">o arrastra y suelta</div>
-<div class="dz-pills">
-<span class="pill p-pdf">PDF</span>
-<span class="pill p-word">DOC · DOCX</span>
-<span class="pill p-img">JPG · PNG · WEBP</span>
+<!-- HEADER -->
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-x-3">
+<div class="w-11 h-11 bg-gradient-to-br from-indigo-600 to-cyan-500 rounded-2xl flex items-center justify-center text-3xl shadow-inner">🗂️</div>
+<div>
+<h1 class="title-font text-4xl font-semibold tracking-tighter text-indigo-950">DocuVoz <span class="text-cyan-500">Pro</span></h1>
+<p class="text-sm text-indigo-600 font-medium -mt-1">100% local • Gratis • Sin registro</p>
 </div>
 </div>
-<div class="file-chip" id="fileChip">
-<div class="fc-ico" id="fcIco">📄</div>
-<div class="fc-info">
-<div class="fc-name" id="fcName">—</div>
-<div class="fc-size" id="fcSize">—</div>
-</div>
-<button class="fc-del" onclick="clearFile()">✕</button>
+<div onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center bg-white shadow rounded-2xl cursor-pointer hover:scale-110 text-xl" id="themeBtn">
+🌙
 </div>
 </div>
 
-<!-- PASO 2 -->
+<!-- PASO 1: SUBIR ARCHIVO -->
+<div class="glass border border-indigo-100 rounded-3xl p-6 shadow-xl mb-6">
+<div class="flex items-center gap-x-2 mb-4 text-indigo-700 font-semibold text-lg">
+<span class="text-2xl">📤</span>
+<span>Paso 1 — Sube tu archivo</span>
+</div>
 
-<div class="card">
-<div class="card-title">⚡ Paso 2 — ¿Qué deseas hacer?</div>
-<div class="actions-grid">
-<button class="act-btn a-pdf" id="a-pdf" onclick="pickAction('pdf')">
-<span class="ae">📕</span>Guardar como PDF
+<div id="dropZone"
+onclick="document.getElementById('fileInput').click()"
+class="drop-zone border-2 border-dashed border-indigo-300 hover:border-indigo-500 rounded-3xl py-14 text-center cursor-pointer bg-white/70">
+<input type="file" id="fileInput" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tiff" class="hidden" onchange="handleFileSelect(event)">
+
+<div class="mx-auto w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-5xl mb-4">☁️</div>
+<p class="font-semibold text-indigo-900 text-xl">Arrastra o haz clic para subir</p>
+<p class="text-indigo-500 text-sm mt-1">PDF • Word • Imágenes con texto</p>
+
+<div class="flex justify-center gap-2 mt-6">
+<span class="px-4 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-3xl">PDF</span>
+<span class="px-4 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-3xl">DOCX</span>
+<span class="px-4 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-3xl">JPG / PNG</span>
+</div>
+</div>
+
+<!-- Archivo seleccionado -->
+<div id="filePreview" class="hidden mt-6 p-4 bg-white border border-indigo-200 rounded-2xl flex items-center gap-x-4">
+<div id="fileIcon" class="text-4xl">📄</div>
+<div class="flex-1 min-w-0">
+<p id="fileName" class="font-semibold text-indigo-900 truncate"></p>
+<p id="fileSize" class="text-xs text-indigo-500"></p>
+</div>
+<button onclick="clearFile()"
+class="w-9 h-9 flex items-center justify-center text-red-500 hover:bg-red-100 rounded-2xl text-xl">✕</button>
+</div>
+</div>
+
+<!-- PASO 2: ACCIONES -->
+<div id="actionPanel" class="glass border border-indigo-100 rounded-3xl p-6 shadow-xl mb-6 hidden">
+<div class="flex items-center gap-x-2 mb-5 text-indigo-700 font-semibold text-lg">
+<span class="text-2xl">⚡</span>
+<span>Paso 2 — ¿Qué quieres hacer?</span>
+</div>
+
+<div class="grid grid-cols-2 gap-3">
+<button onclick="selectAction('pdf')" id="btn-pdf"
+class="action-btn flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-3xl border-2 border-transparent bg-white hover:shadow-md">
+<span class="text-5xl">📕</span>
+<span class="font-semibold text-indigo-900">Guardar como PDF</span>
 </button>
-<button class="act-btn a-word" id="a-word" onclick="pickAction('word')">
-<span class="ae">📘</span>Convertir a Word
+<button onclick="selectAction('word')" id="btn-word"
+class="action-btn flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-3xl border-2 border-transparent bg-white hover:shadow-md">
+<span class="text-5xl">📘</span>
+<span class="font-semibold text-indigo-900">Convertir a Word</span>
 </button>
-<button class="act-btn a-excel" id="a-excel" onclick="pickAction('excel')">
-<span class="ae">📗</span>Convertir a Excel
+<button onclick="selectAction('excel')" id="btn-excel"
+class="action-btn flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-3xl border-2 border-transparent bg-white hover:shadow-md">
+<span class="text-5xl">📗</span>
+<span class="font-semibold text-indigo-900">Convertir a Excel</span>
 </button>
-<button class="act-btn a-voice" id="a-voice" onclick="pickAction('voice')">
-<span class="ae">🔊</span>Leer en Voz Alta
+<button onclick="selectAction('voice')" id="btn-voice"
+class="action-btn flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-3xl border-2 border-transparent bg-white hover:shadow-md">
+<span class="text-5xl">🔊</span>
+<span class="font-semibold text-indigo-900">Leer en voz alta</span>
 </button>
 </div>
 
-<button class="main-btn" id="mainBtn" onclick="run()" disabled>
-👆 Sube un archivo y elige acción
+<button onclick="executeAction()" id="mainActionBtn"
+class="w-full mt-6 py-4 bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-semibold text-lg rounded-3xl shadow-lg flex items-center justify-center gap-x-3 disabled:opacity-50">
+<span id="btnText">🚀 Ejecutar acción</span>
 </button>
-
-<div class="prog-wrap" id="progWrap">
-<div class="prog-head">
-<span id="progLbl">Procesando…</span>
-<span id="progPct">0%</span>
-</div>
-<div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
 </div>
 
-<div class="alert" id="mainAlert"></div>
-<div class="result-box" id="resultBox"></div>
+<!-- BARRA DE PROGRESO -->
+<div id="progressBar" class="hidden glass border border-indigo-100 rounded-3xl p-6 mb-6">
+<div class="flex justify-between text-sm font-medium text-indigo-600 mb-3">
+<span id="progressLabel">Procesando archivo...</span>
+<span id="progressPercent">0%</span>
+</div>
+<div class="h-3 bg-indigo-100 rounded-3xl overflow-hidden">
+<div id="progressFill" class="h-3 bg-gradient-to-r from-indigo-600 to-cyan-500 w-0 rounded-3xl"></div>
+</div>
+</div>
+
+<!-- TEXTO EXTRAÍDO -->
+<div id="textResultPanel" class="glass border border-indigo-100 rounded-3xl p-6 shadow-xl hidden">
+<div class="flex justify-between items-baseline mb-4">
+<div class="text-lg font-semibold text-indigo-900 flex items-center gap-x-2">
+📝 Texto extraído
+</div>
+<div class="flex gap-x-2">
+<button onclick="copyText()" class="text-xs px-4 py-2 bg-white border border-indigo-200 hover:bg-indigo-50 rounded-2xl font-medium">📋 Copiar</button>
+<button onclick="downloadTxt()" class="text-xs px-4 py-2 bg-white border border-indigo-200 hover:bg-indigo-50 rounded-2xl font-medium">📥 .txt</button>
+</div>
+</div>
+<div id="extractedText" class="max-h-64 overflow-y-auto text-sm leading-relaxed text-slate-700 bg-white/70 p-5 rounded-2xl border border-indigo-100 whitespace-pre-wrap"></div>
 </div>
 
 <!-- LECTOR DE VOZ -->
-
-<div class="voice-card" id="voiceCard">
-<div class="card-title">🎙️ Lector de Voz en Español</div>
-<div class="voice-sel-wrap">
-<label>🗣️ Voz del sistema</label>
-<select id="voiceSel"><option>Cargando voces…</option></select>
+<div id="voicePanel" class="hidden glass border border-indigo-100 rounded-3xl p-6 shadow-xl mt-6">
+<div class="flex items-center justify-between mb-5">
+<div class="text-lg font-semibold text-indigo-900 flex items-center gap-2">
+🎤 Lector de voz en español latino
 </div>
-<div class="sliders">
-<div class="sl-box">
-<label>⚡ Velocidad <span class="sl-val" id="rateVal">0.9x</span></label>
-<input type="range" id="rateR" min=".5" max="2" step=".05" value=".9"
-oninput="document.getElementById('rateVal').textContent=parseFloat(this.value).toFixed(1)+'x'">
-</div>
-<div class="sl-box">
-<label>🎵 Tono <span class="sl-val" id="pitchVal">1.0</span></label>
-<input type="range" id="pitchR" min=".5" max="2" step=".1" value="1"
-oninput="document.getElementById('pitchVal').textContent=parseFloat(this.value).toFixed(1)">
-</div>
-</div>
-<div class="wave" id="wave">
-<div class="wb"></div><div class="wb"></div><div class="wb"></div>
-<div class="wb"></div><div class="wb"></div><div class="wb"></div>
-<div class="wb"></div><div class="wb"></div><div class="wb"></div>
-</div>
-<div class="vbtns">
-<button class="vb vb-play" id="btnPlay" onclick="vPlay()">▶ Leer en voz alta</button>
-<button class="vb vb-pause" id="btnPause" onclick="vPause()" disabled>⏸ Pausar</button>
-<button class="vb vb-stop" id="btnStop" onclick="vStop()" disabled>⏹ Detener</button>
-</div>
+<select id="voiceSelect" class="bg-white border border-indigo-200 text-indigo-900 rounded-2xl px-4 py-2 text-sm font-medium focus:outline-none"></select>
 </div>
 
-<!-- TEXTO MANUAL -->
-
-<div class="manual-card">
-<div class="card-title">✍️ O escribe texto para leer directamente</div>
-<textarea id="manualTxt" placeholder="Pega o escribe cualquier texto aquí y pulsa el botón…"></textarea>
-<button class="main-btn" style="margin-top:11px" onclick="readManual()">
-🔊 Leer este texto en voz alta
-</button>
+<div class="flex gap-6 mb-6">
+<div class="flex-1">
+<label class="block text-xs font-semibold text-indigo-500 mb-2">VELOCIDAD</label>
+<input type="range" id="rateSlider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-indigo-600" oninput="updateSliderValue(this, 'rateValue')">
+<div class="flex justify-between text-xs text-indigo-400 mt-1"><span>0.5x</span><span id="rateValue" class="font-semibold text-indigo-700">1.0x</span><span>2x</span></div>
 </div>
-
-<div class="footer">
-🔒 Procesamiento 100% local en tu navegador · Sin servidores · Sin registro<br>
-PDF.js · Mammoth.js · XLSX.js · docx.js · Web Speech API · Tesseract.js
-</div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<!-- Tesseract cargado al final para no bloquear -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
-
-<script>
-/* ── CONFIG ── */
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-/* ── ESTADO ── */
-var gFile = null;
-var gAction = null;
-var gText = '';
-var gVoices = [];
-var gUtt = null;
-var gPaused = false;
-var keepAliveTimer = null;
-
-/* ════════════════════════════════════════
-TOAST
-════════════════════════════════════════ */
-function showToast(msg, type) {
-var el = document.getElementById('toast');
-el.textContent = msg;
-el.className = 'toast ' + (type || 'inf');
-void el.offsetWidth;
-el.classList.add('on');
-clearTimeout(el._tid);
-el._tid = setTimeout(function() { el.classList.remove('on'); }, 3200);
-}
-
-/* ════════════════════════════════════════
-DRAG & DROP
-════════════════════════════════════════ */
-function dzOver(e) { e.preventDefault(); document.getElementById('dz').classList.add('over'); }
-function dzOut() { document.getElementById('dz').classList.remove('over'); }
-function dzDrop(e) {
-e.preventDefault(); dzOut();
-var files = e.dataTransfer && e.dataTransfer.files;
-if (files && files[0]) pickFile(files[0]);
-}
-
-/* ════════════════════════════════════════
-ARCHIVO
-════════════════════════════════════════ */
-var EXT_ICONS = {pdf:'📕',doc:'📘',docx:'📘',png:'🖼️',jpg:'🖼️',jpeg:'🖼️',webp:'🖼️',bmp:'🖼️',gif:'🖼️',tiff:'🖼️'};
-var EXT_OK = ['pdf','doc','docx','png','jpg','jpeg','webp','bmp','gif','tiff'];
-
-function pickFile(f) {
-if (!f) return;
-var ext = f.name.split('.').pop().toLowerCase();
-if (!EXT_OK.includes(ext)) { showToast('❌ Formato no soportado', 'err'); return; }
-
-gFile = f; gText = '';
-document.getElementById('fcIco').textContent = EXT_ICONS[ext] || '📄';
-document.getElementById('fcName').textContent = f.name;
-document.getElementById('fcSize').textContent = fmtSize(f.size);
-document.getElementById('fileChip').classList.add('on');
-document.getElementById('resultBox').classList.remove('on');
-document.getElementById('resultBox').textContent = '';
-hideAlert();
-refreshBtn();
-showToast('✅ ' + f.name + ' listo', 'ok');
-}
-
-function clearFile() {
-gFile = null; gText = '';
-document.getElementById('fileIn').value = '';
-document.getElementById('fileChip').classList.remove('on');
-document.getElementById('resultBox').classList.remove('on');
-document.getElementById('voiceCard').classList.remove('on');
-hideAlert();
-refreshBtn();
-}
-
-function fmtSize(b) {
-if (b < 1024) return b + ' B';
-if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
-return (b / 1048576).toFixed(1) + ' MB';
-}
-
-/* ════════════════════════════════════════
-ACCIÓN
-════════════════════════════════════════ */
-function pickAction(a) {
-gAction = a;
-['pdf','word','excel','voice'].forEach(function(k) {
-document.getElementById('a-' + k).classList.toggle('sel', k === a);
-});
-refreshBtn();
-}
-
-var BTN_LABELS = {
-pdf: '📕 Generar PDF',
-word: '📘 Convertir a Word (.docx)',
-excel: '📗 Convertir a Excel (.xlsx)',
-voice: '🔊 Extraer texto y leer'
-};
-
-function refreshBtn() {
-var btn = document.getElementById('mainBtn');
-if (!gFile) { btn.disabled = true; btn.textContent = !gAction ? '👆 Sube un archivo y elige acción' : '👆 Sube un archivo primero'; return; }
-if (!gAction) { btn.disabled = true; btn.textContent = '👆 Elige qué hacer con el archivo'; return; }
-btn.disabled = false;
-btn.textContent = BTN_LABELS[gAction];
-}
-
-/* ════════════════════════════════════════
-PROGRESO
-════════════════════════════════════════ */
-function setP(pct, lbl) {
-document.getElementById('progWrap').classList.add('on');
-document.getElementById('progFill').style.width = Math.min(pct, 100) + '%';
-document.getElementById('progLbl').textContent = lbl || 'Procesando…';
-document.getElementById('progPct').textContent = Math.round(Math.min(pct, 100)) + '%';
-}
-function hideP() { document.getElementById('progWrap').classList.remove('on'); }
-
-/* ════════════════════════════════════════
-ALERTAS
-════════════════════════════════════════ */
-function showAlert(msg, type) {
-var el = document.getElementById('mainAlert');
-el.textContent = msg;
-el.className = 'alert on alert-' + (type || 'warn');
-}
-function hideAlert() {
-document.getElementById('mainAlert').className = 'alert';
-}
-
-/* ════════════════════════════════════════
-EJECUTAR
-════════════════════════════════════════ */
-async function run() {
-if (!gFile || !gAction) return;
-hideAlert();
-document.getElementById('resultBox').classList.remove('on');
-document.getElementById('mainBtn').disabled = true;
-
-try {
-/* 1. Extraer texto */
-gText = await extractText(gFile);
-
-if (!gText || gText.trim().length < 2) {
-throw new Error('No se encontró texto legible en el archivo. Si es una imagen, asegúrate de que el texto sea claro y nítido.');
-}
-
-setP(80, 'Generando archivo…');
-
-/* 2. Acción */
-if (gAction === 'pdf') await doPdf(gText, gFile.name);
-if (gAction === 'word') await doWord(gText, gFile.name);
-if (gAction === 'excel') doExcel(gText, gFile.name);
-if (gAction === 'voice') doVoice(gText);
-
-setP(100, '¡Completado!');
-setTimeout(hideP, 900);
-
-if (gAction !== 'voice')
-showAlert('✅ Archivo descargado correctamente en tu dispositivo.', 'ok');
-
-} catch (err) {
-hideP();
-showAlert('❌ ' + err.message, 'err');
-showToast('❌ Error: ' + err.message, 'err');
-console.error('[DocuVoz]', err);
-}
-
-document.getElementById('mainBtn').disabled = false;
-}
-
-/* ════════════════════════════════════════
-EXTRACCIÓN DE TEXTO
-════════════════════════════════════════ */
-async function extractText(file) {
-var ext = file.name.split('.').pop().toLowerCase();
-if (ext === 'pdf') return extractPDF(file);
-if (ext === 'doc' || ext === 'docx') return extractDOCX(file);
-if (['png','jpg','jpeg','webp','bmp','gif','tiff'].includes(ext)) return extractIMG(file);
-throw new Error('Tipo no soportado: ' + ext);
-}
-
-/* ── PDF con manejo correcto de encoding ── */
-async function extractPDF(file) {
-setP(5, 'Abriendo PDF…');
-var buf = await file.arrayBuffer();
-
-var pdf = await pdfjsLib.getDocument({
-data: new Uint8Array(buf),
-useSystemFonts: true,
-disableFontFace: false,
-isEvalSupported: false,
-cMapPacked: true
-}).promise;
-
-var total = pdf.numPages;
-var out = [];
-
-for (var i = 1; i <= total; i++) {
-setP(5 + (i / total) * 62, 'Página ' + i + ' de ' + total + '…');
-var page = await pdf.getPage(i);
-var content = await page.getTextContent({ normalizeWhitespace: true, disableCombineTextItems: false });
-
-/* reconstruir líneas por posición Y */
-var lineMap = {};
-content.items.forEach(function(item) {
-if (typeof item.str !== 'string') return;
-var y = item.transform ? Math.round(item.transform[5]) : 0;
-if (!lineMap[y]) lineMap[y] = [];
-lineMap[y].push(item.str);
-});
-
-/* ordenar por Y descendente (PDF Y crece hacia arriba) */
-var ys = Object.keys(lineMap).map(Number).sort(function(a,b){ return b-a; });
-var pageLines = ys.map(function(y){ return lineMap[y].join(' ').trim(); }).filter(Boolean);
-out.push(pageLines.join('\n'));
-}
-
-var raw = out.join('\n\n');
-return cleanPDF(raw);
-}
-
-/* Limpiar artefactos comunes de PDF */
-function cleanPDF(str) {
-return str
-.replace(/ﬁ/g,'fi').replace(/ﬂ/g,'fl').replace(/ﬀ/g,'ff').replace(/ﬃ/g,'ffi').replace(/ﬄ/g,'ffl')
-.replace(/\u2013/g,'–').replace(/\u2014/g,'—')
-.replace(/[\u201C\u201D]/g,'"').replace(/[\u2018\u2019]/g,"'")
-.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g,'')
-.replace(/[ \t]{3,}/g,' ')
-.replace(/\n{4,}/g,'\n\n')
-.trim();
-}
-
-/* ── DOCX ── */
-async function extractDOCX(file) {
-setP(15, 'Leyendo documento Word…');
-var buf = await file.arrayBuffer();
-var result = await mammoth.extractRawText({ arrayBuffer: buf });
-setP(68, 'Texto extraído…');
-return (result.value || '').trim();
-}
-
-/* ── IMAGEN → OCR ── */
-async function extractIMG(file) {
-setP(5, 'Iniciando OCR (puede tardar un momento)…');
-
-if (typeof Tesseract === 'undefined') {
-throw new Error('Tesseract OCR no está disponible. Comprueba tu conexión a internet.');
-}
-
-var url = URL.createObjectURL(file);
-try {
-var result = await Tesseract.recognize(url, 'spa+eng', {
-logger: function(m) {
-if (m.status === 'recognizing text')
-setP(5 + m.progress * 62, 'OCR: ' + Math.round(m.progress * 100) + '%…');
-if (m.status === 'loading tesseract core' || m.status === 'initializing tesseract')
-setP(5, 'Cargando motor OCR…');
-}
-});
-var text = (result.data.text || '').trim();
-if (!text) throw new Error('No se detectó texto en la imagen. Usa una imagen con texto claro y sin distorsión.');
-return text;
-} finally {
-URL.revokeObjectURL(url);
-}
-}
-
-/* ════════════════════════════════════════
-CONVERTIR A PDF
-════════════════════════════════════════ */
-async function doPdf(text, origName) {
-function escHtml(s) {
-return String(s)
-.replace(/&/g,'&amp;').replace(/</g,'&lt;')
-.replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-var lines = text.split('\n');
-var bodyHtml = lines.map(function(l) {
-return '<p>' + (l.trim() ? escHtml(l) : '&nbsp;') + '</p>';
-}).join('');
-
-var name = escHtml(baseName(origName));
-var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + name + '</title>' +
-'<style>*{margin:0;padding:0;box-sizing:border-box}' +
-'body{font-family:Arial,Helvetica,sans-serif;font-size:11.5pt;line-height:1.8;' +
-'padding:55px 65px;color:#111;background:#fff;max-width:800px;margin:auto}' +
-'h2{font-size:13pt;margin-bottom:18px;color:#1e1b4b;border-bottom:2px solid #e0e7ff;padding-bottom:8px}' +
-'p{margin-bottom:6px}@media print{body{padding:25px 35px}@page{margin:12mm}}' +
-'</style></head><body><h2>' + name + '</h2>' + bodyHtml +
-
-```
-'<script>window.addEventListener("load",function(){setTimeout(function(){window.print();},600);})<\/script>' +
-'</body></html>';
-```
-
-var blob = new Blob([html], { type: ‘text/html;charset=utf-8’ });
-var burl = URL.createObjectURL(blob);
-var win = window.open(burl, ‘_blank’);
-
-if (!win) {
-/* Fallback: descargar HTML */
-download(blob, baseName(origName) + ‘.html’);
-showAlert(‘⚠️ Ventanas emergentes bloqueadas. Se descargó como HTML: ábrelo en el navegador y usa Archivo → Imprimir → Guardar como PDF.’, ‘warn’);
-} else {
-setTimeout(function() { URL.revokeObjectURL(burl); }, 6000);
-showToast(‘🖨️ Usa “Guardar como PDF” en el diálogo de impresión’, ‘inf’);
-}
-}
-
-/* ════════════════════════════════════════
-CONVERTIR A WORD
-════════════════════════════════════════ */
-async function doWord(text, origName) {
-if (!window.docx) throw new Error(‘La librería docx.js no cargó. Verifica tu conexión a internet y recarga la página.’);
-
-var D = window.docx;
-var lines = text.split(’\n’);
-var children = lines.map(function(line) {
-return new D.Paragraph({
-children: [new D.TextRun({ text: line || ’ ’, size: 24, font: ‘Arial’ })],
-spacing: { after: 120 }
-});
-});
-
-var doc = new D.Document({ creator:‘DocuVoz Pro’, title: baseName(origName), sections:[{ properties:{}, children:children }] });
-var blob = await D.Packer.toBlob(doc);
-download(blob, baseName(origName) + ‘_convertido.docx’,
-‘application/vnd.openxmlformats-officedocument.wordprocessingml.document’);
-}
-
-/* ════════════════════════════════════════
-CONVERTIR A EXCEL
-════════════════════════════════════════ */
-function doExcel(text, origName) {
-var lines = text.split(’\n’).filter(function(l){ return l.trim(); });
-if (!lines.length) throw new Error(‘Sin contenido para exportar.’);
-
-/* Detectar separadores */
-var rows = lines.map(function(line) {
-var byTab = line.split(’\t’);
-var bySemi = line.split(’;’);
-var bySpc = line.split(/ +/);
-if (byTab.length > 1) return byTab.map(function(s){ return s.trim(); });
-if (bySemi.length > 1) return bySemi.map(function(s){ return s.trim(); });
-if (bySpc.length > 1) return bySpc.map(function(s){ return s.trim(); });
-return [line.trim()];
-});
-
-/* Anchos automáticos */
-var colW = [];
-rows.forEach(function(row) {
-row.forEach(function(cell, ci) {
-var l = cell ? cell.length : 8;
-if (!colW[ci] || colW[ci] < l) colW[ci] = l;
-});
-});
-
-var wb = XLSX.utils.book_new();
-var ws = XLSX.utils.aoa_to_sheet(rows);
-ws[’!cols’] = colW.map(function(w){ return { wch: Math.min(w + 3, 60) }; });
-XLSX.utils.book_append_sheet(wb, ws, ‘Contenido’);
-
-/* Segunda hoja con texto completo */
-var ws2 = XLSX.utils.aoa_to_sheet(
-[[‘Texto completo’]].concat(lines.map(function(l){ return [l]; }))
-);
-ws2[’!cols’] = [{ wch: 80 }];
-XLSX.utils.book_append_sheet(wb, ws2, ‘Texto completo’);
-
-var buf = XLSX.write(wb, { bookType:‘xlsx’, type:‘array’ });
-download(
-new Blob([buf], { type:‘application/vnd.openxmlformats-officedocument.spreadsheetml.sheet’ }),
-baseName(origName) + ‘_convertido.xlsx’
-);
-}
-
-/* ════════════════════════════════════════
-VOZ
-════════════════════════════════════════ */
-function doVoice(text) {
-var card = document.getElementById(‘voiceCard’);
-card.classList.add(‘on’);
-var rb = document.getElementById(‘resultBox’);
-rb.textContent = text;
-rb.classList.add(‘on’);
-loadVoices();
-card.scrollIntoView({ behavior:‘smooth’, block:‘start’ });
-showToast(‘📖 Texto listo. Pulsa ▶ para escuchar’, ‘inf’);
-}
-
-function loadVoices() {
-function fill() {
-var all = window.speechSynthesis.getVoices();
-gVoices = all.filter(function(v) {
-return v.lang.toLowerCase().startsWith(‘es’) ||
-v.name.toLowerCase().includes(‘spanish’) ||
-v.name.toLowerCase().includes(‘español’);
-});
-if (!gVoices.length) gVoices = all;
-
-```
-var sel = document.getElementById('voiceSel');
-if (!gVoices.length) {
-sel.innerHTML = '<option>Sin voces disponibles en este dispositivo</option>';
-return;
-}
-sel.innerHTML = gVoices.map(function(v, i) {
-return '<option value="' + i + '">' + v.name + ' (' + v.lang + ')</option>';
-}).join('');
-
-/* Preferir voz latinoamericana */
-var pref = ['es-MX','es-AR','es-CO','es-CL','es-PE','es-VE','es-US','es-ES'];
-var best = -1;
-pref.forEach(function(lang) {
-if (best >= 0) return;
-gVoices.forEach(function(v, i) {
-if (best < 0 && v.lang === lang) best = i;
-});
-});
-if (best >= 0) sel.value = best;
-```
-
-}
-
-var stt = window.speechSynthesis;
-if (stt.getVoices().length > 0) fill();
-/* onvoiceschanged dispara en Chrome/Edge al cargar */
-stt.onvoiceschanged = fill;
-/* Polyfill: Safari/Firefox no siempre dispara el evento */
-setTimeout(fill, 500);
-setTimeout(fill, 1500);
-}
-
-function vPlay() {
-var text = gText || document.getElementById(‘manualTxt’).value.trim();
-if (!text) { showToast(‘⚠️ No hay texto para leer’, ‘err’); return; }
-
-var stt = window.speechSynthesis;
-stt.cancel();
-gPaused = false;
-clearInterval(keepAliveTimer);
-
-gUtt = new SpeechSynthesisUtterance(text);
-
-var idx = parseInt(document.getElementById(‘voiceSel’).value);
-if (!isNaN(idx) && gVoices[idx]) {
-gUtt.voice = gVoices[idx];
-gUtt.lang = gVoices[idx].lang;
-} else {
-gUtt.lang = ‘es-MX’;
-}
-
-gUtt.rate = parseFloat(document.getElementById(‘rateR’).value);
-gUtt.pitch = parseFloat(document.getElementById(‘pitchR’).value);
-gUtt.volume = 1;
-
-gUtt.onstart = function() {
-document.getElementById(‘wave’).classList.add(‘on’);
-document.getElementById(‘btnPlay’).disabled = true;
-document.getElementById(‘btnPause’).disabled = false;
-document.getElementById(‘btnStop’).disabled = false;
-showToast(‘🔊 Leyendo en voz alta…’, ‘inf’);
-};
-gUtt.onend = vReset;
-gUtt.onerror = function(e) {
-if (e.error !== ‘interrupted’ && e.error !== ‘canceled’)
-showToast(’Error de voz: ’ + e.error, ‘err’);
-vReset();
-};
-
-stt.speak(gUtt);
-
-/* Workaround Chrome Android: síntesis se corta en textos largos */
-keepAliveTimer = setInterval(function() {
-if (!stt.speaking) { clearInterval(keepAliveTimer); return; }
-if (!gPaused) { stt.pause(); stt.resume(); }
-}, 12000);
-}
-
-function vPause() {
-if (!gPaused) {
-window.speechSynthesis.pause();
-gPaused = true;
-document.getElementById(‘btnPause’).textContent = ‘▶ Continuar’;
-document.getElementById(‘wave’).classList.remove(‘on’);
-showToast(‘⏸ Pausado’, ‘inf’);
-} else {
-window.speechSynthesis.resume();
-gPaused = false;
-document.getElementById(‘btnPause’).textContent = ‘⏸ Pausar’;
-document.getElementById(‘wave’).classList.add(‘on’);
-showToast(‘▶ Continuando…’, ‘inf’);
-}
-}
-
-function vStop() {
-clearInterval(keepAliveTimer);
-window.speechSynthesis.cancel();
-vReset();
-showToast(‘⏹ Detenido’, ‘inf’);
-}
-
-function vReset() {
-clearInterval(keepAliveTimer);
-gPaused = false;
-document.getElementById(‘wave’).classList.remove(‘on’);
-document.getElementById(‘btnPlay’).disabled = false;
-document.getElementById(‘btnPause’).disabled = true;
-document.getElementById(‘btnStop’).disabled = true;
-document.getElementById(‘btnPause’).textContent = ‘⏸ Pausar’;
-}
-
-function readManual() {
-var text = document.getElementById(‘manualTxt’).value.trim();
-if (!text) { showToast(‘✏️ Escribe texto primero’, ‘err’); return; }
-gText = text;
-document.getElementById(‘voiceCard’).classList.add(‘on’);
-document.getElementById(‘resultBox’).textContent = text;
-document.getElementById(‘resultBox’).classList.add(‘on’);
-loadVoices();
-document.getElementById(‘voiceCard’).scrollIntoView({ behavior:‘smooth’ });
-/* Esperar voces */
-setTimeout(vPlay, 600);
-}
-
-/* ════════════════════════════════════════
-UTILIDADES
-════════════════════════════════════════ */
-function baseName(fname) { return fname.replace(/.[^.]+$/, ‘’); }
-
-function download(blob, filename) {
-var url = URL.createObjectURL(blob);
-var a = document.createElement(‘a’);
-a.href = url;
-a.download = filename;
-document.body.appendChild(a);
-a.click();
-setTimeout(function() {
-document.body.removeChild(a);
-URL.revokeObjectURL(url);
-}, 1000);
-}
-
-/* ════════════════════════════════════════
-INIT
-════════════════════════════════════════ */
-window.addEventListener(‘load’, function() {
-loadVoices();
-
-/* Feedback táctil */
-document.querySelectorAll(‘button, .act-btn, .drop-zone’).forEach(function(el) {
-el.addEventListener(‘touchstart’, function() { this.style.opacity = ‘.7’; }, { passive:true });
-el.addEventListener(‘touchend’, function() { this.style.opacity = ‘’; }, { passive:true });
-el.addEventListener(‘touchcancel’,function() { this.style.opacity = ‘’; }, { passive:true });
-});
-
-/* Verificar soporte */
-if (!(‘speechSynthesis’ in window)) {
-document.getElementById(‘voiceCard’).insertAdjacentHTML(‘afterbegin’,
-‘<div class="alert on alert-err">⚠️ Tu navegador no soporta síntesis de voz. Usa Google Chrome o Microsoft Edge.</div>’);
-}
-});
-</script>
-
-</body>
-</html>
+<div class="flex-1">
+<label class="block text-xs font-semibold text-indigo-500 mb-2">TONO</label>
+<input type="range" id="pitchSlider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-indigo-600" oninput="updateSliderValue(this, 'pitchValue')">
+<div class="flex justify-between text-xs text-indigo
