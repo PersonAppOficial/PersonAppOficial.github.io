@@ -1,186 +1,3070 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DocuVoz Pro — Convertidor + Lector de Voz</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&display=swap');
+  <meta charset="UTF-8" />
 
-:root {
---primary: #6366f1;
-}
+  <meta
 
-* { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    name="viewport"
 
-.app {
-font-family: 'Inter', system_ui, sans-serif;
-}
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
 
-.title-font {
-font-family: 'Space Grotesk', sans-serif;
-}
+  />
 
-.glass {
-background: rgba(255,255,255,0.95);
-backdrop-filter: blur(16px);
-}
+  <title>DocuVoz Next</title>
 
-.drop-zone {
-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
-.wave {
-animation: wavePulse 1.2s ease-in-out infinite;
-}
 
-@keyframes wavePulse {
-0%, 100% { height: 6px; opacity: 0.4; }
-50% { height: 36px; opacity: 1; }
-}
+  <link
 
-.toast {
-animation: toastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-</style>
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+
+    rel="stylesheet"
+
+  />
+
+
+
+  <!-- Librerías -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+
+
+
+  <style>
+
+    * {
+
+      margin: 0;
+
+      padding: 0;
+
+      box-sizing: border-box;
+
+      -webkit-tap-highlight-color: transparent;
+
+    }
+
+
+
+    :root {
+
+      --bg: #0b1020;
+
+      --bg2: #11182f;
+
+      --card: rgba(255, 255, 255, 0.08);
+
+      --card-border: rgba(255, 255, 255, 0.14);
+
+      --white: #ffffff;
+
+      --text: #eef2ff;
+
+      --muted: #b6c0e0;
+
+      --primary: #6d5dfc;
+
+      --primary-2: #7c3aed;
+
+      --cyan: #06b6d4;
+
+      --green: #10b981;
+
+      --red: #ef4444;
+
+      --yellow: #f59e0b;
+
+      --blue: #3b82f6;
+
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+
+      --radius: 24px;
+
+      --radius-sm: 16px;
+
+    }
+
+
+
+    html {
+
+      scroll-behavior: smooth;
+
+    }
+
+
+
+    body {
+
+      font-family: "Inter", sans-serif;
+
+      background:
+
+        radial-gradient(circle at 20% 10%, rgba(109, 93, 252, 0.22), transparent 28%),
+
+        radial-gradient(circle at 80% 0%, rgba(6, 182, 212, 0.18), transparent 24%),
+
+        linear-gradient(180deg, var(--bg), var(--bg2));
+
+      color: var(--text);
+
+      min-height: 100vh;
+
+      padding: 22px 14px 40px;
+
+    }
+
+
+
+    .app {
+
+      max-width: 860px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .hero {
+
+      text-align: center;
+
+      padding: 10px 0 28px;
+
+    }
+
+
+
+    .hero-badge {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      background: rgba(255, 255, 255, 0.08);
+
+      border: 1px solid rgba(255, 255, 255, 0.12);
+
+      border-radius: 999px;
+
+      padding: 10px 16px;
+
+      font-size: 0.82rem;
+
+      font-weight: 700;
+
+      color: #dbeafe;
+
+      margin-bottom: 16px;
+
+      backdrop-filter: blur(10px);
+
+    }
+
+
+
+    .hero h1 {
+
+      font-size: clamp(2rem, 6vw, 3.4rem);
+
+      font-weight: 900;
+
+      line-height: 1.02;
+
+      letter-spacing: -1.6px;
+
+      margin-bottom: 10px;
+
+    }
+
+
+
+    .hero h1 span {
+
+      background: linear-gradient(135deg, #9f8bff, #63d6ff);
+
+      -webkit-background-clip: text;
+
+      -webkit-text-fill-color: transparent;
+
+      background-clip: text;
+
+      color: transparent;
+
+    }
+
+
+
+    .hero p {
+
+      color: var(--muted);
+
+      font-size: 1rem;
+
+      line-height: 1.7;
+
+      max-width: 700px;
+
+      margin: 0 auto;
+
+    }
+
+
+
+    .grid {
+
+      display: grid;
+
+      gap: 18px;
+
+    }
+
+
+
+    .card {
+
+      background: var(--card);
+
+      border: 1px solid var(--card-border);
+
+      border-radius: var(--radius);
+
+      box-shadow: var(--shadow);
+
+      backdrop-filter: blur(16px);
+
+      padding: 22px;
+
+    }
+
+
+
+    .card-title {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      font-size: 1rem;
+
+      font-weight: 800;
+
+      margin-bottom: 16px;
+
+    }
+
+
+
+    .drop-zone {
+
+      position: relative;
+
+      border: 2px dashed rgba(255, 255, 255, 0.18);
+
+      border-radius: 22px;
+
+      padding: 34px 18px;
+
+      text-align: center;
+
+      cursor: pointer;
+
+      transition: 0.22s ease;
+
+      background: rgba(255, 255, 255, 0.05);
+
+      overflow: hidden;
+
+    }
+
+
+
+    .drop-zone:hover,
+
+    .drop-zone.over {
+
+      transform: translateY(-1px);
+
+      border-color: rgba(109, 93, 252, 0.8);
+
+      background: rgba(109, 93, 252, 0.12);
+
+      box-shadow: 0 0 0 4px rgba(109, 93, 252, 0.08);
+
+    }
+
+
+
+    .drop-zone input[type="file"] {
+
+      position: absolute;
+
+      inset: 0;
+
+      opacity: 0;
+
+      cursor: pointer;
+
+    }
+
+
+
+    .dz-icon {
+
+      font-size: 2.6rem;
+
+      margin-bottom: 12px;
+
+    }
+
+
+
+    .dz-title {
+
+      font-size: 1.08rem;
+
+      font-weight: 800;
+
+      margin-bottom: 6px;
+
+    }
+
+
+
+    .dz-sub {
+
+      color: var(--muted);
+
+      font-size: 0.92rem;
+
+      line-height: 1.6;
+
+    }
+
+
+
+    .dz-tags {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      justify-content: center;
+
+      margin-top: 16px;
+
+    }
+
+
+
+    .tag {
+
+      padding: 8px 12px;
+
+      border-radius: 999px;
+
+      font-size: 0.76rem;
+
+      font-weight: 800;
+
+      letter-spacing: 0.2px;
+
+      border: 1px solid rgba(255, 255, 255, 0.08);
+
+    }
+
+
+
+    .tag-pdf { background: rgba(239, 68, 68, 0.16); color: #fecaca; }
+
+    .tag-doc { background: rgba(59, 130, 246, 0.16); color: #bfdbfe; }
+
+    .tag-img { background: rgba(16, 185, 129, 0.16); color: #bbf7d0; }
+
+    .tag-txt { background: rgba(245, 158, 11, 0.16); color: #fde68a; }
+
+
+
+    .file-chip {
+
+      display: none;
+
+      align-items: center;
+
+      gap: 12px;
+
+      margin-top: 14px;
+
+      padding: 14px 16px;
+
+      border-radius: 18px;
+
+      background: rgba(255, 255, 255, 0.07);
+
+      border: 1px solid rgba(255, 255, 255, 0.12);
+
+    }
+
+
+
+    .file-chip.on { display: flex; }
+
+
+
+    .fc-icon {
+
+      width: 48px;
+
+      height: 48px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 14px;
+
+      font-size: 1.6rem;
+
+      background: rgba(109, 93, 252, 0.16);
+
+      flex-shrink: 0;
+
+    }
+
+
+
+    .fc-info {
+
+      flex: 1;
+
+      min-width: 0;
+
+    }
+
+
+
+    .fc-name {
+
+      font-weight: 800;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      margin-bottom: 4px;
+
+    }
+
+
+
+    .fc-meta {
+
+      color: var(--muted);
+
+      font-size: 0.85rem;
+
+    }
+
+
+
+    .fc-del {
+
+      width: 36px;
+
+      height: 36px;
+
+      border-radius: 12px;
+
+      border: none;
+
+      background: rgba(239, 68, 68, 0.16);
+
+      color: #fecaca;
+
+      font-size: 1rem;
+
+      cursor: pointer;
+
+    }
+
+
+
+    .actions-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      gap: 12px;
+
+      margin-top: 8px;
+
+    }
+
+
+
+    .act-btn {
+
+      border: 1px solid rgba(255, 255, 255, 0.12);
+
+      background: rgba(255, 255, 255, 0.06);
+
+      color: var(--white);
+
+      border-radius: 20px;
+
+      padding: 18px 14px;
+
+      cursor: pointer;
+
+      text-align: left;
+
+      transition: 0.2s ease;
+
+      min-height: 108px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+    }
+
+
+
+    .act-btn:hover {
+
+      transform: translateY(-2px);
+
+      border-color: rgba(255, 255, 255, 0.22);
+
+    }
+
+
+
+    .act-btn.sel {
+
+      outline: 3px solid rgba(109, 93, 252, 0.26);
+
+      border-color: rgba(109, 93, 252, 0.7);
+
+      background: rgba(109, 93, 252, 0.16);
+
+    }
+
+
+
+    .act-top {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+    }
+
+
+
+    .act-icon {
+
+      font-size: 1.7rem;
+
+    }
+
+
+
+    .act-name {
+
+      font-size: 0.98rem;
+
+      font-weight: 800;
+
+      margin-bottom: 4px;
+
+    }
+
+
+
+    .act-desc {
+
+      color: var(--muted);
+
+      font-size: 0.86rem;
+
+      line-height: 1.5;
+
+    }
+
+
+
+    .main-btn {
+
+      width: 100%;
+
+      margin-top: 18px;
+
+      border: none;
+
+      border-radius: 18px;
+
+      padding: 17px 18px;
+
+      cursor: pointer;
+
+      color: white;
+
+      font-size: 1rem;
+
+      font-weight: 900;
+
+      letter-spacing: 0.2px;
+
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+
+      box-shadow: 0 12px 28px rgba(109, 93, 252, 0.34);
+
+      transition: 0.2s ease;
+
+    }
+
+
+
+    .main-btn:hover:not(:disabled) {
+
+      transform: translateY(-1px);
+
+    }
+
+
+
+    .main-btn:disabled {
+
+      opacity: 0.5;
+
+      cursor: not-allowed;
+
+      box-shadow: none;
+
+    }
+
+
+
+    .progress-wrap {
+
+      display: none;
+
+      margin-top: 16px;
+
+    }
+
+
+
+    .progress-wrap.on {
+
+      display: block;
+
+    }
+
+
+
+    .progress-head {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      font-size: 0.84rem;
+
+      font-weight: 700;
+
+      color: var(--muted);
+
+      margin-bottom: 8px;
+
+    }
+
+
+
+    .progress-track {
+
+      width: 100%;
+
+      height: 10px;
+
+      background: rgba(255, 255, 255, 0.08);
+
+      border-radius: 999px;
+
+      overflow: hidden;
+
+    }
+
+
+
+    .progress-fill {
+
+      width: 0%;
+
+      height: 100%;
+
+      border-radius: 999px;
+
+      background: linear-gradient(90deg, var(--primary), var(--cyan));
+
+      transition: width 0.25s ease;
+
+    }
+
+
+
+    .alert {
+
+      display: none;
+
+      margin-top: 16px;
+
+      border-radius: 16px;
+
+      padding: 14px 16px;
+
+      font-size: 0.92rem;
+
+      line-height: 1.6;
+
+      font-weight: 700;
+
+    }
+
+
+
+    .alert.on { display: block; }
+
+    .alert-ok {
+
+      background: rgba(16, 185, 129, 0.14);
+
+      color: #bbf7d0;
+
+      border: 1px solid rgba(16, 185, 129, 0.25);
+
+    }
+
+    .alert-err {
+
+      background: rgba(239, 68, 68, 0.14);
+
+      color: #fecaca;
+
+      border: 1px solid rgba(239, 68, 68, 0.25);
+
+    }
+
+    .alert-warn {
+
+      background: rgba(245, 158, 11, 0.14);
+
+      color: #fde68a;
+
+      border: 1px solid rgba(245, 158, 11, 0.25);
+
+    }
+
+
+
+    .result-box {
+
+      display: none;
+
+      margin-top: 16px;
+
+      border-radius: 18px;
+
+      padding: 16px;
+
+      background: rgba(255, 255, 255, 0.05);
+
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      color: #f8fafc;
+
+      white-space: pre-wrap;
+
+      word-break: break-word;
+
+      max-height: 280px;
+
+      overflow-y: auto;
+
+      line-height: 1.7;
+
+      font-size: 0.92rem;
+
+    }
+
+
+
+    .result-box.on { display: block; }
+
+
+
+    .voice-card {
+
+      display: none;
+
+    }
+
+
+
+    .voice-card.on {
+
+      display: block;
+
+    }
+
+
+
+    .voice-grid {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 12px;
+
+      margin-top: 12px;
+
+      margin-bottom: 14px;
+
+    }
+
+
+
+    .field {
+
+      background: rgba(255, 255, 255, 0.05);
+
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      border-radius: 18px;
+
+      padding: 14px;
+
+    }
+
+
+
+    .field label {
+
+      display: block;
+
+      font-size: 0.78rem;
+
+      font-weight: 800;
+
+      color: #c7d2fe;
+
+      margin-bottom: 8px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.4px;
+
+    }
+
+
+
+    .field select,
+
+    .field input[type="range"],
+
+    textarea {
+
+      width: 100%;
+
+    }
+
+
+
+    .field select,
+
+    textarea {
+
+      background: rgba(255, 255, 255, 0.07);
+
+      border: 1px solid rgba(255, 255, 255, 0.12);
+
+      color: white;
+
+      border-radius: 14px;
+
+      padding: 12px 14px;
+
+      font-family: "Inter", sans-serif;
+
+      font-size: 0.95rem;
+
+      outline: none;
+
+    }
+
+
+
+    textarea {
+
+      min-height: 120px;
+
+      resize: vertical;
+
+      line-height: 1.7;
+
+    }
+
+
+
+    .wave {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 4px;
+
+      height: 42px;
+
+      margin: 8px 0 16px;
+
+    }
+
+
+
+    .bar {
+
+      width: 5px;
+
+      height: 8px;
+
+      border-radius: 999px;
+
+      background: linear-gradient(180deg, #9f8bff, #63d6ff);
+
+      opacity: 0.45;
+
+    }
+
+
+
+    .wave.on .bar {
+
+      animation: wavePulse 0.8s ease-in-out infinite;
+
+    }
+
+
+
+    .bar:nth-child(1) { animation-delay: 0s; }
+
+    .bar:nth-child(2) { animation-delay: .08s; }
+
+    .bar:nth-child(3) { animation-delay: .16s; }
+
+    .bar:nth-child(4) { animation-delay: .24s; }
+
+    .bar:nth-child(5) { animation-delay: .32s; }
+
+    .bar:nth-child(6) { animation-delay: .24s; }
+
+    .bar:nth-child(7) { animation-delay: .16s; }
+
+    .bar:nth-child(8) { animation-delay: .08s; }
+
+    .bar:nth-child(9) { animation-delay: 0s; }
+
+
+
+    @keyframes wavePulse {
+
+      0%, 100% { height: 8px; opacity: 0.35; }
+
+      50% { height: 34px; opacity: 1; }
+
+    }
+
+
+
+    .voice-buttons {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 12px;
+
+    }
+
+
+
+    .voice-buttons .full {
+
+      grid-column: 1 / -1;
+
+    }
+
+
+
+    .vbtn {
+
+      border: none;
+
+      border-radius: 16px;
+
+      padding: 15px 14px;
+
+      cursor: pointer;
+
+      font-size: 0.95rem;
+
+      font-weight: 800;
+
+      color: white;
+
+    }
+
+
+
+    .vbtn-play {
+
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+
+      box-shadow: 0 10px 24px rgba(139, 92, 246, 0.3);
+
+    }
+
+
+
+    .vbtn-pause {
+
+      background: rgba(245, 158, 11, 0.18);
+
+      color: #fde68a;
+
+      border: 1px solid rgba(245, 158, 11, 0.25);
+
+    }
+
+
+
+    .vbtn-stop {
+
+      background: rgba(239, 68, 68, 0.18);
+
+      color: #fecaca;
+
+      border: 1px solid rgba(239, 68, 68, 0.25);
+
+    }
+
+
+
+    .vbtn:disabled {
+
+      opacity: 0.45;
+
+      cursor: not-allowed;
+
+    }
+
+
+
+    .footer {
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 0.84rem;
+
+      line-height: 1.8;
+
+      padding: 8px 0 0;
+
+    }
+
+
+
+    .toast {
+
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 24px;
+
+      transform: translateX(-50%) translateY(120px);
+
+      padding: 14px 20px;
+
+      border-radius: 999px;
+
+      color: white;
+
+      font-weight: 800;
+
+      font-size: 0.9rem;
+
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+
+      z-index: 9999;
+
+      transition: 0.35s ease;
+
+      max-width: 90vw;
+
+      text-align: center;
+
+    }
+
+
+
+    .toast.on { transform: translateX(-50%) translateY(0); }
+
+    .toast.ok { background: linear-gradient(135deg, #10b981, #059669); }
+
+    .toast.err { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+    .toast.inf { background: linear-gradient(135deg, #6d5dfc, #7c3aed); }
+
+
+
+    @media (max-width: 720px) {
+
+      .actions-grid,
+
+      .voice-grid,
+
+      .voice-buttons {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+
+      .voice-buttons .full {
+
+        grid-column: auto;
+
+      }
+
+
+
+      .card {
+
+        padding: 18px;
+
+      }
+
+
+
+      .drop-zone {
+
+        padding: 28px 14px;
+
+      }
+
+    }
+
+  </style>
+
 </head>
-<body class="app bg-gradient-to-br from-indigo-50 via-white to-cyan-50 min-h-screen pb-12">
-<div class="max-w-2xl mx-auto px-4 pt-8">
 
-<!-- HEADER -->
-<div class="flex items-center justify-between mb-8">
-<div class="flex items-center gap-x-3">
-<div class="w-11 h-11 bg-gradient-to-br from-indigo-600 to-cyan-500 rounded-2xl flex items-center justify-center text-3xl shadow-inner">🗂️</div>
-<div>
-<h1 class="title-font text-4xl font-semibold tracking-tighter text-indigo-950">DocuVoz <span class="text-cyan-500">Pro</span></h1>
-<p class="text-sm text-indigo-600 font-medium -mt-1">100% local • Gratis • Sin registro</p>
-</div>
-</div>
-<div onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center bg-white shadow rounded-2xl cursor-pointer hover:scale-110 text-xl" id="themeBtn">
-🌙
-</div>
-</div>
+<body>
 
-<!-- PASO 1: SUBIR ARCHIVO -->
-<div class="glass border border-indigo-100 rounded-3xl p-6 shadow-xl mb-6">
-<div class="flex items-center gap-x-2 mb-4 text-indigo-700 font-semibold text-lg">
-<span class="text-2xl">📤</span>
-<span>Paso 1 — Sube tu archivo</span>
-</div>
+  <div class="app">
 
-<div id="dropZone"
-onclick="document.getElementById('fileInput').click()"
-class="drop-zone border-2 border-dashed border-indigo-300 hover:border-indigo-500 rounded-3xl py-14 text-center cursor-pointer bg-white/70">
-<input type="file" id="fileInput" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tiff" class="hidden" onchange="handleFileSelect(event)">
+    <section class="hero">
 
-<div class="mx-auto w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-5xl mb-4">☁️</div>
-<p class="font-semibold text-indigo-900 text-xl">Arrastra o haz clic para subir</p>
-<p class="text-indigo-500 text-sm mt-1">PDF • Word • Imágenes con texto</p>
+      <div class="hero-badge">🚀 Herramienta gratuita • 100% en navegador</div>
 
-<div class="flex justify-center gap-2 mt-6">
-<span class="px-4 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-3xl">PDF</span>
-<span class="px-4 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-3xl">DOCX</span>
-<span class="px-4 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-3xl">JPG / PNG</span>
-</div>
-</div>
+      <h1>Docu<span>Voz</span> Next</h1>
 
-<!-- Archivo seleccionado -->
-<div id="filePreview" class="hidden mt-6 p-4 bg-white border border-indigo-200 rounded-2xl flex items-center gap-x-4">
-<div id="fileIcon" class="text-4xl">📄</div>
-<div class="flex-1 min-w-0">
-<p id="fileName" class="font-semibold text-indigo-900 truncate"></p>
-<p id="fileSize" class="text-xs text-indigo-500"></p>
-</div>
-<button onclick="clearFile()"
-class="w-9 h-9 flex items-center justify-center text-red-500 hover:bg-red-100 rounded-2xl text-xl">✕</button>
-</div>
-</div>
+      <p>
 
-<!-- PASO 2: ACCIONES -->
-<div id="actionPanel" class="glass border border-indigo-100 rounded-3xl p-6 shadow-xl mb-6 hidden">
-<div class="flex items-center gap-x-2 mb-5 text-indigo-700 font-semibold text-lg">
-<span class="text-2xl">⚡</span>
-<span>Paso 2 — ¿Qué quieres hacer?</span>
-</div>
+        Convierte archivos, extrae texto, aplica OCR a imágenes y escucha todo en
 
-<div class="grid grid-cols-2 gap-3">
-<button onclick="selectAction('pdf')" id="btn-pdf"
-class="action-btn flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-3xl border-2 border-transparent bg-white hover:shadow-md">
-<span class="text-5xl">📕</span>
-<span class="font-semibold text-indigo-900">Guardar como PDF</span>
-</button>
-<button onclick="selectAction('word')" id="btn-word"
-class="action-btn flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-3xl border-2 border-transparent bg-white hover:shadow-md">
-<span class="text-5xl">📘</span>
-<span class="font-semibold text-indigo-900">Convertir a Word</span>
-</button>
-<button onclick="selectAction('excel')" id="btn-excel"
-class="action-btn flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-3xl border-2 border-transparent bg-white hover:shadow-md">
-<span class="text-5xl">📗</span>
-<span class="font-semibold text-indigo-900">Convertir a Excel</span>
-</button>
-<button onclick="selectAction('voice')" id="btn-voice"
-class="action-btn flex flex-col items-center justify-center gap-2 py-6 px-4 rounded-3xl border-2 border-transparent bg-white hover:shadow-md">
-<span class="text-5xl">🔊</span>
-<span class="font-semibold text-indigo-900">Leer en voz alta</span>
-</button>
-</div>
+        voz alta con español latino.
 
-<button onclick="executeAction()" id="mainActionBtn"
-class="w-full mt-6 py-4 bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-semibold text-lg rounded-3xl shadow-lg flex items-center justify-center gap-x-3 disabled:opacity-50">
-<span id="btnText">🚀 Ejecutar acción</span>
-</button>
-</div>
+      </p>
 
-<!-- BARRA DE PROGRESO -->
-<div id="progressBar" class="hidden glass border border-indigo-100 rounded-3xl p-6 mb-6">
-<div class="flex justify-between text-sm font-medium text-indigo-600 mb-3">
-<span id="progressLabel">Procesando archivo...</span>
-<span id="progressPercent">0%</span>
-</div>
-<div class="h-3 bg-indigo-100 rounded-3xl overflow-hidden">
-<div id="progressFill" class="h-3 bg-gradient-to-r from-indigo-600 to-cyan-500 w-0 rounded-3xl"></div>
-</div>
-</div>
+    </section>
 
-<!-- TEXTO EXTRAÍDO -->
-<div id="textResultPanel" class="glass border border-indigo-100 rounded-3xl p-6 shadow-xl hidden">
-<div class="flex justify-between items-baseline mb-4">
-<div class="text-lg font-semibold text-indigo-900 flex items-center gap-x-2">
-📝 Texto extraído
-</div>
-<div class="flex gap-x-2">
-<button onclick="copyText()" class="text-xs px-4 py-2 bg-white border border-indigo-200 hover:bg-indigo-50 rounded-2xl font-medium">📋 Copiar</button>
-<button onclick="downloadTxt()" class="text-xs px-4 py-2 bg-white border border-indigo-200 hover:bg-indigo-50 rounded-2xl font-medium">📥 .txt</button>
-</div>
-</div>
-<div id="extractedText" class="max-h-64 overflow-y-auto text-sm leading-relaxed text-slate-700 bg-white/70 p-5 rounded-2xl border border-indigo-100 whitespace-pre-wrap"></div>
-</div>
 
-<!-- LECTOR DE VOZ -->
-<div id="voicePanel" class="hidden glass border border-indigo-100 rounded-3xl p-6 shadow-xl mt-6">
-<div class="flex items-center justify-between mb-5">
-<div class="text-lg font-semibold text-indigo-900 flex items-center gap-2">
-🎤 Lector de voz en español latino
-</div>
-<select id="voiceSelect" class="bg-white border border-indigo-200 text-indigo-900 rounded-2xl px-4 py-2 text-sm font-medium focus:outline-none"></select>
-</div>
 
-<div class="flex gap-6 mb-6">
-<div class="flex-1">
-<label class="block text-xs font-semibold text-indigo-500 mb-2">VELOCIDAD</label>
-<input type="range" id="rateSlider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-indigo-600" oninput="updateSliderValue(this, 'rateValue')">
-<div class="flex justify-between text-xs text-indigo-400 mt-1"><span>0.5x</span><span id="rateValue" class="font-semibold text-indigo-700">1.0x</span><span>2x</span></div>
-</div>
-<div class="flex-1">
-<label class="block text-xs font-semibold text-indigo-500 mb-2">TONO</label>
-<input type="range" id="pitchSlider" min="0.5" max="2" step="0.1" value="1" class="w-full accent-indigo-600" oninput="updateSliderValue(this, 'pitchValue')">
-<div class="flex justify-between text-xs text-indigo
+    <div class="grid">
+
+      <!-- SUBIR ARCHIVO -->
+
+      <section class="card">
+
+        <div class="card-title">📂 Paso 1 — Sube tu archivo</div>
+
+
+
+        <div
+
+          class="drop-zone"
+
+          id="dropZone"
+
+          ondragover="dzOver(event)"
+
+          ondragleave="dzOut()"
+
+          ondrop="dzDrop(event)"
+
+        >
+
+          <input
+
+            type="file"
+
+            id="fileInput"
+
+            accept=".pdf,.docx,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tiff,.txt"
+
+            onchange="pickFile(this.files[0])"
+
+          />
+
+          <div class="dz-icon">☁️</div>
+
+          <div class="dz-title">Toca aquí o arrastra tu archivo</div>
+
+          <div class="dz-sub">
+
+            Soporta PDF, DOCX, TXT e imágenes con texto
+
+          </div>
+
+          <div class="dz-tags">
+
+            <span class="tag tag-pdf">PDF</span>
+
+            <span class="tag tag-doc">DOCX</span>
+
+            <span class="tag tag-img">JPG · PNG</span>
+
+            <span class="tag tag-txt">TXT</span>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="file-chip" id="fileChip">
+
+          <div class="fc-icon" id="fcIcon">📄</div>
+
+          <div class="fc-info">
+
+            <div class="fc-name" id="fcName">Archivo</div>
+
+            <div class="fc-meta" id="fcMeta">0 KB</div>
+
+          </div>
+
+          <button class="fc-del" onclick="clearFile()">✕</button>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ACCIONES -->
+
+      <section class="card">
+
+        <div class="card-title">⚙️ Paso 2 — Elige qué hacer</div>
+
+
+
+        <div class="actions-grid">
+
+          <button class="act-btn" id="a-pdf" onclick="pickAction('pdf')">
+
+            <div class="act-top">
+
+              <span class="act-icon">📕</span>
+
+            </div>
+
+            <div>
+
+              <div class="act-name">Convertir a PDF</div>
+
+              <div class="act-desc">Genera un PDF limpio a partir del texto extraído</div>
+
+            </div>
+
+          </button>
+
+
+
+          <button class="act-btn" id="a-word" onclick="pickAction('word')">
+
+            <div class="act-top">
+
+              <span class="act-icon">📘</span>
+
+            </div>
+
+            <div>
+
+              <div class="act-name">Convertir a Word</div>
+
+              <div class="act-desc">Exporta el texto a un archivo .docx</div>
+
+            </div>
+
+          </button>
+
+
+
+          <button class="act-btn" id="a-excel" onclick="pickAction('excel')">
+
+            <div class="act-top">
+
+              <span class="act-icon">📗</span>
+
+            </div>
+
+            <div>
+
+              <div class="act-name">Convertir a Excel</div>
+
+              <div class="act-desc">Pasa el contenido a una hoja .xlsx</div>
+
+            </div>
+
+          </button>
+
+
+
+          <button class="act-btn" id="a-voice" onclick="pickAction('voice')">
+
+            <div class="act-top">
+
+              <span class="act-icon">🔊</span>
+
+            </div>
+
+            <div>
+
+              <div class="act-name">Leer en voz alta</div>
+
+              <div class="act-desc">Extrae el texto y lo reproduce con voz del sistema</div>
+
+            </div>
+
+          </button>
+
+        </div>
+
+
+
+        <button class="main-btn" id="mainBtn" onclick="run()" disabled>
+
+          👆 Sube un archivo y elige una acción
+
+        </button>
+
+
+
+        <div class="progress-wrap" id="progressWrap">
+
+          <div class="progress-head">
+
+            <span id="progressLabel">Procesando...</span>
+
+            <span id="progressPct">0%</span>
+
+          </div>
+
+          <div class="progress-track">
+
+            <div class="progress-fill" id="progressFill"></div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="alert" id="mainAlert"></div>
+
+        <div class="result-box" id="resultBox"></div>
+
+      </section>
+
+
+
+      <!-- VOZ -->
+
+      <section class="card voice-card" id="voiceCard">
+
+        <div class="card-title">🎙️ Lector de Voz</div>
+
+
+
+        <div class="voice-grid">
+
+          <div class="field">
+
+            <label>🗣️ Voz</label>
+
+            <select id="voiceSel">
+
+              <option>Cargando voces...</option>
+
+            </select>
+
+          </div>
+
+
+
+          <div class="field">
+
+            <label>⚡ Velocidad <span id="rateVal">1.0x</span></label>
+
+            <input
+
+              type="range"
+
+              id="rateR"
+
+              min="0.6"
+
+              max="2"
+
+              step="0.05"
+
+              value="1"
+
+              oninput="document.getElementById('rateVal').textContent=parseFloat(this.value).toFixed(1)+'x'"
+
+            />
+
+          </div>
+
+
+
+          <div class="field">
+
+            <label>🎵 Tono <span id="pitchVal">1.0</span></label>
+
+            <input
+
+              type="range"
+
+              id="pitchR"
+
+              min="0.5"
+
+              max="2"
+
+              step="0.1"
+
+              value="1"
+
+              oninput="document.getElementById('pitchVal').textContent=parseFloat(this.value).toFixed(1)"
+
+            />
+
+          </div>
+
+        </div>
+
+
+
+        <div class="wave" id="wave">
+
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+
+        </div>
+
+
+
+        <div class="voice-buttons">
+
+          <button class="vbtn vbtn-play full" id="btnPlay" onclick="vPlay()">
+
+            ▶ Leer en voz alta
+
+          </button>
+
+          <button class="vbtn vbtn-pause" id="btnPause" onclick="vPause()" disabled>
+
+            ⏸ Pausar
+
+          </button>
+
+          <button class="vbtn vbtn-stop" id="btnStop" onclick="vStop()" disabled>
+
+            ⏹ Detener
+
+          </button>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- TEXTO MANUAL -->
+
+      <section class="card">
+
+        <div class="card-title">✍️ O pega texto manualmente</div>
+
+        <textarea
+
+          id="manualTxt"
+
+          placeholder="Pega aquí cualquier texto y luego pulsa leer en voz alta..."
+
+        ></textarea>
+
+        <button class="main-btn" style="margin-top:16px" onclick="readManual()">
+
+          🔊 Leer este texto
+
+        </button>
+
+      </section>
+
+
+
+      <div class="footer">
+
+        🔒 Todo se procesa localmente en tu navegador · Sin servidores · Sin registro<br />
+
+        PDF.js · Mammoth · XLSX · docx.js · jsPDF · Tesseract.js · Web Speech API
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="toast" id="toast"></div>
+
+
+
+  <script>
+
+    // CONFIG
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+
+
+    // ESTADO
+
+    let gFile = null;
+
+    let gAction = null;
+
+    let gText = "";
+
+    let gVoices = [];
+
+    let gPaused = false;
+
+    let gChunks = [];
+
+    let gChunkIndex = 0;
+
+    let gSpeaking = false;
+
+    let currentUtterance = null;
+
+
+
+    const EXT_ICONS = {
+
+      pdf: "📕",
+
+      docx: "📘",
+
+      txt: "📝",
+
+      png: "🖼️",
+
+      jpg: "🖼️",
+
+      jpeg: "🖼️",
+
+      webp: "🖼️",
+
+      bmp: "🖼️",
+
+      gif: "🖼️",
+
+      tiff: "🖼️"
+
+    };
+
+
+
+    const EXT_OK = [
+
+      "pdf", "docx", "txt", "png", "jpg", "jpeg", "webp", "bmp", "gif", "tiff"
+
+    ];
+
+
+
+    // UI
+
+    function showToast(msg, type = "inf") {
+
+      const el = document.getElementById("toast");
+
+      el.textContent = msg;
+
+      el.className = "toast " + type;
+
+      void el.offsetWidth;
+
+      el.classList.add("on");
+
+      clearTimeout(el._timer);
+
+      el._timer = setTimeout(() => el.classList.remove("on"), 3200);
+
+    }
+
+
+
+    function showAlert(msg, type = "warn") {
+
+      const el = document.getElementById("mainAlert");
+
+      el.textContent = msg;
+
+      el.className = "alert on alert-" + type;
+
+    }
+
+
+
+    function hideAlert() {
+
+      const el = document.getElementById("mainAlert");
+
+      el.className = "alert";
+
+      el.textContent = "";
+
+    }
+
+
+
+    function setProgress(pct, label = "Procesando...") {
+
+      document.getElementById("progressWrap").classList.add("on");
+
+      document.getElementById("progressFill").style.width = Math.min(pct, 100) + "%";
+
+      document.getElementById("progressLabel").textContent = label;
+
+      document.getElementById("progressPct").textContent = Math.round(Math.min(pct, 100)) + "%";
+
+    }
+
+
+
+    function hideProgress() {
+
+      document.getElementById("progressWrap").classList.remove("on");
+
+    }
+
+
+
+    function fmtSize(bytes) {
+
+      if (bytes < 1024) return bytes + " B";
+
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+
+      return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+
+    }
+
+
+
+    function baseName(filename) {
+
+      return filename.replace(/\.[^.]+$/, "");
+
+    }
+
+
+
+    function download(blob, filename) {
+
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+
+      a.href = url;
+
+      a.download = filename;
+
+      document.body.appendChild(a);
+
+      a.click();
+
+      setTimeout(() => {
+
+        document.body.removeChild(a);
+
+        URL.revokeObjectURL(url);
+
+      }, 1000);
+
+    }
+
+
+
+    // DRAG & DROP
+
+    function dzOver(e) {
+
+      e.preventDefault();
+
+      document.getElementById("dropZone").classList.add("over");
+
+    }
+
+
+
+    function dzOut() {
+
+      document.getElementById("dropZone").classList.remove("over");
+
+    }
+
+
+
+    function dzDrop(e) {
+
+      e.preventDefault();
+
+      dzOut();
+
+      const files = e.dataTransfer?.files;
+
+      if (files && files[0]) pickFile(files[0]);
+
+    }
+
+
+
+    // ARCHIVO
+
+    function pickFile(file) {
+
+      if (!file) return;
+
+      const ext = file.name.split(".").pop().toLowerCase();
+
+
+
+      if (!EXT_OK.includes(ext)) {
+
+        showToast("❌ Formato no soportado", "err");
+
+        return;
+
+      }
+
+
+
+      gFile = file;
+
+      gText = "";
+
+      stopSpeech();
+
+
+
+      document.getElementById("fcIcon").textContent = EXT_ICONS[ext] || "📄";
+
+      document.getElementById("fcName").textContent = file.name;
+
+      document.getElementById("fcMeta").textContent = `${fmtSize(file.size)} • ${ext.toUpperCase()}`;
+
+      document.getElementById("fileChip").classList.add("on");
+
+
+
+      document.getElementById("resultBox").classList.remove("on");
+
+      document.getElementById("resultBox").textContent = "";
+
+      document.getElementById("voiceCard").classList.remove("on");
+
+
+
+      hideAlert();
+
+      refreshBtn();
+
+      showToast("✅ Archivo cargado", "ok");
+
+    }
+
+
+
+    function clearFile() {
+
+      gFile = null;
+
+      gText = "";
+
+      stopSpeech();
+
+
+
+      document.getElementById("fileInput").value = "";
+
+      document.getElementById("fileChip").classList.remove("on");
+
+      document.getElementById("resultBox").classList.remove("on");
+
+      document.getElementById("voiceCard").classList.remove("on");
+
+      hideAlert();
+
+      refreshBtn();
+
+    }
+
+
+
+    // ACCIÓN
+
+    function pickAction(action) {
+
+      gAction = action;
+
+      ["pdf", "word", "excel", "voice"].forEach((k) => {
+
+        document.getElementById("a-" + k).classList.toggle("sel", k === action);
+
+      });
+
+      refreshBtn();
+
+    }
+
+
+
+    const BTN_LABELS = {
+
+      pdf: "📕 Convertir a PDF",
+
+      word: "📘 Convertir a Word (.docx)",
+
+      excel: "📗 Convertir a Excel (.xlsx)",
+
+      voice: "🔊 Extraer texto y leer"
+
+    };
+
+
+
+    function refreshBtn() {
+
+      const btn = document.getElementById("mainBtn");
+
+
+
+      if (!gFile) {
+
+        btn.disabled = true;
+
+        btn.textContent = "👆 Sube un archivo y elige una acción";
+
+        return;
+
+      }
+
+
+
+      if (!gAction) {
+
+        btn.disabled = true;
+
+        btn.textContent = "👆 Elige qué hacer con el archivo";
+
+        return;
+
+      }
+
+
+
+      btn.disabled = false;
+
+      btn.textContent = BTN_LABELS[gAction];
+
+    }
+
+
+
+    // EJECUCIÓN
+
+    async function run() {
+
+      if (!gFile || !gAction) return;
+
+
+
+      hideAlert();
+
+      document.getElementById("mainBtn").disabled = true;
+
+      document.getElementById("resultBox").classList.remove("on");
+
+
+
+      try {
+
+        setProgress(5, "Leyendo archivo...");
+
+        gText = await extractText(gFile);
+
+
+
+        if (!gText || gText.trim().length < 2) {
+
+          throw new Error("No se encontró texto legible en el archivo.");
+
+        }
+
+
+
+        setProgress(82, "Preparando resultado...");
+
+
+
+        if (gAction === "pdf") await doPdf(gText, gFile.name);
+
+        if (gAction === "word") await doWord(gText, gFile.name);
+
+        if (gAction === "excel") doExcel(gText, gFile.name);
+
+        if (gAction === "voice") doVoice(gText);
+
+
+
+        setProgress(100, "¡Listo!");
+
+        setTimeout(hideProgress, 1000);
+
+
+
+        if (gAction !== "voice") {
+
+          showAlert("✅ Archivo generado correctamente.", "ok");
+
+        }
+
+      } catch (err) {
+
+        console.error(err);
+
+        hideProgress();
+
+        showAlert("❌ " + err.message, "err");
+
+        showToast("❌ " + err.message, "err");
+
+      }
+
+
+
+      document.getElementById("mainBtn").disabled = false;
+
+      refreshBtn();
+
+    }
+
+
+
+    // EXTRACCIÓN
+
+    async function extractText(file) {
+
+      const ext = file.name.split(".").pop().toLowerCase();
+
+
+
+      if (ext === "pdf") return await extractPDF(file);
+
+      if (ext === "docx") return await extractDOCX(file);
+
+      if (ext === "txt") return await extractTXT(file);
+
+      if (["png", "jpg", "jpeg", "webp", "bmp", "gif", "tiff"].includes(ext)) {
+
+        return await extractIMG(file);
+
+      }
+
+
+
+      throw new Error("Tipo de archivo no soportado.");
+
+    }
+
+
+
+    async function extractTXT(file) {
+
+      setProgress(20, "Leyendo TXT...");
+
+      return await file.text();
+
+    }
+
+
+
+    async function extractDOCX(file) {
+
+      setProgress(20, "Leyendo Word...");
+
+      const buf = await file.arrayBuffer();
+
+      const result = await mammoth.extractRawText({ arrayBuffer: buf });
+
+      setProgress(70, "Texto extraído...");
+
+      return (result.value || "").trim();
+
+    }
+
+
+
+    async function extractIMG(file) {
+
+      setProgress(8, "Iniciando OCR...");
+
+      const url = URL.createObjectURL(file);
+
+
+
+      try {
+
+        const result = await Tesseract.recognize(url, "spa+eng", {
+
+          logger: (m) => {
+
+            if (m.status === "recognizing text") {
+
+              setProgress(10 + m.progress * 65, "OCR: " + Math.round(m.progress * 100) + "%");
+
+            } else if (
+
+              m.status === "loading tesseract core" ||
+
+              m.status === "initializing tesseract"
+
+            ) {
+
+              setProgress(10, "Cargando motor OCR...");
+
+            }
+
+          }
+
+        });
+
+
+
+        const text = (result.data.text || "").trim();
+
+
+
+        if (!text) {
+
+          throw new Error("No se detectó texto en la imagen.");
+
+        }
+
+
+
+        return text;
+
+      } finally {
+
+        URL.revokeObjectURL(url);
+
+      }
+
+    }
+
+
+
+    async function extractPDF(file) {
+
+      setProgress(8, "Abriendo PDF...");
+
+      const buf = await file.arrayBuffer();
+
+
+
+      const pdf = await pdfjsLib.getDocument({
+
+        data: new Uint8Array(buf),
+
+        useSystemFonts: true,
+
+        disableFontFace: false,
+
+        isEvalSupported: false,
+
+        cMapPacked: true
+
+      }).promise;
+
+
+
+      const total = pdf.numPages;
+
+      let pagesText = [];
+
+
+
+      for (let i = 1; i <= total; i++) {
+
+        setProgress(10 + (i / total) * 55, `Leyendo página ${i} de ${total}...`);
+
+        const page = await pdf.getPage(i);
+
+        const content = await page.getTextContent({
+
+          normalizeWhitespace: true,
+
+          disableCombineTextItems: false
+
+        });
+
+
+
+        let pageText = reconstructPDFText(content.items);
+
+
+
+        // Si casi no trae texto, probar OCR de la página
+
+        if (!pageText || pageText.replace(/\s+/g, "").length < 20) {
+
+          setProgress(10 + (i / total) * 55, `Aplicando OCR a página ${i}...`);
+
+          pageText = await ocrPdfPage(page);
+
+        }
+
+
+
+        pagesText.push(pageText.trim());
+
+      }
+
+
+
+      return cleanPDF(pagesText.join("\n\n"));
+
+    }
+
+
+
+    function reconstructPDFText(items) {
+
+      const lines = {};
+
+
+
+      items.forEach((item) => {
+
+        if (!item.str || typeof item.str !== "string") return;
+
+        const y = item.transform ? Math.round(item.transform[5]) : 0;
+
+        if (!lines[y]) lines[y] = [];
+
+        lines[y].push({
+
+          x: item.transform ? item.transform[4] : 0,
+
+          str: item.str
+
+        });
+
+      });
+
+
+
+      const sortedY = Object.keys(lines)
+
+        .map(Number)
+
+        .sort((a, b) => b - a);
+
+
+
+      const out = sortedY.map((y) => {
+
+        const row = lines[y].sort((a, b) => a.x - b.x);
+
+        return row.map((r) => r.str).join(" ").replace(/\s+/g, " ").trim();
+
+      });
+
+
+
+      return out.filter(Boolean).join("\n");
+
+    }
+
+
+
+    async function ocrPdfPage(page) {
+
+      const viewport = page.getViewport({ scale: 2 });
+
+      const canvas = document.createElement("canvas");
+
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = viewport.width;
+
+      canvas.height = viewport.height;
+
+
+
+      await page.render({
+
+        canvasContext: ctx,
+
+        viewport
+
+      }).promise;
+
+
+
+      const dataUrl = canvas.toDataURL("image/png");
+
+
+
+      const result = await Tesseract.recognize(dataUrl, "spa+eng", {
+
+        logger: () => {}
+
+      });
+
+
+
+      return (result.data.text || "").trim();
+
+    }
+
+
+
+    function cleanPDF(str) {
+
+      return str
+
+        .replace(/ﬁ/g, "fi")
+
+        .replace(/ﬂ/g, "fl")
+
+        .replace(/ﬀ/g, "ff")
+
+        .replace(/ﬃ/g, "ffi")
+
+        .replace(/ﬄ/g, "ffl")
+
+        .replace(/[\u201C\u201D]/g, '"')
+
+        .replace(/[\u2018\u2019]/g, "'")
+
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "")
+
+        .replace(/[ \t]{3,}/g, "  ")
+
+        .replace(/\n{4,}/g, "\n\n")
+
+        .trim();
+
+    }
+
+
+
+    // EXPORTACIONES
+
+    async function doPdf(text, origName) {
+
+      const { jsPDF } = window.jspdf;
+
+      const doc = new jsPDF({
+
+        orientation: "p",
+
+        unit: "pt",
+
+        format: "a4"
+
+      });
+
+
+
+      const pageWidth = doc.internal.pageSize.getWidth();
+
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      const margin = 46;
+
+      const maxWidth = pageWidth - margin * 2;
+
+
+
+      doc.setFont("helvetica", "bold");
+
+      doc.setFontSize(16);
+
+      doc.text(baseName(origName), margin, 46);
+
+
+
+      doc.setFont("helvetica", "normal");
+
+      doc.setFontSize(11);
+
+
+
+      const lines = doc.splitTextToSize(text, maxWidth);
+
+
+
+      let y = 76;
+
+      const lineHeight = 16;
+
+
+
+      lines.forEach((line) => {
+
+        if (y > pageHeight - 50) {
+
+          doc.addPage();
+
+          y = 46;
+
+        }
+
+        doc.text(line, margin, y);
+
+        y += lineHeight;
+
+      });
+
+
+
+      doc.save(baseName(origName) + "_convertido.pdf");
+
+    }
+
+
+
+    async function doWord(text, origName) {
+
+      if (!window.docx) {
+
+        throw new Error("No se pudo cargar la librería DOCX.");
+
+      }
+
+
+
+      const D = window.docx;
+
+      const lines = text.split("\n");
+
+
+
+      const children = lines.map((line) => {
+
+        return new D.Paragraph({
+
+          children: [
+
+            new D.TextRun({
+
+              text: line || " ",
+
+              size: 22,
+
+              font: "Arial"
+
+            })
+
+          ],
+
+          spacing: { after: 120 }
+
+        });
+
+      });
+
+
+
+      const doc = new D.Document({
+
+        creator: "DocuVoz Next",
+
+        title: baseName(origName),
+
+        sections: [{ properties: {}, children }]
+
+      });
+
+
+
+      const blob = await D.Packer.toBlob(doc);
+
+
+
+      download(
+
+        blob,
+
+        baseName(origName) + "_convertido.docx"
+
+      );
+
+    }
+
+
+
+    function doExcel(text, origName) {
+
+      const lines = text.split("\n").filter((l) => l.trim());
+
+
+
+      if (!lines.length) {
+
+        throw new Error("No hay contenido para exportar.");
+
+      }
+
+
+
+      const rows = lines.map((line) => {
+
+        const byTab = line.split("\t");
+
+        const bySemi = line.split(";");
+
+        const byMultiSpace = line.split(/  +/);
+
+
+
+        if (byTab.length > 1) return byTab.map((s) => s.trim());
+
+        if (bySemi.length > 1) return bySemi.map((s) => s.trim());
+
+        if (byMultiSpace.length > 1) return byMultiSpace.map((s) => s.trim());
+
+
+
+        return [line.trim()];
+
+      });
+
+
+
+      const wb = XLSX.utils.book_new();
+
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+
+
+
+      const colW = [];
+
+      rows.forEach((row) => {
+
+        row.forEach((cell, i) => {
+
+          const len = String(cell || "").length || 8;
+
+          if (!colW[i] || colW[i] < len) colW[i] = len;
+
+        });
+
+      });
+
+
+
+      ws["!cols"] = colW.map((w) => ({ wch: Math.min(w + 3, 60) }));
+
+      XLSX.utils.book_append_sheet(wb, ws, "Contenido");
+
+
+
+      const ws2 = XLSX.utils.aoa_to_sheet(
+
+        [["Texto completo"]].concat(lines.map((l) => [l]))
+
+      );
+
+      ws2["!cols"] = [{ wch: 90 }];
+
+      XLSX.utils.book_append_sheet(wb, ws2, "Texto completo");
+
+
+
+      const buf = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+
+
+
+      download(
+
+        new Blob([buf], {
+
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+        }),
+
+        baseName(origName) + "_convertido.xlsx"
+
+      );
+
+    }
+
+
+
+    // VOZ
+
+    function doVoice(text) {
+
+      document.getElementById("voiceCard").classList.add("on");
+
+      document.getElementById("resultBox").textContent = text;
+
+      document.getElementById("resultBox").classList.add("on");
+
+      loadVoices();
+
+      document.getElementById("voiceCard").scrollIntoView({ behavior: "smooth" });
+
+      showToast("📖 Texto listo para reproducir", "inf");
+
+    }
+
+
+
+    function loadVoices() {
+
+      function fill() {
+
+        const all = window.speechSynthesis.getVoices();
+
+
+
+        gVoices = all.filter((v) => {
+
+          const lang = (v.lang || "").toLowerCase();
+
+          const name = (v.name || "").toLowerCase();
+
+          return (
+
+            lang.startsWith("es") ||
+
+            name.includes("spanish") ||
+
+            name.includes("español")
+
+          );
+
+        });
+
+
+
+        if (!gVoices.length) gVoices = all;
+
+
+
+        const sel = document.getElementById("voiceSel");
+
+
+
+        if (!gVoices.length) {
+
+          sel.innerHTML = "<option>Sin voces disponibles</option>";
+
+          return;
+
+        }
+
+
+
+        sel.innerHTML = gVoices
+
+          .map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`)
+
+          .join("");
+
+
+
+        const preferred = ["es-MX", "es-AR", "es-CO", "es-CL", "es-PE", "es-VE", "es-US", "es-ES"];
+
+        let best = -1;
+
+
+
+        preferred.forEach((lang) => {
+
+          if (best >= 0) return;
+
+          gVoices.forEach((v, i) => {
+
+            if (best < 0 && v.lang === lang) best = i;
+
+          });
+
+        });
+
+
+
+        if (best >= 0) sel.value = best;
+
+      }
+
+
+
+      const synth = window.speechSynthesis;
+
+      if (synth.getVoices().length > 0) fill();
+
+      synth.onvoiceschanged = fill;
+
+      setTimeout(fill, 500);
+
+      setTimeout(fill, 1500);
+
+    }
+
+
+
+    function splitTextForSpeech(text, maxLength = 220) {
+
+      const clean = text.replace(/\s+/g, " ").trim();
+
+      const sentences = clean.match(/[^.!?]+[.!?]*/g) || [clean];
+
+
+
+      const chunks = [];
+
+      let current = "";
+
+
+
+      for (const sentence of sentences) {
+
+        if ((current + " " + sentence).trim().length <= maxLength) {
+
+          current += " " + sentence;
+
+        } else {
+
+          if (current.trim()) chunks.push(current.trim());
+
+
+
+          if (sentence.length > maxLength) {
+
+            const parts = sentence.match(new RegExp(`.{1,${maxLength}}`, "g")) || [];
+
+            chunks.push(...parts.map((p) => p.trim()).filter(Boolean));
+
+            current = "";
+
+          } else {
+
+            current = sentence;
+
+          }
+
+        }
+
+      }
+
+
+
+      if (current.trim()) chunks.push(current.trim());
+
+      return chunks;
+
+    }
+
+
+
+    function vPlay() {
+
+      const text = gText || document.getElementById("manualTxt").value.trim();
+
+
+
+      if (!text) {
+
+        showToast("⚠️ No hay texto para leer", "err");
+
+        return;
+
+      }
+
+
+
+      if (gPaused && window.speechSynthesis.paused) {
+
+        window.speechSynthesis.resume();
+
+        gPaused = false;
+
+        document.getElementById("btnPause").textContent = "⏸ Pausar";
+
+        document.getElementById("wave").classList.add("on");
+
+        showToast("▶ Continuando...", "inf");
+
+        return;
+
+      }
+
+
+
+      stopSpeech(false);
+
+
+
+      gChunks = splitTextForSpeech(text, 220);
+
+      gChunkIndex = 0;
+
+      gSpeaking = true;
+
+
+
+      document.getElementById("btnPlay").disabled = true;
+
+      document.getElementById("btnPause").disabled = false;
+
+      document.getElementById("btnStop").disabled = false;
+
+      document.getElementById("wave").classList.add("on");
+
+
+
+      speakNextChunk();
+
+    }
+
+
+
+    function speakNextChunk() {
+
+      if (!gSpeaking || gChunkIndex >= gChunks.length) {
+
+        vReset();
+
+        return;
+
+      }
+
+
+
+      const synth = window.speechSynthesis;
+
+      const utter = new SpeechSynthesisUtterance(gChunks[gChunkIndex]);
+
+      currentUtterance = utter;
+
+
+
+      const idx = parseInt(document.getElementById("voiceSel").value, 10);
+
+      if (!isNaN(idx) && gVoices[idx]) {
+
+        utter.voice = gVoices[idx];
+
+        utter.lang = gVoices[idx].lang;
+
+      } else {
+
+        utter.lang = "es-MX";
+
+      }
+
+
+
+      utter.rate = parseFloat(document.getElementById("rateR").value);
+
+      utter.pitch = parseFloat(document.getElementById("pitchR").value);
+
+      utter.volume = 1;
+
+
+
+      utter.onstart = () => {
+
+        showToast("🔊 Leyendo en voz alta...", "inf");
+
+      };
+
+
+
+      utter.onend = () => {
+
+        gChunkIndex++;
+
+        if (gSpeaking && !gPaused) {
+
+          setTimeout(speakNextChunk, 120);
+
+        }
+
+      };
+
+
+
+      utter.onerror = (e) => {
+
+        console.error("Speech error:", e);
+
+        if (e.error !== "interrupted" && e.error !== "canceled") {
+
+          showToast("❌ Error de voz: " + e.error, "err");
+
+        }
+
+        vReset();
+
+      };
+
+
+
+      synth.speak(utter);
+
+    }
+
+
+
+    function vPause() {
+
+      const synth = window.speechSynthesis;
+
+
+
+      if (!gSpeaking) return;
+
+
+
+      if (!gPaused) {
+
+        synth.pause();
+
+        gPaused = true;
+
+        document.getElementById("btnPause").textContent = "▶ Continuar";
+
+        document.getElementById("wave").classList.remove("on");
+
+        showToast("⏸ Pausado", "inf");
+
+      } else {
+
+        synth.resume();
+
+        gPaused = false;
+
+        document.getElementById("btnPause").textContent = "⏸ Pausar";
+
+        document.getElementById("wave").classList.add("on");
+
+        showToast("▶ Continuando...", "inf");
+
+      }
+
+    }
+
+
+
+    function vStop() {
+
+      stopSpeech();
+
+      showToast("⏹ Lectura detenida", "inf");
+
+    }
+
+
+
+    function stopSpeech(resetUI = true) {
+
+      gSpeaking = false;
+
+      gPaused = false;
+
+      gChunkIndex = 0;
+
+      gChunks = [];
+
+      currentUtterance = null;
+
+      window.speechSynthesis.cancel();
+
+      if (resetUI) vReset();
+
+    }
+
+
+
+    function vReset() {
+
+      gSpeaking = false;
+
+      gPaused = false;
+
+      document.getElementById("wave").classList.remove("on");
+
+      document.getElementById("btnPlay").disabled = false;
+
+      document.getElementById("btnPause").disabled = true;
+
+      document.getElementById("btnStop").disabled = true;
+
+      document.getElementById("btnPause").textContent = "⏸ Pausar";
+
+    }
+
+
+
+    function readManual() {
+
+      const text = document.getElementById("manualTxt").value.trim();
+
+
+
+      if (!text) {
+
+        showToast("✏️ Escribe o pega texto primero", "err");
+
+        return;
+
+      }
+
+
+
+      gText = text;
+
+      document.getElementById("voiceCard").classList.add("on");
+
+      document.getElementById("resultBox").textContent = text;
+
+      document.getElementById("resultBox").classList.add("on");
+
+      loadVoices();
+
+
+
+      document.getElementById("voiceCard").scrollIntoView({ behavior: "smooth" });
+
+      setTimeout(vPlay, 700);
+
+    }
+
+
+
+    // INIT
+
+    window.addEventListener("load", () => {
+
+      loadVoices();
+
+
+
+      if (!("speechSynthesis" in window)) {
+
+        showAlert(
+
+          "⚠️ Tu navegador no soporta síntesis de voz. Usa Chrome o Edge.",
+
+          "warn"
+
+        );
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html
+
