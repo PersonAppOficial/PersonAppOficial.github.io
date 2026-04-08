@@ -1,393 +1,222 @@
-<<!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Apoyemos al Piloto Chileno • El Rayo Agustín</title>
+<meta name="description" content="¡Apoya a El Rayo Agustín! Piloto chileno de karting con proyección internacional. Fotos, videos y mini-juego de carreras."/>
 
-<title>personapp — tu lector de texto gratis | TTS español y PDF</title>
-<meta name="description" content="personapp: lector de texto GRATIS en español. Léelo con voz (TTS), pega texto o carga PDF/TXT. Funciona directo en tu navegador (sin subir archivos)."/>
-<meta name="keywords" content="lector de texto gratis, TTS español, convertir texto a voz, leer PDF gratis, lectura en voz alta, sintetizador de voz, Web Speech API, pdf.js, accesibilidad, lectura rápida"/>
-
-<!-- Open Graph / Twitter -->
-<meta property="og:title" content="personapp — tu lector de texto gratis"/>
-<meta property="og:description" content="Lee en voz alta cualquier texto o PDF desde tu navegador. Rápido, privado y sin subir archivos."/>
-<meta property="og:type" content="website"/>
-<meta property="og:image" content="https://example.com/og-image.jpg"/>
-<meta name="twitter:card" content="summary_large_image"/>
-
-<!-- Datos estructurados -->
-<script type="application/ld+json">
-{
-"@context":"https://schema.org",
-"@type":"SoftwareApplication",
-"name":"personapp — lector de texto gratis",
-"applicationCategory":"UtilitiesApplication",
-"operatingSystem":"Web",
-"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
-"description":"Lector de texto y PDF que usa Web Speech API (TTS) y pdf.js. Funciona localmente en el navegador.",
-"inLanguage":"es"
-}
-</script>
-
-<!-- Estilos -->
 <style>
-:root{
-/* Modo claro */
---bg:#ffffff; --text:#0b0c0f; --muted:#5b6676;
---line:#e6e8ee; --panel:#ffffff;
---ok:#10b981; --warn:#f59e0b; --err:#ef4444;
---radius:14px; --max:1100px;
-/* Rutas del borde anime (reemplaza con tus imágenes) */
---anime-left:url('/assets/anime/left.jpg');
---anime-right:url('/assets/anime/right.jpg');
---anime-top:url('/assets/anime/top.jpg');
---anime-bottom:url('/assets/anime/bottom.jpg');
+:root {
+--bg: #0a0a0a;
+--accent: #ff2d00;
+--neon: #00f7ff;
+--text: #ffffff;
+--card: #1a1a1a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+background: var(--bg);
+color: var(--text);
+font-family: 'Arial', 'Helvetica', sans-serif;
+line-height: 1.5;
+overflow-x: hidden;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+/* Header / Hero */
+header {
+background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://i.imgur.com/placeholder-hero.jpg') center/cover no-repeat;
+text-align: center;
+padding: 100px 20px 60px;
+position: relative;
+}
+h1 {
+font-size: clamp(2.8rem, 8vw, 5.5rem);
+font-weight: 900;
+text-transform: uppercase;
+letter-spacing: 4px;
+color: #fff;
+text-shadow: 0 0 30px var(--accent);
+}
+.subtitle {
+font-size: 1.5rem;
+margin: 15px 0 30px;
+color: var(--neon);
+}
+.flag { font-size: 2.5rem; margin: 10px; }
+
+/* Galería de fotos */
+.galeria {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 15px;
+margin: 40px 0;
+}
+.foto {
+border-radius: 12px;
+overflow: hidden;
+border: 3px solid var(--accent);
+box-shadow: 0 0 20px rgba(255,45,0,0.4);
+transition: transform 0.3s;
+}
+.foto:hover { transform: scale(1.05); }
+.foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Secciones */
+section { margin: 60px 0; }
+h2 {
+font-size: 2.4rem;
+color: var(--neon);
+text-align: center;
+margin-bottom: 30px;
+text-transform: uppercase;
 }
 
-/* Reset base */
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-margin:0;background:var(--bg);color:var(--text);
-font:16px/1.55 -apple-system,BlinkMacSystemFont,Inter,Roboto,Segoe UI,Arial,sans-serif;
--webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+/* Mini-juego */
+#gameContainer {
+background: #111;
+border: 4px solid var(--accent);
+border-radius: 16px;
+padding: 10px;
+margin: 30px auto;
+max-width: 1100px;
+}
+canvas {
+display: block;
+margin: 0 auto;
+background: #222;
+image-rendering: pixelated;
+}
+#hud {
+display: flex;
+justify-content: space-between;
+background: #1a1a1a;
+padding: 12px 20px;
+font-weight: bold;
+font-size: 1.1rem;
+border-bottom: 3px solid var(--accent);
+}
+.btn-game {
+background: var(--accent);
+color: white;
+border: none;
+padding: 10px 20px;
+font-weight: bold;
+cursor: pointer;
+border-radius: 8px;
 }
 
-/* Marco anime estético alrededor de la página */
-.frame{position:relative;min-height:100dvh;isolation:isolate;}
-.frame::before,
-.frame::after{content:"";position:fixed;top:0;bottom:0;width:28px;z-index:2;pointer-events:none;background-size:cover;background-position:center}
-.frame::before{left:0;background-image:var(--anime-left), linear-gradient(180deg,#ffd1f5,#c9e7ff);}
-.frame::after{right:0;background-image:var(--anime-right), linear-gradient(180deg,#c9e7ff,#ffd1f5);}
-.frame .top, .frame .bottom{content:"";position:fixed;left:28px;right:28px;height:24px;z-index:2;pointer-events:none;background-size:cover;background-position:center}
-.frame .top{top:0;background-image:var(--anime-top), linear-gradient(90deg,#ffd1f5,#c9e7ff);}
-.frame .bottom{bottom:0;background-image:var(--anime-bottom), linear-gradient(90deg,#c9e7ff,#ffd1f5);}
-
-/* Layout */
-header{padding:34px 20px 18px;border-bottom:1px solid var(--line);text-align:center;background:#fff;position:relative;z-index:3}
-header h1{margin:0 0 6px;font-size:clamp(28px,5.4vw,40px);font-weight:900;letter-spacing:-.02em}
-header .sub{color:var(--muted);font-size:14px}
-main{max-width:var(--max);margin:24px auto;padding:0 24px 40px;display:grid;gap:16px;position:relative;z-index:1}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 10px 24px rgba(0,0,0,.06)}
-.row{display:grid;gap:12px}
-.grid-2{grid-template-columns:1fr 1fr}
-@media (max-width:900px){.grid-2{grid-template-columns:1fr}}
-
-h2{margin:0 0 6px;font-size:clamp(18px,2.4vw,22px)}
-label{font-size:13px;color:var(--muted)}
-
-textarea{
-width:100%;min-height:220px;resize:vertical;
-background:#fff;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;line-height:1.6
+footer {
+text-align: center;
+padding: 40px 20px;
+background: #000;
+margin-top: 60px;
+color: #666;
 }
-input[type="file"],select{width:100%}
-select{background:#fff;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px}
-
-.controls{display:flex;flex-wrap:wrap;gap:8px}
-button{
-appearance:none;border:1px solid var(--line);background:#fff;color:var(--text);
-padding:10px 14px;border-radius:10px;cursor:pointer
-}
-button.primary{background:#111827;color:#fff;border-color:#111827;font-weight:700}
-button:disabled{opacity:.5;cursor:not-allowed}
-
-.kv{background:#fafbfc;border:1px dashed var(--line);border-radius:10px;padding:10px;font-size:13px;color:var(--muted)}
-.kvs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-@media (max-width:720px){.kvs{grid-template-columns:1fr}}
-
-.meter{height:8px;border-radius:999px;background:#fafbfc;border:1px solid var(--line);overflow:hidden}
-.meter > i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22d3ee,#10b981)}
-.small{font-size:12px;color:var(--muted)}
-.ok{color:var(--ok)} .warn{color:var(--warn)} .err{color:var(--err)}
-
-footer{padding:20px 24px 40px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line);background:#fff;position:relative;z-index:1}
 </style>
 </head>
 <body>
-<div class="frame">
-<div class="top"></div>
 
 <header>
-<h1>personapp — tu lector de texto gratis</h1>
-<div class="sub">Lee en voz alta tu texto o PDF con voces del navegador. 100% local, rápido y privado.</div>
+<div class="container">
+<h1>EL RAYO AGUSTÍN</h1>
+<p class="subtitle">Apoyemos al piloto chileno más rápido del momento 🇨🇱</p>
+<p style="font-size:1.3rem; max-width:700px; margin:0 auto;">
+Velocidad, talento y pasión por el motorsport. ¡Vamos Agustín!
+</p>
+</div>
 </header>
 
-<main role="main">
-<!-- Entrada -->
-<section class="card" aria-labelledby="t1">
-<h2 id="t1">1) Escribe o pega tu texto (prioridad)</h2>
-<label for="textInput">Texto</label>
-<textarea id="textInput" placeholder="Pega aquí el texto y presiona ▶️ Probar voz o ▶️ Leer"></textarea>
-<div class="kvs" style="margin-top:12px">
-<div class="kv"><b>Estado:</b> <span id="status">Listo</span></div>
-<div class="kv"><b>Soporte voz:</b> <span id="support">—</span></div>
-<div class="kv"><b>Longitud (caracteres):</b> <span id="len">0</span></div>
+<div class="container">
+
+<!-- Galería de fotos -->
+<section id="fotos">
+<h2>Galería del Rayo</h2>
+<div class="galeria">
+<!-- Todas tus fotos aquí -->
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...wgsdv?..." alt="Agustín con casco naranja"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...53nMH?..." alt="Agustín junto al kart"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...kYJqb?..." alt="Agustín abrazando a otro piloto"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...hGP8T?..." alt="Agustín de pie junto al kart"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...glWoC?..." alt="Entrenador ajustando el casco"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...0PMAY?..." alt="Agustín hablando con otros"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...rR8G1?..." alt="Agustín conversando con hombre"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...trxs6?..." alt="Agustín con casco verde"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...JfwR0?..." alt="Agustín con brazos cruzados"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...0WydS?..." alt="Agustín en el kart mirando atrás"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...jKV5C?..." alt="Agustín sin casco mirando"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...FS2cX?..." alt="Agustín sin casco close-up"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...JSJ7z?..." alt="Agustín en el kart"></div>
+<div class="foto"><img src="https://files.oaiusercontent.com/file-...MAH4X?..." alt="Agustín poniéndose el casco"></div>
 </div>
 </section>
 
-<!-- PDF opcional -->
-<section class="card" aria-labelledby="t2">
-<h2 id="t2">2) (Opcional) Subir PDF / TXT</h2>
-<div class="row grid-2">
-<div>
-<label for="fileInput">Archivo (.pdf o .txt)</label>
-<input id="fileInput" type="file" accept=".pdf,.txt"/>
-<div class="small">Si el PDF es escaneado (imagen), no tendrá texto. Podemos agregar OCR si lo necesitas.</div>
+<!-- Mini-juego de carrera -->
+<section id="juego">
+<h2>¡Mini Juego: Carrera del Rayo!</h2>
+<p style="text-align:center; margin-bottom:20px; color:#aaa;">
+Usa las <strong>FLECHAS IZQUIERDA / DERECHA</strong> para moverte • <strong>ESPACIO</strong> para saltar
+</p>
+
+<div id="gameContainer">
+<div id="hud">
+<div>Puntuación: <span id="score">0</span></div>
+<div>Velocidad: <span id="speed">1.0</span>x</div>
+<div>Vidas: <span id="lives">3</span></div>
+<button class="btn-game" id="restartBtn">Reiniciar Carrera</button>
 </div>
-<div>
-<label for="extracted">Texto extraído</label>
-<textarea id="extracted" placeholder="Aquí aparecerá el texto del PDF/TXT…"></textarea>
-</div>
+<canvas id="gameCanvas" width="1100" height="420"></canvas>
 </div>
 </section>
 
-<!-- Voces y parámetros -->
-<section class="card" aria-labelledby="t3">
-<h2 id="t3">3) Voz y parámetros</h2>
-<div class="row grid-2">
-<div>
-<label for="voiceSelect">Voz</label>
-<select id="voiceSelect"></select>
-<div class="small">Sugerido: voces <b>es-ES</b> o <b>es-*</b> para español.</div>
 </div>
-<div>
-<label for="rate">Velocidad</label>
-<input id="rate" type="range" min="0.5" max="2" step="0.1" value="1"/>
-<div class="meter"><i id="rateBar"></i></div>
-</div>
-</div>
-<div class="row grid-2">
-<div>
-<label for="pitch">Tono</label>
-<input id="pitch" type="range" min="0" max="2" step="0.1" value="1"/>
-<div class="meter"><i id="pitchBar"></i></div>
-</div>
-<div>
-<label for="volume">Volumen</label>
-<input id="volume" type="range" min="0" max="1" step="0.1" value="1"/>
-<div class="meter"><i id="volumeBar"></i></div>
-</div>
-</div>
-</section>
-
-<!-- Controles -->
-<section class="card" aria-labelledby="t4">
-<h2 id="t4">4) Controles</h2>
-<div class="controls">
-<button id="testBtn" class="primary" disabled>▶️ Probar voz</button>
-<button id="speakBtn" class="primary" disabled>▶️ Leer texto</button>
-<button id="pauseBtn" disabled>⏸️ Pausar</button>
-<button id="resumeBtn" disabled>▶️ Reanudar</button>
-<button id="stopBtn" disabled>⏹️ Detener</button>
-<button id="clearBtn">🧹 Limpiar</button>
-</div>
-<div class="small" style="margin-top:8px">
-Por políticas del navegador, el audio comienza tras un clic del usuario.
-</div>
-</section>
-
-<!-- Progreso -->
-<section class="card" aria-labelledby="t5">
-<h2 id="t5">Progreso</h2>
-<div class="meter"><i id="progressBar"></i></div>
-<div class="small" style="margin-top:6px">
-<span id="progressText">0%</span> — <span id="chunkInfo">0 / 0</span> fragmentos
-</div>
-</section>
-</main>
 
 <footer>
-Hecho con personapp — lector de texto gratis (Web Speech API + pdf.js). Nada se sube, todo queda en tu navegador.
+<p>© 2026 • Apoyemos al Piloto Chileno El Rayo Agustín • Agustín Alfaro</p>
+<p>¡Sigue su carrera y comparte esta página para apoyarlo!</p>
 </footer>
 
-<div class="bottom"></div>
-</div>
-
-<!-- PDF.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-KiWzZfa7qv3Zj1mE2AQfCMyJOQ7NlXQK1yXQ2p6mQ2nKq35aSgQbY0ciV9ewVR5Xk+U9VujwQcZ1B1v+0s0y5A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'</script>
-
 <script>
-/* ========= Utilidades/UI ========= */
-const $ = s => document.querySelector(s);
-const UI = {
-status: $('#status'), support: $('#support'), len: $('#len'),
-textInput: $('#textInput'), extracted: $('#extracted'),
-voiceSelect: $('#voiceSelect'),
-rate: $('#rate'), pitch: $('#pitch'), volume: $('#volume'),
-rateBar: $('#rateBar'), pitchBar: $('#pitchBar'), volumeBar: $('#volumeBar'),
-testBtn: $('#testBtn'), speakBtn: $('#speakBtn'),
-pauseBtn: $('#pauseBtn'), resumeBtn: $('#resumeBtn'), stopBtn: $('#stopBtn'), clearBtn: $('#clearBtn'),
-progressBar: $('#progressBar'), progressText: $('#progressText'), chunkInfo: $('#chunkInfo'),
-fileInput: $('#fileInput')
+// =============== MINI JUEGO DE CARRERA ===============
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width;
+const H = canvas.height;
+
+let score = 0;
+let speed = 4;
+let lives = 3;
+let gameRunning = true;
+
+const player = {
+x: 150,
+y: H - 100,
+width: 80,
+height: 50,
+vy: 0,
+jumping: false
 };
-const state = { voices: [], chunks: [], index: 0, speaking: false, paused: false, utter: null };
 
-const setStatus = (msg, cls='') => { UI.status.textContent = msg; UI.status.className = cls; };
-const setSupport = (msg) => UI.support.textContent = msg;
-const updateLen = () => UI.len.textContent = getSanitizedText(UI.textInput.value).length;
-const setButtons = () => {
-const hasSpeech = ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window);
-const hasText = getSanitizedText(UI.textInput.value).length > 0;
-UI.testBtn.disabled = !hasSpeech;
-UI.speakBtn.disabled = !hasSpeech || !hasText;
-UI.pauseBtn.disabled = !(state.speaking && !speechSynthesis.paused);
-UI.resumeBtn.disabled= !(speechSynthesis.paused);
-UI.stopBtn.disabled = !state.speaking;
-};
-function updateMeters(){
-UI.rateBar.style.width = ((UI.rate.value-0.5)/1.5*100)+'%';
-UI.pitchBar.style.width = (UI.pitch.value/2*100)+'%';
-UI.volumeBar.style.width = (UI.volume.value*100)+'%';
-}
-updateMeters();
-UI.rate.addEventListener('input', updateMeters);
-UI.pitch.addEventListener('input', updateMeters);
-UI.volume.addEventListener('input', updateMeters);
+const obstacles = [];
+let keys = {};
 
-/* ========= Limpieza de texto ========= */
-function getSanitizedText(raw){
-if (!raw) return '';
-let t = raw.normalize('NFC').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g,'');
-t = t.replace(/\u00A0/g,' ');
-t = t.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
-return t;
-}
-function onTextChanged(){ updateLen(); setButtons(); }
-UI.textInput.addEventListener('input', onTextChanged); onTextChanged();
-
-/* ========= Soporte de voz ========= */
-function checkSpeechSupport(){
-const ok = ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window);
-setSupport(ok ? '✅ Disponible' : '❌ No disponible (usa Chrome/Edge/Safari)');
-setButtons();
-}
-checkSpeechSupport();
-
-/* ========= Voces ========= */
-function loadVoices(){
-const list = speechSynthesis.getVoices().sort((a,b)=>a.lang.localeCompare(b.lang));
-state.voices = list;
-UI.voiceSelect.innerHTML = '';
-list.forEach((v,i)=>{
-const o = document.createElement('option');
-o.value = i; o.textContent = `${v.name} — ${v.lang}${v.default?' (default)':''}`;
-UI.voiceSelect.appendChild(o);
+function spawnObstacle() {
+obstacles.push({
+x: W + 50,
+y: H - 80,
+width: 50,
+height: 60,
+type: Math.random() > 0.5 ? 'cone' : 'barrel'
 });
-const esIdx = list.findIndex(v=>/^es(-|_)/i.test(v.lang));
-UI.voiceSelect.value = esIdx >= 0 ? esIdx : 0;
-}
-loadVoices();
-if (typeof speechSynthesis !== 'undefined') speechSynthesis.onvoiceschanged = loadVoices;
-
-/* ========= División en fragmentos ========= */
-function chunkText(text, maxLen=1500){
-const paras = text.split(/\n{2,}/);
-const chunks = []; let cur = '';
-const push = ()=>{ if(cur.trim()) { chunks.push(cur.trim()); cur=''; } };
-for(const p of paras){
-if((cur+'\n\n'+p).length <= maxLen){ cur = cur ? cur+'\n\n'+p : p; }
-else{
-const sents = p.split(/(?<=[\.\?\!…:;])\s+/);
-for(const s of sents){
-if((cur+' '+s).length <= maxLen){ cur = cur ? cur+' '+s : s; }
-else{
-push();
-if(s.length <= maxLen) cur = s;
-else{ for(let i=0;i<s.length;i+=maxLen) chunks.push(s.slice(i,i+maxLen)); cur=''; }
-}
-}
-}
-}
-push(); return chunks;
-}
-function updateProgress(){
-const total = state.chunks.length || 1;
-const pct = Math.round((state.index/total)*100);
-UI.progressBar.style.width = pct + '%';
-UI.progressText.textContent = pct + '%';
-UI.chunkInfo.textContent = `${Math.min(state.index,total)} / ${total}`;
-setButtons();
 }
 
-/* ========= Lectura ========= */
-function speakNext(){
-if(state.index >= state.chunks.length){
-setStatus('Lectura finalizada ✅','ok');
-state.speaking = false; updateProgress(); return;
-}
-const utter = new SpeechSynthesisUtterance(state.chunks[state.index]);
-state.utter = utter;
-const v = state.voices[+UI.voiceSelect.value] || state.voices[0];
-if(v) utter.voice = v;
-utter.rate = +UI.rate.value; utter.pitch = +UI.pitch.value; utter.volume = +UI.volume.value;
+function update() {
+if (!gameRunning) return;
 
-utter.onstart = ()=>{ state.speaking = true; setStatus(`Leyendo ${state.index+1}/${state.chunks.length}…`); updateProgress(); };
-utter.onend = ()=>{ state.index++; updateProgress(); speakNext(); };
-utter.onerror = (e)=>{ console.error(e); setStatus('Error durante la lectura.','err'); state.speaking=false; updateProgress(); };
+score += Math.floor(speed / 2);
+document.getElementById('score').textContent = score;
+document.getElementById('speed').textContent = (speed/4).toFixed(1);
 
-speechSynthesis.speak(utter); setButtons();
-}
-
-UI.testBtn.addEventListener('click', ()=>{
-if (!('speechSynthesis' in window)) { setStatus('Sin soporte de voz.','err'); return; }
-speechSynthesis.cancel();
-const u = new SpeechSynthesisUtterance('Hola, esta es una prueba de voz de personapp.');
-const v = state.voices[+UI.voiceSelect.value] || state.voices[0];
-if(v) u.voice = v;
-u.rate = +UI.rate.value; u.pitch = +UI.pitch.value; u.volume = +UI.volume.value;
-u.onstart=()=>{ state.speaking=true; setStatus('Prueba de voz…'); setButtons(); };
-u.onend=()=>{ state.speaking=false; setStatus('Listo'); setButtons(); };
-speechSynthesis.speak(u);
-});
-
-UI.speakBtn.addEventListener('click', ()=>{
-const t = getSanitizedText(UI.textInput.value);
-if(!t){ setStatus('No hay texto limpio para leer.','warn'); return; }
-speechSynthesis.cancel();
-state.chunks = chunkText(t, 1500);
-state.index = 0; updateProgress(); setStatus('Iniciando lectura…'); speakNext();
-});
-
-UI.pauseBtn.addEventListener('click', ()=>{ if(speechSynthesis.speaking && !speechSynthesis.paused){ speechSynthesis.pause(); state.paused=true; setStatus('Pausado ⏸️'); setButtons(); }});
-UI.resumeBtn.addEventListener('click', ()=>{ if(speechSynthesis.paused){ speechSynthesis.resume(); state.paused=false; setStatus('Reanudando ▶️'); setButtons(); }});
-UI.stopBtn.addEventListener('click', ()=>{ speechSynthesis.cancel(); state.speaking=false; setStatus('Detenido ⏹️'); updateProgress(); });
-UI.clearBtn.addEventListener('click', ()=>{
-speechSynthesis.cancel(); UI.textInput.value=''; UI.extracted.value='';
-state.chunks=[]; state.index=0; state.speaking=false; updateLen(); updateProgress(); setStatus('Listo');
-});
-
-/* ========= PDF opcional ========= */
-UI.fileInput.addEventListener('change', async (e)=>{
-const f = e.target.files?.[0]; if(!f) return;
-const ext = (f.name.split('.').pop()||'').toLowerCase();
-setStatus('Procesando archivo…');
-try{
-if(ext==='txt'){
-const txt = await f.text(); UI.extracted.value = txt; setStatus('TXT cargado ✅','ok');
-}else if(ext==='pdf'){
-const buf = await f.arrayBuffer();
-const text = await extractTextFromPDF(buf);
-UI.extracted.value = text.trim(); setStatus('PDF extraído ✅','ok');
-}else{ setStatus('Formato no soportado (usa .pdf o .txt).','warn'); }
-}catch(err){ console.error(err); setStatus('No se pudo extraer texto (PDF escaneado o error).','err'); }
-});
-
-async function extractTextFromPDF(arrayBuffer){
-const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-let out = '';
-for(let p=1;p<=pdf.numPages;p++){
-const page = await pdf.getPage(p);
-const content = await page.getTextContent();
-const strings = content.items.map(it => (typeof it.str==='string') ? it.str : (it?.chars?.map(c=>c?.unicode||'').join('')||''));
-out += strings.join(' ') + '\n\n';
-}
-if(!out.trim()) throw new Error('PDF sin texto (escaneado).');
-return getSanitizedText(out);
-}
-
-/* Inicial */
-updateProgress(); setButtons();
-</script>
-</body>
-</html>
+// Movimiento jugador
+if (keys['ArrowLeft'] && player.x >
