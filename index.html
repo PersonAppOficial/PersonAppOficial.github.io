@@ -3,1083 +3,961 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DocuVoz — Convertidor & Lector</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>DocuVoz Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- LIBRARIES -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.2.0/docx.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+
 <style>
 :root {
---bg: #0a0a0f;
---surface: #12121a;
---surface2: #1a1a26;
---border: #2a2a3d;
---accent: #7c6af7;
---accent2: #f7c76a;
---accent3: #6af7c7;
---text: #e8e8f0;
---muted: #7878a0;
---danger: #f76a6a;
---success: #6af76a;
+--bg: #f0f4ff;
+--white: #ffffff;
+--card: #ffffff;
+--primary: #4f46e5;
+--primary-light: #eef2ff;
+--secondary: #06b6d4;
+--success: #10b981;
+--warning: #f59e0b;
+--danger: #ef4444;
+--excel: #217346;
+--word: #2b579a;
+--pdf: #dc2626;
+--voice: #7c3aed;
+--text: #1e1b4b;
+--muted: #6b7280;
+--border: #e0e7ff;
+--shadow: 0 4px 24px rgba(79,70,229,0.10);
+--shadow-lg: 0 8px 40px rgba(79,70,229,0.18);
+--radius: 20px;
+--radius-sm: 12px;
 }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
-font-family: ‘DM Sans’, sans-serif;
-background: var(–bg);
-color: var(–text);
+font-family: 'Nunito', sans-serif;
+background: var(--bg);
+color: var(--text);
 min-height: 100vh;
-overflow-x: hidden;
+padding-bottom: 40px;
 }
 
-/* BACKGROUND MESH */
+/* BG DECORATION */
 body::before {
-content: ‘’;
+content: '';
 position: fixed;
-inset: 0;
-background:
-radial-gradient(ellipse 60% 40% at 20% 10%, rgba(124,106,247,0.15) 0%, transparent 60%),
-radial-gradient(ellipse 50% 35% at 80% 80%, rgba(106,247,199,0.08) 0%, transparent 60%),
-radial-gradient(ellipse 40% 30% at 70% 20%, rgba(247,199,106,0.07) 0%, transparent 50%);
-pointer-events: none;
-z-index: 0;
+top: -120px; right: -120px;
+width: 500px; height: 500px;
+background: radial-gradient(circle, rgba(79,70,229,0.12), transparent 70%);
+pointer-events: none; z-index: 0;
 }
-
-/* GRAIN OVERLAY */
 body::after {
-content: ‘’;
+content: '';
 position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.04’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 0;
-opacity: 0.5;
+bottom: -100px; left: -100px;
+width: 400px; height: 400px;
+background: radial-gradient(circle, rgba(6,182,212,0.10), transparent 70%);
+pointer-events: none; z-index: 0;
 }
 
-.wrapper {
-position: relative;
-z-index: 1;
-max-width: 960px;
+.app {
+position: relative; z-index: 1;
+max-width: 680px;
 margin: 0 auto;
-padding: 0 24px 60px;
-}
-
-/* HEADER */
-header {
-padding: 48px 0 40px;
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-gap: 8px;
-animation: fadeDown 0.7s ease;
-}
-
-.logo {
-font-family: ‘Syne’, sans-serif;
-font-size: 3rem;
-font-weight: 800;
-line-height: 1;
-letter-spacing: -2px;
-}
-.logo span { color: var(–accent); }
-
-.tagline {
-font-size: 1rem;
-color: var(–muted);
-font-weight: 300;
-letter-spacing: 0.3px;
-}
-
-/* TABS */
-.tabs {
-display: flex;
-gap: 4px;
-margin-bottom: 32px;
-background: var(–surface);
-padding: 6px;
-border-radius: 16px;
-border: 1px solid var(–border);
-animation: fadeUp 0.6s ease 0.15s both;
-}
-
-.tab {
-flex: 1;
-padding: 12px 20px;
-border: none;
-background: transparent;
-color: var(–muted);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 0.9rem;
-font-weight: 500;
-border-radius: 11px;
-cursor: pointer;
-transition: all 0.25s ease;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-}
-
-.tab:hover { color: var(–text); background: var(–surface2); }
-
-.tab.active {
-background: var(–accent);
-color: #fff;
-box-shadow: 0 4px 20px rgba(124,106,247,0.4);
-}
-
-.tab-icon { font-size: 1.1rem; }
-
-/* PANELS */
-.panel { display: none; animation: fadeUp 0.4s ease; }
-.panel.active { display: block; }
-
-/* CARD */
-.card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 20px;
-padding: 32px;
-margin-bottom: 20px;
-transition: border-color 0.2s;
-}
-
-.card:hover { border-color: rgba(124,106,247,0.3); }
-
-.card-title {
-font-family: ‘Syne’, sans-serif;
-font-size: 1.1rem;
-font-weight: 700;
-margin-bottom: 20px;
-display: flex;
-align-items: center;
-gap: 10px;
-color: var(–text);
-}
-
-.card-title .badge {
-font-size: 0.7rem;
-padding: 3px 10px;
-border-radius: 20px;
-font-family: ‘DM Sans’, sans-serif;
-font-weight: 500;
-}
-
-.badge-pdf { background: rgba(247,106,106,0.15); color: #f76a6a; border: 1px solid rgba(247,106,106,0.3); }
-.badge-word { background: rgba(124,106,247,0.15); color: #a09af7; border: 1px solid rgba(124,106,247,0.3); }
-.badge-voice { background: rgba(106,247,199,0.15); color: #6af7c7; border: 1px solid rgba(106,247,199,0.3); }
-
-/* DROP ZONE */
-.drop-zone {
-border: 2px dashed var(–border);
-border-radius: 14px;
-padding: 48px 24px;
-text-align: center;
-cursor: pointer;
-transition: all 0.25s ease;
-position: relative;
-background: var(–surface2);
-}
-
-.drop-zone:hover, .drop-zone.drag-over {
-border-color: var(–accent);
-background: rgba(124,106,247,0.05);
-}
-
-.drop-zone input[type=“file”] {
-position: absolute;
-inset: 0;
-opacity: 0;
-cursor: pointer;
-width: 100%;
-height: 100%;
-}
-
-.drop-icon {
-font-size: 2.5rem;
-margin-bottom: 12px;
-display: block;
-}
-
-.drop-label {
-font-size: 0.95rem;
-color: var(–muted);
-line-height: 1.6;
-}
-
-.drop-label strong { color: var(–text); }
-
-.file-selected {
-margin-top: 16px;
-padding: 12px 16px;
-background: rgba(124,106,247,0.1);
-border: 1px solid rgba(124,106,247,0.3);
-border-radius: 10px;
-font-size: 0.85rem;
-color: var(–accent);
-display: none;
-align-items: center;
-gap: 8px;
-}
-
-/* BUTTONS */
-.btn {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-padding: 13px 26px;
-border: none;
-border-radius: 12px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 0.9rem;
-font-weight: 500;
-cursor: pointer;
-transition: all 0.2s ease;
-}
-
-.btn-primary {
-background: var(–accent);
-color: #fff;
-box-shadow: 0 4px 16px rgba(124,106,247,0.35);
-}
-
-.btn-primary:hover {
-transform: translateY(-2px);
-box-shadow: 0 8px 24px rgba(124,106,247,0.45);
-}
-
-.btn-primary:active { transform: translateY(0); }
-
-.btn-secondary {
-background: var(–surface2);
-color: var(–text);
-border: 1px solid var(–border);
-}
-
-.btn-secondary:hover {
-border-color: var(–accent);
-color: var(–accent);
-}
-
-.btn-success {
-background: rgba(106,247,106,0.15);
-color: var(–success);
-border: 1px solid rgba(106,247,106,0.3);
-}
-
-.btn-success:hover { background: rgba(106,247,106,0.25); }
-
-.btn-danger {
-background: rgba(247,106,106,0.15);
-color: var(–danger);
-border: 1px solid rgba(247,106,106,0.3);
-}
-
-.btn-danger:hover { background: rgba(247,106,106,0.25); }
-
-.btn-voice {
-background: rgba(106,247,199,0.15);
-color: var(–accent3);
-border: 1px solid rgba(106,247,199,0.3);
-}
-
-.btn-voice:hover { background: rgba(106,247,199,0.25); }
-
-.btn:disabled {
-opacity: 0.4;
-cursor: not-allowed;
-transform: none !important;
-}
-
-.btn-row {
-display: flex;
-gap: 12px;
-flex-wrap: wrap;
-margin-top: 20px;
-}
-
-/* PROGRESS */
-.progress-bar {
-width: 100%;
-height: 4px;
-background: var(–border);
-border-radius: 4px;
-margin: 16px 0;
-overflow: hidden;
-display: none;
-}
-
-.progress-fill {
-height: 100%;
-background: linear-gradient(90deg, var(–accent), var(–accent3));
-border-radius: 4px;
-transition: width 0.3s ease;
-animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-0% { filter: brightness(1); }
-50% { filter: brightness(1.3); }
-100% { filter: brightness(1); }
-}
-
-/* STATUS */
-.status {
-padding: 12px 16px;
-border-radius: 10px;
-font-size: 0.85rem;
-margin-top: 14px;
-display: none;
-}
-
-.status.info { background: rgba(124,106,247,0.1); color: var(–accent); border: 1px solid rgba(124,106,247,0.2); }
-.status.success { background: rgba(106,247,106,0.1); color: var(–success); border: 1px solid rgba(106,247,106,0.2); }
-.status.error { background: rgba(247,106,106,0.1); color: var(–danger); border: 1px solid rgba(247,106,106,0.2); }
-
-/* TEXT PREVIEW */
-.text-preview {
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 12px;
-padding: 20px;
-font-size: 0.88rem;
-line-height: 1.75;
-color: var(–text);
-max-height: 280px;
-overflow-y: auto;
-margin-top: 16px;
-white-space: pre-wrap;
-word-break: break-word;
-display: none;
-font-family: ‘DM Sans’, sans-serif;
-}
-
-.text-preview::-webkit-scrollbar { width: 6px; }
-.text-preview::-webkit-scrollbar-track { background: transparent; }
-.text-preview::-webkit-scrollbar-thumb { background: var(–border); border-radius: 3px; }
-
-/* VOICE CONTROLS */
-.voice-controls {
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 14px;
-padding: 20px;
-margin-top: 16px;
-display: none;
-}
-
-.voice-controls .ctrl-label {
-font-size: 0.78rem;
-color: var(–muted);
-text-transform: uppercase;
-letter-spacing: 0.8px;
-margin-bottom: 6px;
-font-weight: 500;
-}
-
-.voice-controls input[type=“range”] {
-width: 100%;
-accent-color: var(–accent);
-cursor: pointer;
-}
-
-.ctrl-group {
-margin-bottom: 16px;
-}
-
-.ctrl-row {
-display: flex;
-align-items: center;
-gap: 12px;
-}
-
-.ctrl-val {
-font-size: 0.82rem;
-color: var(–accent);
-min-width: 32px;
-text-align: right;
-}
-
-select.voice-select {
-width: 100%;
-padding: 10px 14px;
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 8px;
-color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 0.88rem;
-cursor: pointer;
-outline: none;
-margin-top: 4px;
-}
-
-select.voice-select:focus { border-color: var(–accent); }
-
-/* WAVEFORM VISUALIZER */
-.waveform {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 3px;
-height: 40px;
-margin: 12px 0;
-}
-
-.wave-bar {
-width: 4px;
-height: 8px;
-background: var(–accent);
-border-radius: 2px;
-transition: height 0.15s ease;
-}
-
-.waveform.playing .wave-bar {
-animation: wave 1s ease-in-out infinite;
-}
-
-.wave-bar:nth-child(1) { animation-delay: 0s; }
-.wave-bar:nth-child(2) { animation-delay: 0.1s; }
-.wave-bar:nth-child(3) { animation-delay: 0.2s; }
-.wave-bar:nth-child(4) { animation-delay: 0.3s; }
-.wave-bar:nth-child(5) { animation-delay: 0.4s; }
-.wave-bar:nth-child(6) { animation-delay: 0.3s; }
-.wave-bar:nth-child(7) { animation-delay: 0.2s; }
-.wave-bar:nth-child(8) { animation-delay: 0.1s; }
-.wave-bar:nth-child(9) { animation-delay: 0s; }
-
-@keyframes wave {
-0%, 100% { height: 6px; opacity: 0.4; }
-50% { height: 32px; opacity: 1; }
-}
-
-/* TEXTAREA */
-textarea.manual-text {
-width: 100%;
-min-height: 120px;
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 12px;
-padding: 16px;
-color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 0.9rem;
-line-height: 1.7;
-resize: vertical;
-outline: none;
-transition: border-color 0.2s;
-margin-top: 12px;
-}
-
-textarea.manual-text:focus { border-color: var(–accent); }
-textarea.manual-text::placeholder { color: var(–muted); }
-
-/* DIVIDER */
-.divider {
-text-align: center;
-color: var(–muted);
-font-size: 0.8rem;
-letter-spacing: 1px;
-text-transform: uppercase;
-position: relative;
-margin: 20px 0;
-}
-
-.divider::before {
-content: ‘’;
-position: absolute;
-top: 50%;
-left: 0; right: 0;
-height: 1px;
-background: var(–border);
-z-index: 0;
-}
-
-.divider span {
-position: relative;
-z-index: 1;
-background: var(–surface);
 padding: 0 16px;
 }
 
-/* FOOTER */
-footer {
+/* HEADER */
+.header {
 text-align: center;
-padding: 32px 0 0;
-color: var(–muted);
-font-size: 0.8rem;
-border-top: 1px solid var(–border);
-line-height: 1.8;
+padding: 36px 0 28px;
+animation: slideDown 0.5s ease;
+}
+.header-emoji { font-size: 3rem; display: block; margin-bottom: 8px; }
+.header h1 {
+font-size: 2.2rem;
+font-weight: 900;
+color: var(--primary);
+letter-spacing: -1px;
+}
+.header h1 span { color: var(--secondary); }
+.header p {
+color: var(--muted);
+font-size: 0.95rem;
+margin-top: 6px;
+font-weight: 600;
+}
+
+/* UPLOAD ZONE */
+.upload-card {
+background: var(--white);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+padding: 28px 24px;
+margin-bottom: 20px;
+animation: slideUp 0.5s ease 0.1s both;
+}
+
+.upload-label {
+font-size: 1rem;
+font-weight: 800;
+color: var(--text);
+margin-bottom: 14px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.drop-area {
+border: 2.5px dashed var(--border);
+border-radius: var(--radius-sm);
+padding: 36px 20px;
+text-align: center;
+cursor: pointer;
+position: relative;
+background: var(--primary-light);
+transition: all 0.22s ease;
+user-select: none;
+}
+.drop-area:active, .drop-area.over {
+border-color: var(--primary);
+background: #e0e7ff;
+transform: scale(0.98);
+}
+.drop-area input[type=file] {
+position: absolute; inset: 0;
+opacity: 0; width: 100%; height: 100%; cursor: pointer;
+}
+.drop-icon { font-size: 2.6rem; display: block; margin-bottom: 10px; }
+.drop-text { font-size: 1rem; font-weight: 700; color: var(--primary); }
+.drop-sub { font-size: 0.82rem; color: var(--muted); margin-top: 4px; font-weight: 600; }
+.drop-types {
+display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+margin-top: 12px;
+}
+.type-pill {
+padding: 4px 12px; border-radius: 20px; font-size: 0.73rem; font-weight: 800;
+letter-spacing: 0.5px; text-transform: uppercase;
+}
+.tp-pdf { background: #fee2e2; color: var(--pdf); }
+.tp-word { background: #dbeafe; color: var(--word); }
+.tp-img { background: #d1fae5; color: var(--success); }
+
+/* FILE PREVIEW */
+.file-preview {
+display: none;
+margin-top: 14px;
+background: #f5f3ff;
+border: 1.5px solid #c4b5fd;
+border-radius: var(--radius-sm);
+padding: 14px 16px;
+align-items: center;
+gap: 12px;
+}
+.file-preview.show { display: flex; animation: pop 0.25s ease; }
+.file-icon { font-size: 2rem; }
+.file-info { flex: 1; }
+.file-name { font-weight: 800; font-size: 0.9rem; color: var(--primary); word-break: break-all; }
+.file-size { font-size: 0.78rem; color: var(--muted); margin-top: 2px; font-weight: 600; }
+.file-remove {
+background: #fee2e2; color: var(--danger);
+border: none; border-radius: 50%; width: 30px; height: 30px;
+font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+transition: transform 0.15s;
+}
+.file-remove:active { transform: scale(0.85); }
+
+/* CONVERT SECTION */
+.convert-card {
+background: var(--white);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+padding: 24px;
+margin-bottom: 20px;
+animation: slideUp 0.5s ease 0.2s both;
+}
+.section-title {
+font-size: 1rem; font-weight: 800; color: var(--text);
+margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+
+/* FORMAT GRID */
+.format-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+margin-bottom: 16px;
+}
+
+.fmt-btn {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 6px;
+padding: 16px 10px;
+border-radius: var(--radius-sm);
+border: 2.5px solid transparent;
+cursor: pointer;
+font-family: 'Nunito', sans-serif;
+font-weight: 800;
+font-size: 0.85rem;
+transition: all 0.18s ease;
+position: relative;
+overflow: hidden;
+}
+.fmt-btn::after {
+content: '';
+position: absolute;
+inset: 0;
+background: rgba(255,255,255,0);
+transition: background 0.15s;
+}
+.fmt-btn:active::after { background: rgba(255,255,255,0.3); }
+.fmt-btn:active { transform: scale(0.94); }
+
+.fmt-btn .fmt-emoji { font-size: 1.6rem; }
+.fmt-btn .fmt-label { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.5px; }
+
+.fmt-pdf { background: #fee2e2; color: var(--pdf); border-color: #fca5a5; }
+.fmt-word { background: #dbeafe; color: var(--word); border-color: #93c5fd; }
+.fmt-excel{ background: #d1fae5; color: var(--excel); border-color: #6ee7b7; }
+.fmt-voice{ background: #ede9fe; color: var(--voice); border-color: #c4b5fd; }
+
+.fmt-btn.selected { box-shadow: 0 0 0 3px currentColor; }
+
+/* BIG ACTION BUTTON */
+.action-btn {
+width: 100%;
+padding: 18px;
+border-radius: var(--radius-sm);
+border: none;
+background: linear-gradient(135deg, var(--primary), #6366f1);
+color: white;
+font-family: 'Nunito', sans-serif;
+font-size: 1.05rem;
+font-weight: 900;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+box-shadow: 0 6px 24px rgba(79,70,229,0.35);
+transition: all 0.2s ease;
+letter-spacing: 0.3px;
+}
+.action-btn:active { transform: scale(0.97); box-shadow: 0 2px 10px rgba(79,70,229,0.25); }
+.action-btn:disabled {
+background: #d1d5db; box-shadow: none; cursor: not-allowed; color: #9ca3af;
+}
+
+/* PROGRESS */
+.progress-wrap {
+display: none;
+margin-top: 14px;
+}
+.progress-wrap.show { display: block; animation: fadeIn 0.3s ease; }
+.progress-label {
+font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 6px;
+display: flex; justify-content: space-between;
+}
+.progress-track {
+height: 10px; background: #e0e7ff; border-radius: 10px; overflow: hidden;
+}
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, var(--primary), var(--secondary));
+border-radius: 10px;
+width: 0%;
+transition: width 0.35s ease;
+}
+
+/* TOAST */
+.toast {
+position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+padding: 14px 24px; border-radius: 50px;
+font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.92rem;
+color: white; box-shadow: var(--shadow-lg);
+transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+z-index: 999; white-space: nowrap; max-width: 90vw;
+text-align: center;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: linear-gradient(135deg, #10b981, #059669); }
+.toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.toast.info { background: linear-gradient(135deg, #4f46e5, #6366f1); }
+
+/* VOICE CARD */
+.voice-card {
+background: var(--white);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+padding: 24px;
+margin-bottom: 20px;
+animation: slideUp 0.5s ease 0.3s both;
+display: none;
+}
+.voice-card.show { display: block; }
+
+.extracted-text {
+background: #f5f3ff;
+border: 1.5px solid #c4b5fd;
+border-radius: var(--radius-sm);
+padding: 16px;
+font-size: 0.88rem;
+line-height: 1.75;
+color: var(--text);
+max-height: 200px;
+overflow-y: auto;
+white-space: pre-wrap;
+word-break: break-word;
+margin-bottom: 16px;
+font-family: 'Nunito', sans-serif;
+}
+
+/* VOICE CONTROLS */
+.voice-controls {
+display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
+}
+.ctrl-box {
+background: #f5f3ff; border-radius: var(--radius-sm); padding: 12px;
+}
+.ctrl-box label {
+font-size: 0.75rem; font-weight: 800; color: var(--voice); text-transform: uppercase;
+letter-spacing: 0.5px; display: block; margin-bottom: 6px;
+}
+.ctrl-box input[type=range] {
+width: 100%; accent-color: var(--voice); cursor: pointer; height: 4px;
+}
+.ctrl-box .ctrl-val {
+font-size: 0.82rem; font-weight: 800; color: var(--voice); text-align: right; display: block; margin-top: 4px;
+}
+.voice-select-box { grid-column: span 2; }
+.voice-select-box select {
+width: 100%;
+padding: 10px 14px;
+background: #f5f3ff;
+border: 1.5px solid #c4b5fd;
+border-radius: var(--radius-sm);
+font-family: 'Nunito', sans-serif;
+font-size: 0.88rem; font-weight: 700;
+color: var(--voice); outline: none; cursor: pointer;
+}
+
+/* WAVEFORM */
+.waveform {
+display: flex; align-items: center; justify-content: center;
+gap: 4px; height: 48px; margin: 12px 0;
+}
+.wb { width: 5px; background: var(--voice); border-radius: 3px; height: 6px; transition: height 0.1s; }
+.waveform.playing .wb { animation: wavePulse 0.9s ease-in-out infinite; }
+.wb:nth-child(1){animation-delay:0s}.wb:nth-child(2){animation-delay:.08s}
+.wb:nth-child(3){animation-delay:.16s}.wb:nth-child(4){animation-delay:.24s}
+.wb:nth-child(5){animation-delay:.32s}.wb:nth-child(6){animation-delay:.24s}
+.wb:nth-child(7){animation-delay:.16s}.wb:nth-child(8){animation-delay:.08s}
+.wb:nth-child(9){animation-delay:0s}.wb:nth-child(10){animation-delay:.08s}
+.wb:nth-child(11){animation-delay:.16s}
+
+@keyframes wavePulse {
+0%,100%{height:5px;opacity:.4} 50%{height:38px;opacity:1}
+}
+
+/* VOICE BUTTONS */
+.voice-btn-row {
+display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.v-btn {
+padding: 15px; border-radius: var(--radius-sm); border: none;
+font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.92rem;
+cursor: pointer; display: flex; align-items: center; justify-content: center;
+gap: 8px; transition: all 0.18s ease;
+}
+.v-btn:active { transform: scale(0.94); }
+.v-btn-play {
+background: linear-gradient(135deg, var(--voice), #6d28d9);
+color: white; box-shadow: 0 4px 16px rgba(124,58,237,0.35);
+grid-column: span 2;
+}
+.v-btn-stop { background: #fee2e2; color: var(--danger); }
+.v-btn-pause { background: #fef3c7; color: #92400e; }
+.v-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+/* MANUAL TEXT */
+.manual-card {
+background: var(--white);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+padding: 24px;
+animation: slideUp 0.5s ease 0.35s both;
+}
+.manual-card textarea {
+width: 100%; min-height: 100px;
+background: #f5f3ff; border: 1.5px solid #c4b5fd;
+border-radius: var(--radius-sm); padding: 14px;
+font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 600;
+color: var(--text); line-height: 1.7; resize: vertical; outline: none;
+transition: border-color 0.2s;
+}
+.manual-card textarea:focus { border-color: var(--voice); }
+.manual-card textarea::placeholder { color: #a78bfa; }
+
+/* FOOTER */
+.footer {
+text-align: center; padding: 20px 0;
+color: var(--muted); font-size: 0.78rem; font-weight: 600; line-height: 1.8;
 }
 
 /* ANIMATIONS */
-@keyframes fadeDown {
-from { opacity: 0; transform: translateY(-16px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(16px); }
-to { opacity: 1; transform: translateY(0); }
-}
+@keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes pop { 0%{transform:scale(0.8);opacity:0} 100%{transform:scale(1);opacity:1} }
 
 /* RESPONSIVE */
-@media (max-width: 600px) {
-.logo { font-size: 2.2rem; }
-.tab { font-size: 0.78rem; padding: 10px 10px; }
-.card { padding: 20px; }
-.btn { padding: 11px 18px; font-size: 0.85rem; }
+@media(max-width:400px){
+.header h1{font-size:1.8rem}
+.format-grid{grid-template-columns:1fr 1fr}
+.voice-controls{grid-template-columns:1fr}
+.voice-select-box{grid-column:span 1}
 }
 </style>
 
 </head>
 <body>
-<div class="wrapper">
+<div class="app">
 
-<header>
-<div class="logo">Docu<span>Voz</span></div>
-<div class="tagline">Convierte documentos y escucha texto con voz en español — sin costo, sin registro</div>
-</header>
+<!-- HEADER -->
 
-<!-- TABS -->
+<div class="header">
+<span class="header-emoji">🚀</span>
+<h1>Docu<span>Voz</span> Pro</h1>
+<p>Sube tu archivo · Elige el formato · ¡Listo!</p>
+</div>
 
-<div class="tabs">
-<button class="tab active" onclick="switchTab('pdf2word')">
-<span class="tab-icon">📄</span> PDF → Word
+<!-- UPLOAD CARD -->
+
+<div class="upload-card">
+<div class="upload-label">📂 Paso 1 — Sube tu archivo</div>
+<div class="drop-area" id="dropArea"
+ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+<input type="file" id="fileInput"
+accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tiff"
+onchange="onFileSelected(this.files[0])">
+<span class="drop-icon">☁️</span>
+<div class="drop-text">Toca para seleccionar archivo</div>
+<div class="drop-sub">o arrastra aquí</div>
+<div class="drop-types">
+<span class="type-pill tp-pdf">PDF</span>
+<span class="type-pill tp-word">WORD</span>
+<span class="type-pill tp-img">JPG/PNG</span>
+</div>
+</div>
+
+<div class="file-preview" id="filePreview">
+<div class="file-icon" id="fileIcon">📄</div>
+<div class="file-info">
+<div class="file-name" id="fileName">—</div>
+<div class="file-size" id="fileSize">—</div>
+</div>
+<button class="file-remove" onclick="removeFile()" title="Quitar archivo">✕</button>
+</div>
+</div>
+
+<!-- CONVERT CARD -->
+
+<div class="convert-card">
+<div class="section-title">⚡ Paso 2 — ¿Qué quieres hacer?</div>
+
+<div class="format-grid">
+<button class="fmt-btn fmt-pdf" onclick="selectAction('pdf')" id="btn-pdf">
+<span class="fmt-emoji">📕</span>
+<span class="fmt-label">Convertir a PDF</span>
 </button>
-<button class="tab" onclick="switchTab('word2pdf')">
-<span class="tab-icon">📝</span> Word → PDF
+<button class="fmt-btn fmt-word" onclick="selectAction('word')" id="btn-word">
+<span class="fmt-emoji">📘</span>
+<span class="fmt-label">Convertir a Word</span>
 </button>
-<button class="tab" onclick="switchTab('voice')">
-<span class="tab-icon">🔊</span> Lector de Voz
+<button class="fmt-btn fmt-excel" onclick="selectAction('excel')" id="btn-excel">
+<span class="fmt-emoji">📗</span>
+<span class="fmt-label">Convertir a Excel</span>
 </button>
-</div>
-
-<!-- PANEL: PDF → WORD -->
-
-<div class="panel active" id="panel-pdf2word">
-<div class="card">
-<div class="card-title">
-Convertir PDF a Word
-<span class="badge badge-pdf">PDF</span>
-<span style="color:var(--muted)">→</span>
-<span class="badge badge-word">DOCX</span>
-</div>
-
-```
-<div class="drop-zone" id="dz-pdf" ondragover="handleDrag(event,this)" ondragleave="handleDragLeave(this)" ondrop="handleDrop(event,'pdf2word')">
-<input type="file" accept=".pdf" id="input-pdf2word" onchange="handleFileInput('pdf2word')">
-<span class="drop-icon">📂</span>
-<div class="drop-label">
-<strong>Arrastra tu PDF aquí</strong><br>
-o haz clic para seleccionarlo
-</div>
-</div>
-
-<div class="file-selected" id="sel-pdf2word">📄 <span id="sel-pdf2word-name"></span></div>
-
-<div class="progress-bar" id="prog-pdf2word"><div class="progress-fill" id="progf-pdf2word" style="width:0%"></div></div>
-<div class="status" id="status-pdf2word"></div>
-
-<div class="btn-row">
-<button class="btn btn-primary" onclick="convertPdfToWord()" id="btn-pdf2word" disabled>
-⚡ Convertir a Word
-</button>
-</div>
-</div>
-```
-
-</div>
-
-<!-- PANEL: WORD → PDF -->
-
-<div class="panel" id="panel-word2pdf">
-<div class="card">
-<div class="card-title">
-Convertir Word a PDF
-<span class="badge badge-word">DOCX</span>
-<span style="color:var(--muted)">→</span>
-<span class="badge badge-pdf">PDF</span>
-</div>
-
-```
-<div class="drop-zone" id="dz-word" ondragover="handleDrag(event,this)" ondragleave="handleDragLeave(this)" ondrop="handleDrop(event,'word2pdf')">
-<input type="file" accept=".docx,.doc" id="input-word2pdf" onchange="handleFileInput('word2pdf')">
-<span class="drop-icon">📝</span>
-<div class="drop-label">
-<strong>Arrastra tu archivo Word aquí</strong><br>
-o haz clic para seleccionarlo (.docx)
-</div>
-</div>
-
-<div class="file-selected" id="sel-word2pdf">📝 <span id="sel-word2pdf-name"></span></div>
-
-<div class="progress-bar" id="prog-word2pdf"><div class="progress-fill" id="progf-word2pdf" style="width:0%"></div></div>
-<div class="status" id="status-word2pdf"></div>
-
-<div class="btn-row">
-<button class="btn btn-primary" onclick="convertWordToPdf()" id="btn-word2pdf" disabled>
-⚡ Convertir a PDF
+<button class="fmt-btn fmt-voice" onclick="selectAction('voice')" id="btn-voice">
+<span class="fmt-emoji">🔊</span>
+<span class="fmt-label">Leer en Voz</span>
 </button>
 </div>
+
+<button class="action-btn" id="actionBtn" onclick="executeAction()" disabled>
+👆 Elige un archivo primero
+</button>
+
+<div class="progress-wrap" id="progressWrap">
+<div class="progress-label">
+<span id="progressLabel">Procesando…</span>
+<span id="progressPct">0%</span>
 </div>
-```
-
-</div>
-
-<!-- PANEL: VOICE READER -->
-
-<div class="panel" id="panel-voice">
-<div class="card">
-<div class="card-title">
-Lector de Voz en Español
-<span class="badge badge-voice">VOZ IA</span>
-</div>
-
-```
-<!-- Upload file -->
-<div class="drop-zone" id="dz-voice" ondragover="handleDrag(event,this)" ondragleave="handleDragLeave(this)" ondrop="handleDrop(event,'voice')">
-<input type="file" accept=".pdf,.docx,.doc,.png,.jpg,.jpeg,.webp,.bmp,.gif" id="input-voice" onchange="handleFileInput('voice')">
-<span class="drop-icon">🔊</span>
-<div class="drop-label">
-<strong>Sube PDF, Word o Imagen</strong><br>
-JPG, PNG, WEBP, DOCX, PDF — extrae el texto y lo lee en voz alta
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
 </div>
 </div>
 
-<div class="file-selected" id="sel-voice">📎 <span id="sel-voice-name"></span></div>
+<!-- VOICE CARD -->
 
-<div class="progress-bar" id="prog-voice"><div class="progress-fill" id="progf-voice" style="width:0%"></div></div>
-<div class="status" id="status-voice"></div>
+<div class="voice-card" id="voiceCard">
+<div class="section-title">🎙️ Lector de Voz</div>
 
-<div class="divider"><span>o escribe texto directamente</span></div>
+<div class="extracted-text" id="extractedText">El texto extraído aparecerá aquí…</div>
 
-<textarea class="manual-text" id="manual-text" placeholder="Escribe o pega aquí el texto que quieres escuchar…"></textarea>
-
-<!-- Voice controls -->
-<div class="voice-controls" id="voice-controls">
-<div class="ctrl-group">
-<div class="ctrl-label">Voz en español</div>
-<select class="voice-select" id="voice-select"></select>
+<div class="voice-controls">
+<div class="ctrl-box">
+<label>⚡ Velocidad</label>
+<input type="range" min="0.5" max="2" step="0.05" value="0.9" id="rateSlider"
+oninput="rateVal.textContent=parseFloat(this.value).toFixed(1)+'x'">
+<span class="ctrl-val" id="rateVal">0.9x</span>
 </div>
-<div class="ctrl-group">
-<div class="ctrl-label">Velocidad</div>
-<div class="ctrl-row">
-<input type="range" min="0.5" max="2" step="0.1" value="0.9" id="rate-slider" oninput="document.getElementById('rate-val').textContent=this.value+'x'">
-<span class="ctrl-val" id="rate-val">0.9x</span>
+<div class="ctrl-box">
+<label>🎵 Tono</label>
+<input type="range" min="0.5" max="2" step="0.1" value="1" id="pitchSlider"
+oninput="pitchVal.textContent=parseFloat(this.value).toFixed(1)">
+<span class="ctrl-val" id="pitchVal">1.0</span>
 </div>
-</div>
-<div class="ctrl-group">
-<div class="ctrl-label">Tono</div>
-<div class="ctrl-row">
-<input type="range" min="0.5" max="2" step="0.1" value="1" id="pitch-slider" oninput="document.getElementById('pitch-val').textContent=this.value">
-<span class="ctrl-val" id="pitch-val">1</span>
-</div>
-</div>
-<div class="ctrl-group">
-<div class="ctrl-label">Volumen</div>
-<div class="ctrl-row">
-<input type="range" min="0" max="1" step="0.1" value="1" id="vol-slider" oninput="document.getElementById('vol-val').textContent=Math.round(this.value*100)+'%'">
-<span class="ctrl-val" id="vol-val">100%</span>
-</div>
+<div class="ctrl-box voice-select-box">
+<label>🗣️ Voz en Español</label>
+<select id="voiceSelect"></select>
 </div>
 </div>
 
-<!-- Waveform -->
 <div class="waveform" id="waveform">
-<div class="wave-bar"></div><div class="wave-bar"></div>
-<div class="wave-bar"></div><div class="wave-bar"></div>
-<div class="wave-bar"></div><div class="wave-bar"></div>
-<div class="wave-bar"></div><div class="wave-bar"></div>
-<div class="wave-bar"></div>
+<div class="wb"></div><div class="wb"></div><div class="wb"></div>
+<div class="wb"></div><div class="wb"></div><div class="wb"></div>
+<div class="wb"></div><div class="wb"></div><div class="wb"></div>
+<div class="wb"></div><div class="wb"></div>
 </div>
 
-<!-- Extracted text preview -->
-<div class="text-preview" id="text-preview"></div>
+<div class="voice-btn-row">
+<button class="v-btn v-btn-play" id="btnPlay" onclick="startSpeech()">▶ Leer en voz alta</button>
+<button class="v-btn v-btn-pause" id="btnPause" onclick="pauseSpeech()" disabled>⏸ Pausar</button>
+<button class="v-btn v-btn-stop" id="btnStop" onclick="stopSpeech()" disabled>⏹ Detener</button>
+</div>
+</div>
 
-<div class="btn-row">
-<button class="btn btn-voice" onclick="extractAndRead()" id="btn-extract">
-📖 Extraer texto del archivo
+<!-- MANUAL TEXT -->
+
+<div class="manual-card">
+<div class="section-title">✍️ O escribe texto para leer</div>
+<textarea id="manualText" placeholder="Escribe o pega aquí cualquier texto y pulsa 🔊 Leer en Voz arriba…"></textarea>
+<button class="action-btn" style="margin-top:12px" onclick="readManualText()">
+🔊 Leer este texto en voz alta
 </button>
-<button class="btn btn-primary" onclick="startReading()" id="btn-read">
-▶ Leer en voz alta
-</button>
-<button class="btn btn-danger" onclick="stopReading()" id="btn-stop" disabled>
-⏹ Detener
-</button>
-</div>
-</div>
-```
-
 </div>
 
-<footer>
-<p>DocuVoz usa <strong>PDF.js</strong> · <strong>Mammoth.js</strong> · <strong>Web Speech API</strong> · <strong>Tesseract.js</strong> — todas libres y sin licencia.</p>
-<p style="margin-top:6px">Procesamiento 100% local en tu navegador · Ningún archivo se sube a servidores externos</p>
-</footer>
+<div class="footer">
+🔒 Todo se procesa en tu navegador · Ningún archivo se envía a internet<br>
+PDF.js · Mammoth.js · XLSX.js · Docx.js · Tesseract.js · Web Speech API
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+</div><!-- /app -->
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
 
 <script>
-// =================== SETUP ===================
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+// ─── SETUP ───────────────────────────────────────────────
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-let pdfFile = null, wordFile = null, voiceFile = null;
-let speaking = false;
-
-// =================== TABS ===================
-function switchTab(name) {
-document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-document.getElementById('panel-' + name).classList.add('active');
-event.currentTarget.classList.add('active');
-if (name === 'voice') initVoices();
-}
-
-// =================== DRAG & DROP ===================
-function handleDrag(e, el) { e.preventDefault(); el.classList.add('drag-over'); }
-function handleDragLeave(el) { el.classList.remove('drag-over'); }
-function handleDrop(e, type) {
-e.preventDefault();
-document.getElementById('dz-' + (type === 'pdf2word' ? 'pdf' : type === 'word2pdf' ? 'word' : 'voice')).classList.remove('drag-over');
-const file = e.dataTransfer.files[0];
-if (!file) return;
-document.getElementById('input-' + type).files = e.dataTransfer.files;
-handleFileInput(type, file);
-}
-
-function handleFileInput(type, file) {
-const input = document.getElementById('input-' + type);
-const f = file || (input.files && input.files[0]);
-if (!f) return;
-
-if (type === 'pdf2word') {
-pdfFile = f;
-showSelected('pdf2word', f.name);
-document.getElementById('btn-pdf2word').disabled = false;
-} else if (type === 'word2pdf') {
-wordFile = f;
-showSelected('word2pdf', f.name);
-document.getElementById('btn-word2pdf').disabled = false;
-} else if (type === 'voice') {
-voiceFile = f;
-showSelected('voice', f.name);
-}
-}
-
-function showSelected(type, name) {
-const el = document.getElementById('sel-' + type);
-document.getElementById('sel-' + type + '-name').textContent = name;
-el.style.display = 'flex';
-}
-
-// =================== STATUS HELPERS ===================
-function showStatus(id, msg, type) {
-const el = document.getElementById('status-' + id);
-el.textContent = msg;
-el.className = 'status ' + type;
-el.style.display = 'block';
-}
-
-function showProgress(id, pct) {
-const bar = document.getElementById('prog-' + id);
-const fill = document.getElementById('progf-' + id);
-bar.style.display = 'block';
-fill.style.width = pct + '%';
-}
-
-function hideProgress(id) {
-document.getElementById('prog-' + id).style.display = 'none';
-}
-
-// =================== PDF → WORD ===================
-async function convertPdfToWord() {
-if (!pdfFile) return;
-const btn = document.getElementById('btn-pdf2word');
-btn.disabled = true;
-showStatus('pdf2word', '⏳ Extrayendo texto del PDF…', 'info');
-showProgress('pdf2word', 20);
-
-try {
-const arrayBuffer = await pdfFile.arrayBuffer();
-const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-let fullText = '';
-
-for (let i = 1; i <= pdf.numPages; i++) {
-const page = await pdf.getPage(i);
-const content = await page.getTextContent();
-const pageText = content.items.map(item => item.str).join(' ');
-fullText += `\n\n--- Página ${i} ---\n\n` + pageText;
-showProgress('pdf2word', 20 + Math.round((i / pdf.numPages) * 60));
-}
-
-showProgress('pdf2word', 85);
-showStatus('pdf2word', '⏳ Generando archivo Word…', 'info');
-
-await buildDocx(fullText, pdfFile.name.replace('.pdf', '') + '_convertido');
-
-showProgress('pdf2word', 100);
-setTimeout(() => hideProgress('pdf2word'), 800);
-showStatus('pdf2word', '✅ ¡Archivo Word generado y descargado exitosamente!', 'success');
-} catch (err) {
-hideProgress('pdf2word');
-showStatus('pdf2word', '❌ Error: ' + err.message, 'error');
-}
-btn.disabled = false;
-}
-
-async function buildDocx(text, filename) {
-const { Document, Packer, Paragraph, TextRun, HeadingLevel } = docx;
-
-const lines = text.split('\n');
-const children = lines.map(line => {
-const isHeading = line.startsWith('--- Página');
-return new Paragraph({
-children: [new TextRun({
-text: line,
-size: isHeading ? 24 : 22,
-bold: isHeading,
-font: 'Calibri',
-})],
-heading: isHeading ? HeadingLevel.HEADING_2 : undefined,
-spacing: { after: 120 },
-});
-});
-
-const doc = new Document({
-sections: [{ properties: {}, children }],
-});
-
-const blob = await Packer.toBlob(doc);
-triggerDownload(blob, filename + '.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-}
-
-// =================== WORD → PDF ===================
-async function convertWordToPdf() {
-if (!wordFile) return;
-const btn = document.getElementById('btn-word2pdf');
-btn.disabled = true;
-showStatus('word2pdf', '⏳ Leyendo archivo Word…', 'info');
-showProgress('word2pdf', 20);
-
-try {
-const arrayBuffer = await wordFile.arrayBuffer();
-const result = await mammoth.convertToHtml({ arrayBuffer });
-const html = result.value;
-
-showProgress('word2pdf', 60);
-showStatus('word2pdf', '⏳ Generando PDF…', 'info');
-
-await buildPdfFromHtml(html, wordFile.name.replace(/\.docx?/, '') + '_convertido');
-
-showProgress('word2pdf', 100);
-setTimeout(() => hideProgress('word2pdf'), 800);
-showStatus('word2pdf', '✅ ¡PDF generado y descargado exitosamente!', 'success');
-} catch (err) {
-hideProgress('word2pdf');
-showStatus('word2pdf', '❌ Error: ' + err.message, 'error');
-}
-btn.disabled = false;
-}
-
-function buildPdfFromHtml(html, filename) {
-return new Promise((resolve, reject) => {
-try {
-const iframe = document.createElement('iframe');
-iframe.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:794px;height:1123px;';
-document.body.appendChild(iframe);
-const doc = iframe.contentDocument;
-doc.open();
-doc.write(`<!DOCTYPE html><html><head>
-<meta charset="UTF-8">
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.6; padding: 60px; color: #000; background: #fff; }
-h1,h2,h3 { margin: 16px 0 8px; }
-p { margin-bottom: 10px; }
-ul,ol { padding-left: 24px; margin-bottom: 10px; }
-table { border-collapse: collapse; width: 100%; margin-bottom: 12px; }
-td, th { border: 1px solid #999; padding: 6px 10px; }
-img { max-width: 100%; }
-</style>
-
-```
-</head><body>${html}</body></html>`);
-doc.close();
-
-iframe.onload = () => {
-setTimeout(() => {
-try {
-iframe.contentWindow.focus();
-iframe.contentWindow.print();
-setTimeout(() => {
-document.body.removeChild(iframe);
-resolve();
-}, 1000);
-} catch(e) { reject(e); }
-}, 500);
-};
-} catch(e) { reject(e); }
-```
-
-});
-}
-
-// =================== VOICE READER ===================
+let currentFile = null;
+let selectedAction = null;
 let voices = [];
+let utterance = null;
+let paused = false;
 
-function initVoices() {
-const sel = document.getElementById(‘voice-select’);
-const loadVoices = () => {
-voices = speechSynthesis.getVoices().filter(v =>
-v.lang.startsWith(‘es’) || v.name.toLowerCase().includes(‘spanish’) || v.name.toLowerCase().includes(‘español’)
-);
-if (voices.length === 0) voices = speechSynthesis.getVoices().slice(0, 10);
-sel.innerHTML = voices.map((v, i) =>
-`<option value="${i}">${v.name} (${v.lang})</option>`
-).join(’’);
-// Prefer Latin American
-const preferred = voices.findIndex(v => v.lang.includes(‘MX’) || v.lang.includes(‘AR’) || v.lang.includes(‘CO’) || v.lang.includes(‘US’) && v.name.includes(‘Spanish’));
-if (preferred > -1) sel.value = preferred;
-document.getElementById(‘voice-controls’).style.display = ‘block’;
+// ─── TOAST ───────────────────────────────────────────────
+function toast(msg, type = 'info') {
+const el = document.getElementById('toast');
+el.textContent = msg;
+el.className = 'toast ' + type;
+void el.offsetWidth;
+el.classList.add('show');
+clearTimeout(el._t);
+el._t = setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+// ─── DRAG & DROP ─────────────────────────────────────────
+function onDragOver(e) { e.preventDefault(); document.getElementById('dropArea').classList.add('over'); }
+function onDragLeave(e) { document.getElementById('dropArea').classList.remove('over'); }
+function onDrop(e) {
+e.preventDefault();
+document.getElementById('dropArea').classList.remove('over');
+if (e.dataTransfer.files[0]) onFileSelected(e.dataTransfer.files[0]);
+}
+
+// ─── FILE SELECTED ────────────────────────────────────────
+function onFileSelected(file) {
+if (!file) return;
+const allowed = ['pdf','doc','docx','png','jpg','jpeg','webp','bmp','gif','tiff'];
+const ext = file.name.split('.').pop().toLowerCase();
+if (!allowed.includes(ext)) { toast('❌ Formato no soportado', 'error'); return; }
+
+currentFile = file;
+const icons = {pdf:'📕',doc:'📘',docx:'📘',png:'🖼️',jpg:'🖼️',jpeg:'🖼️',webp:'🖼️',bmp:'🖼️',gif:'🖼️',tiff:'🖼️'};
+document.getElementById('fileIcon').textContent = icons[ext] || '📄';
+document.getElementById('fileName').textContent = file.name;
+document.getElementById('fileSize').textContent = formatSize(file.size);
+document.getElementById('filePreview').classList.add('show');
+updateActionBtn();
+toast('✅ Archivo cargado: ' + file.name, 'success');
+}
+
+function removeFile() {
+currentFile = null;
+document.getElementById('fileInput').value = '';
+document.getElementById('filePreview').classList.remove('show');
+document.getElementById('voiceCard').classList.remove('show');
+updateActionBtn();
+}
+
+function formatSize(b) {
+if (b < 1024) return b + ' B';
+if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+return (b/1048576).toFixed(1) + ' MB';
+}
+
+// ─── ACTION SELECTION ─────────────────────────────────────
+function selectAction(action) {
+selectedAction = action;
+document.querySelectorAll('.fmt-btn').forEach(b => b.classList.remove('selected'));
+document.getElementById('btn-' + action).classList.add('selected');
+updateActionBtn();
+}
+
+function updateActionBtn() {
+const btn = document.getElementById('actionBtn');
+if (!currentFile && !selectedAction) {
+btn.disabled = true; btn.textContent = '👆 Elige un archivo primero'; return;
+}
+if (!currentFile) {
+btn.disabled = true; btn.textContent = '👆 Primero sube un archivo'; return;
+}
+if (!selectedAction) {
+btn.disabled = true; btn.textContent = '👆 Elige qué hacer con el archivo'; return;
+}
+btn.disabled = false;
+const labels = {
+pdf:'📕 Convertir a PDF',
+word:'📘 Convertir a Word (.docx)',
+excel:'📗 Convertir a Excel (.xlsx)',
+voice:'🔊 Extraer texto y leer en voz'
 };
-
-if (speechSynthesis.getVoices().length > 0) loadVoices();
-else speechSynthesis.addEventListener(‘voiceschanged’, loadVoices, { once: true });
-document.getElementById(‘voice-controls’).style.display = ‘block’;
+btn.textContent = labels[selectedAction];
 }
 
-window.addEventListener(‘load’, initVoices);
+// ─── EXECUTE ──────────────────────────────────────────────
+async function executeAction() {
+if (!currentFile || !selectedAction) return;
+const ext = currentFile.name.split('.').pop().toLowerCase();
 
-async function extractAndRead() {
-if (!voiceFile) {
-showStatus(‘voice’, ‘⚠️ Primero sube un archivo.’, ‘info’);
-return;
-}
-
-showStatus(‘voice’, ‘⏳ Extrayendo texto…’, ‘info’);
-showProgress(‘voice’, 10);
+setProgress(0, 'Iniciando…');
 
 try {
-const ext = voiceFile.name.split(’.’).pop().toLowerCase();
-let text = ‘’;
-
-```
-if (ext === 'pdf') {
-text = await extractTextFromPdf(voiceFile);
-} else if (ext === 'docx' || ext === 'doc') {
-text = await extractTextFromDocx(voiceFile);
-} else if (['png','jpg','jpeg','webp','bmp','gif'].includes(ext)) {
-text = await extractTextFromImage(voiceFile);
-} else {
-throw new Error('Formato no soportado. Usa PDF, DOCX o imagen.');
+// Step 1: Extract text
+let text = '';
+if (['png','jpg','jpeg','webp','bmp','gif','tiff'].includes(ext)) {
+text = await ocrImage(currentFile);
+} else if (ext === 'pdf') {
+text = await extractPdfText(currentFile);
+} else if (['doc','docx'].includes(ext)) {
+text = await extractDocxText(currentFile);
 }
 
-showProgress('voice', 100);
-setTimeout(() => hideProgress('voice'), 600);
+setProgress(70, 'Generando archivo…');
 
-const preview = document.getElementById('text-preview');
-preview.textContent = text;
-preview.style.display = 'block';
+if (selectedAction === 'pdf') await doConvertToPdf(text, currentFile.name);
+else if (selectedAction === 'word') await doConvertToWord(text, currentFile.name);
+else if (selectedAction === 'excel') await doConvertToExcel(text, currentFile.name);
+else if (selectedAction === 'voice') showVoiceCard(text);
 
-document.getElementById('manual-text').value = text;
-showStatus('voice', `✅ Texto extraído (${text.length} caracteres). Presiona "Leer en voz alta".`, 'success');
-```
+setProgress(100, 'Completado');
+setTimeout(() => hideProgress(), 1000);
 
-} catch (err) {
-hideProgress(‘voice’);
-showStatus(‘voice’, ’❌ ’ + err.message, ‘error’);
+if (selectedAction !== 'voice') toast('✅ ¡Archivo descargado correctamente!', 'success');
+
+} catch(err) {
+hideProgress();
+toast('❌ Error: ' + err.message, 'error');
+console.error(err);
 }
 }
 
-async function extractTextFromPdf(file) {
-const buffer = await file.arrayBuffer();
-const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
-let text = ‘’;
+// ─── PROGRESS ─────────────────────────────────────────────
+function setProgress(pct, label) {
+document.getElementById('progressWrap').classList.add('show');
+document.getElementById('progressFill').style.width = pct + '%';
+document.getElementById('progressLabel').textContent = label;
+document.getElementById('progressPct').textContent = Math.round(pct) + '%';
+}
+function hideProgress() {
+document.getElementById('progressWrap').classList.remove('show');
+}
+
+// ─── EXTRACT TEXT FROM PDF ────────────────────────────────
+async function extractPdfText(file) {
+const buf = await file.arrayBuffer();
+const pdf = await pdfjsLib.getDocument({data: buf}).promise;
+let text = '';
 for (let i = 1; i <= pdf.numPages; i++) {
 const page = await pdf.getPage(i);
 const content = await page.getTextContent();
-text += content.items.map(it => it.str).join(’ ’) + ‘\n\n’;
-showProgress(‘voice’, 10 + Math.round((i / pdf.numPages) * 70));
+text += content.items.map(it => it.str).join(' ') + '\n\n';
+setProgress(10 + (i / pdf.numPages) * 55, `Leyendo página ${i} de ${pdf.numPages}…`);
 }
 return text.trim();
 }
 
-async function extractTextFromDocx(file) {
-const buffer = await file.arrayBuffer();
-const result = await mammoth.extractRawText({ arrayBuffer: buffer });
-showProgress(‘voice’, 80);
+// ─── EXTRACT TEXT FROM DOCX ───────────────────────────────
+async function extractDocxText(file) {
+setProgress(20, 'Leyendo Word…');
+const buf = await file.arrayBuffer();
+const result = await mammoth.extractRawText({arrayBuffer: buf});
+setProgress(60, 'Texto extraído…');
 return result.value.trim();
 }
 
-async function extractTextFromImage(file) {
-showStatus(‘voice’, ‘🔍 Reconociendo texto en la imagen (OCR)…’, ‘info’);
+// ─── OCR IMAGE ────────────────────────────────────────────
+async function ocrImage(file) {
+setProgress(5, 'Iniciando OCR…');
 const url = URL.createObjectURL(file);
-const result = await Tesseract.recognize(url, ‘spa+eng’, {
+const result = await Tesseract.recognize(url, 'spa+eng', {
 logger: m => {
-if (m.status === ‘recognizing text’) showProgress(‘voice’, 10 + Math.round(m.progress * 75));
+if (m.status === 'recognizing text')
+setProgress(5 + m.progress * 55, 'Reconociendo texto… ' + Math.round(m.progress*100) + '%');
 }
 });
 URL.revokeObjectURL(url);
 return result.data.text.trim();
 }
 
-function startReading() {
-const text = document.getElementById(‘manual-text’).value.trim();
-if (!text) { showStatus(‘voice’, ‘⚠️ No hay texto para leer.’, ‘info’); return; }
+// ─── CONVERT TO WORD ──────────────────────────────────────
+async function doConvertToWord(text, origName) {
+const {Document, Packer, Paragraph, TextRun} = docx;
+const lines = text.split('\n');
+const children = lines.map(line =>
+new Paragraph({
+children:[new TextRun({text: line || ' ', size: 22, font:'Calibri'})],
+spacing:{after:160}
+})
+);
+const document = new Document({sections:[{properties:{}, children}]});
+const blob = await Packer.toBlob(document);
+download(blob, baseName(origName) + '_convertido.docx',
+'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+}
 
-if (speaking) speechSynthesis.cancel();
+// ─── CONVERT TO EXCEL ─────────────────────────────────────
+async function doConvertToExcel(text, origName) {
+const lines = text.split('\n').filter(l => l.trim());
+const rows = lines.map(line => {
+// Try to split by common delimiters
+const parts = line.split(/\t| {2,}|;/).map(s => s.trim());
+return parts.length > 1 ? parts : [line];
+});
+const wb = XLSX.utils.book_new();
+const ws = XLSX.utils.aoa_to_sheet(rows);
 
-const utterance = new SpeechSynthesisUtterance(text);
-const voiceIdx = parseInt(document.getElementById(‘voice-select’).value);
-if (voices[voiceIdx]) utterance.voice = voices[voiceIdx];
-utterance.lang = voices[voiceIdx] ? voices[voiceIdx].lang : ‘es-MX’;
-utterance.rate = parseFloat(document.getElementById(‘rate-slider’).value);
-utterance.pitch = parseFloat(document.getElementById(‘pitch-slider’).value);
-utterance.volume = parseFloat(document.getElementById(‘vol-slider’).value);
+// Style column widths
+ws['!cols'] = [{wch:50},{wch:30},{wch:30},{wch:30}];
 
-utterance.onstart = () => {
-speaking = true;
-document.getElementById(‘waveform’).classList.add(‘playing’);
-document.getElementById(‘btn-stop’).disabled = false;
-document.getElementById(‘btn-read’).disabled = true;
-showStatus(‘voice’, ‘🔊 Leyendo texto en voz alta…’, ‘info’);
+XLSX.utils.book_append_sheet(wb, ws, 'Contenido');
+const buf = XLSX.write(wb, {bookType:'xlsx', type:'array'});
+download(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),
+baseName(origName) + '_convertido.xlsx');
+}
+
+// ─── CONVERT TO PDF (print dialog) ───────────────────────
+async function doConvertToPdf(text, origName) {
+setProgress(75, 'Preparando PDF…');
+const html = text.split('\n').map(l => `<p>${l || '&nbsp;'}</p>`).join('');
+const win = window.open('','_blank','width=800,height=900');
+if (!win) { toast('⚠️ Activa ventanas emergentes para PDF', 'error'); return; }
+win.document.write(`<!DOCTYPE html><html><head>
+<meta charset="UTF-8">
+<title>${baseName(origName)}</title>
+<style>
+body{font-family:'Times New Roman',serif;font-size:12pt;line-height:1.8;
+padding:60px;color:#000;background:#fff;max-width:780px;margin:auto;}
+p{margin-bottom:8px;}
+@media print{body{padding:40px}}
+</style>
+
+</head><body>${html}
+<script>
+window.onload=function(){
+setTimeout(function(){window.print();},400);
+};
+<\/script></body></html>`);
+win.document.close();
+}
+
+// ─── SHOW VOICE CARD ──────────────────────────────────────
+function showVoiceCard(text) {
+document.getElementById(‘voiceCard’).classList.add(‘show’);
+document.getElementById(‘extractedText’).textContent = text || ‘(No se pudo extraer texto)’;
+initVoices();
+document.getElementById(‘voiceCard’).scrollIntoView({behavior:‘smooth’, block:‘start’});
+toast(‘📖 Texto extraído. Pulsa ▶ para escuchar’, ‘info’);
+}
+
+// ─── VOICE / SPEECH ───────────────────────────────────────
+function initVoices() {
+const load = () => {
+const all = speechSynthesis.getVoices();
+voices = all.filter(v =>
+v.lang.toLowerCase().startsWith(‘es’) ||
+v.name.toLowerCase().includes(‘spanish’) ||
+v.name.toLowerCase().includes(‘español’)
+);
+if (voices.length === 0) voices = all.slice(0, 15);
+
+```
+const sel = document.getElementById('voiceSelect');
+sel.innerHTML = voices.map((v,i) =>
+`<option value="${i}">${v.name} [${v.lang}]</option>`
+).join('');
+
+// Prefer Latin American
+const preferred = voices.findIndex(v =>
+['es-MX','es-AR','es-CO','es-CL','es-PE','es-US'].some(l => v.lang === l)
+);
+if (preferred >= 0) sel.value = preferred;
+```
+
 };
 
-utterance.onend = utterance.onerror = () => {
-speaking = false;
-document.getElementById(‘waveform’).classList.remove(‘playing’);
-document.getElementById(‘btn-stop’).disabled = true;
-document.getElementById(‘btn-read’).disabled = false;
-if (!document.getElementById(‘status-voice’).classList.contains(‘error’))
-showStatus(‘voice’, ‘✅ Lectura completada.’, ‘success’);
+if (speechSynthesis.getVoices().length > 0) load();
+speechSynthesis.addEventListener(‘voiceschanged’, load);
+}
+
+function getTextToRead() {
+const card = document.getElementById(‘extractedText’).textContent;
+const manual = document.getElementById(‘manualText’).value.trim();
+return (card && card !== ‘El texto extraído aparecerá aquí…’) ? card : manual;
+}
+
+function startSpeech(customText) {
+const text = customText || getTextToRead();
+if (!text || text === ‘El texto extraído aparecerá aquí…’) {
+toast(‘⚠️ No hay texto para leer’, ‘error’); return;
+}
+
+speechSynthesis.cancel();
+paused = false;
+
+utterance = new SpeechSynthesisUtterance(text);
+
+const idx = parseInt(document.getElementById(‘voiceSelect’).value) || 0;
+if (voices[idx]) {
+utterance.voice = voices[idx];
+utterance.lang = voices[idx].lang;
+} else {
+utterance.lang = ‘es-MX’;
+}
+
+utterance.rate = parseFloat(document.getElementById(‘rateSlider’).value);
+utterance.pitch = parseFloat(document.getElementById(‘pitchSlider’).value);
+utterance.volume = 1;
+
+utterance.onstart = () => {
+document.getElementById(‘waveform’).classList.add(‘playing’);
+document.getElementById(‘btnPlay’).disabled = true;
+document.getElementById(‘btnPause’).disabled = false;
+document.getElementById(‘btnStop’).disabled = false;
+toast(‘🔊 Leyendo en voz alta…’, ‘info’);
+};
+
+utterance.onend = () => onSpeechEnd();
+utterance.onerror = (e) => {
+if (e.error !== ‘interrupted’) toast(’❌ Error de voz: ’ + e.error, ‘error’);
+onSpeechEnd();
 };
 
 speechSynthesis.speak(utterance);
 }
 
-function stopReading() {
-speechSynthesis.cancel();
-speaking = false;
+function onSpeechEnd() {
 document.getElementById(‘waveform’).classList.remove(‘playing’);
-document.getElementById(‘btn-stop’).disabled = true;
-document.getElementById(‘btn-read’).disabled = false;
-showStatus(‘voice’, ‘⏹ Lectura detenida.’, ‘info’);
+document.getElementById(‘btnPlay’).disabled = false;
+document.getElementById(‘btnPause’).disabled = true;
+document.getElementById(‘btnStop’).disabled = true;
+paused = false;
 }
 
-// =================== UTIL ===================
-function triggerDownload(blob, filename, mime) {
+function pauseSpeech() {
+if (!paused) {
+speechSynthesis.pause();
+paused = true;
+document.getElementById(‘btnPause’).textContent = ‘▶ Continuar’;
+document.getElementById(‘waveform’).classList.remove(‘playing’);
+toast(‘⏸ En pausa’, ‘info’);
+} else {
+speechSynthesis.resume();
+paused = false;
+document.getElementById(‘btnPause’).textContent = ‘⏸ Pausar’;
+document.getElementById(‘waveform’).classList.add(‘playing’);
+toast(‘▶ Continuando…’, ‘info’);
+}
+}
+
+function stopSpeech() {
+speechSynthesis.cancel();
+onSpeechEnd();
+toast(‘⏹ Detenido’, ‘info’);
+}
+
+function readManualText() {
+const text = document.getElementById(‘manualText’).value.trim();
+if (!text) { toast(‘✏️ Escribe algo primero’, ‘error’); return; }
+document.getElementById(‘voiceCard’).classList.add(‘show’);
+document.getElementById(‘extractedText’).textContent = text;
+initVoices();
+startSpeech(text);
+document.getElementById(‘voiceCard’).scrollIntoView({behavior:‘smooth’});
+}
+
+// ─── UTILS ────────────────────────────────────────────────
+function baseName(fname) {
+return fname.replace(/.[^.]+$/, ‘’);
+}
+
+function download(blob, filename) {
 const url = URL.createObjectURL(blob);
 const a = document.createElement(‘a’);
-a.href = url;
-a.download = filename;
-document.body.appendChild(a);
-a.click();
-setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 500);
+a.href = url; a.download = filename;
+document.body.appendChild(a); a.click();
+setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 600);
 }
+
+// ─── INIT ─────────────────────────────────────────────────
+window.addEventListener(‘load’, () => {
+initVoices();
+
+// Touch feedback on all buttons
+document.querySelectorAll(‘button, .fmt-btn, .drop-area’).forEach(el => {
+el.addEventListener(‘touchstart’, () => el.style.opacity = ‘0.75’, {passive:true});
+el.addEventListener(‘touchend’, () => el.style.opacity = ‘’, {passive:true});
+el.addEventListener(‘touchcancel’,() => el.style.opacity = ‘’, {passive:true});
+});
+});
 </script>
 
 </body>
