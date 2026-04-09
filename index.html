@@ -2654,7 +2654,6 @@
       }
 
       function fill() {
-
         const all = window.speechSynthesis.getVoices();
         const sel = document.getElementById("voiceSel");
 
@@ -2672,76 +2671,64 @@
           return;
         }
 
+        // Solo reconstruir si el número de voces ha cambiado o es la primera vez
+        if (gVoices.length === all.length && sel.innerHTML.includes("option")) {
+            return;
+        }
+
+        // Guardar selección actual para no perderla al refrescar la lista
+        const currentIdx = parseInt(sel.value, 10);
+        const currentName = (!isNaN(currentIdx) && gVoices[currentIdx]) ? gVoices[currentIdx].name : null;
+
         gVoices = all.filter((v) => {
-
           const lang = (v.lang || "").toLowerCase();
-
           const name = (v.name || "").toLowerCase();
-
           return (
-
             lang.startsWith("es") ||
-
             name.includes("spanish") ||
-
             name.includes("español")
-
           );
-
         });
-
-
 
         if (!gVoices.length) gVoices = all;
 
-
-
         if (!gVoices.length) {
-
           sel.innerHTML = "<option>Sin voces disponibles</option>";
           document.getElementById("btnPlay").disabled = true;
           showAlert(
             "⚠️ No hay voces disponibles. En Linux instala speech-dispatcher y espeak-ng. Si usas Firefox, activa media.webspeech.synth.enabled en about:config.",
             "warn"
           );
-
           return;
-
         }
-
-
-
 
         sel.innerHTML = gVoices
           .map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`)
-
           .join("");
         document.getElementById("btnPlay").disabled = false;
 
+        // Intentar restaurar la selección previa por nombre
+        let restored = false;
+        if (currentName) {
+          const newIdx = gVoices.findIndex(v => v.name === currentName);
+          if (newIdx !== -1) {
+            sel.value = newIdx;
+            restored = true;
+          }
+        }
 
-
-        const preferred = ["es-MX", "es-AR", "es-CO", "es-CL", "es-PE", "es-VE", "es-US", "es-ES"];
-
-        let best = -1;
-
-
-
-        preferred.forEach((lang) => {
-
-          if (best >= 0) return;
-
-          gVoices.forEach((v, i) => {
-
-            if (best < 0 && v.lang === lang) best = i;
-
+        // Solo si no había selección previa, buscar la mejor por defecto
+        if (!restored) {
+          const preferred = ["es-MX", "es-AR", "es-CO", "es-CL", "es-PE", "es-VE", "es-US", "es-ES"];
+          let best = -1;
+          preferred.forEach((lang) => {
+            if (best >= 0) return;
+            gVoices.forEach((v, i) => {
+              if (best < 0 && v.lang === lang) best = i;
+            });
           });
-
-        });
-
-
-
-        if (best >= 0) sel.value = best;
-
+          if (best >= 0) sel.value = best;
+        }
       }
 
 
@@ -3053,25 +3040,15 @@
 
 
     function stopSpeech(resetUI = true) {
-
       gSpeaking = false;
-
       gPaused = false;
-
       gChunkIndex = 0;
-
       gChunks = [];
-
       currentUtterance = null;
-
       if (hasSpeech()) {
-
         window.speechSynthesis.cancel();
-
       }
-
       if (resetUI) vReset();
-
     }
 
 
@@ -3135,21 +3112,26 @@
     // INIT
 
     window.addEventListener("load", () => {
-
       loadVoices();
 
+      // Aplicar cambios en tiempo real si está hablando
+      const restartIfSpeaking = () => {
+        if (gSpeaking && !gPaused && window.speechSynthesis.speaking) {
+          // Decrementar índice para repetir el bloque actual con la nueva configuración
+          gChunkIndex = Math.max(0, gChunkIndex - 1);
+          window.speechSynthesis.cancel();
+        }
+      };
 
+      document.getElementById("voiceSel").onchange = restartIfSpeaking;
+      document.getElementById("rateR").onchange = restartIfSpeaking;
+      document.getElementById("pitchR").onchange = restartIfSpeaking;
 
-      if (!("speechSynthesis" in window)) {
-
+      if (!hasSpeech()) {
         showAlert(
-
           "⚠️ Tu navegador no soporta síntesis de voz. Usa Chrome o Edge.",
-
           "warn"
-
         );
-
       }
 
     });
