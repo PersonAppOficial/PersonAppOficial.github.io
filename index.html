@@ -1630,6 +1630,7 @@
     let gText = "";
 
     let gVoices = [];
+    let gVoiceUri = "";
 
     let gPaused = false;
 
@@ -2676,8 +2677,8 @@
             return;
         }
 
-        // Guardar selección actual para no perderla al refrescar la lista
         const currentIdx = parseInt(sel.value, 10);
+        const currentVoiceUri = (!isNaN(currentIdx) && gVoices[currentIdx]) ? gVoices[currentIdx].voiceURI : gVoiceUri;
         const currentName = (!isNaN(currentIdx) && gVoices[currentIdx]) ? gVoices[currentIdx].name : null;
 
         gVoices = all.filter((v) => {
@@ -2707,17 +2708,22 @@
           .join("");
         document.getElementById("btnPlay").disabled = false;
 
-        // Intentar restaurar la selección previa por nombre
         let restored = false;
+        if (currentVoiceUri) {
+          const newIdxByUri = gVoices.findIndex(v => v.voiceURI === currentVoiceUri);
+          if (newIdxByUri !== -1) {
+            sel.value = newIdxByUri;
+            restored = true;
+          }
+        }
         if (currentName) {
-          const newIdx = gVoices.findIndex(v => v.name === currentName);
-          if (newIdx !== -1) {
-            sel.value = newIdx;
+          const newIdxByName = gVoices.findIndex(v => v.name === currentName);
+          if (!restored && newIdxByName !== -1) {
+            sel.value = newIdxByName;
             restored = true;
           }
         }
 
-        // Solo si no había selección previa, buscar la mejor por defecto
         if (!restored) {
           const preferred = ["es-MX", "es-AR", "es-CO", "es-CL", "es-PE", "es-VE", "es-US", "es-ES"];
           let best = -1;
@@ -2729,6 +2735,9 @@
           });
           if (best >= 0) sel.value = best;
         }
+
+        const selectedIdx = parseInt(sel.value, 10);
+        gVoiceUri = (!isNaN(selectedIdx) && gVoices[selectedIdx]) ? gVoices[selectedIdx].voiceURI : "";
       }
 
 
@@ -2913,25 +2922,20 @@
 
       const utter = new SpeechSynthesisUtterance(gChunks[gChunkIndex]);
 
-      currentUtterance = utter;
-
-
-
       const idx = parseInt(document.getElementById("voiceSel").value, 10);
-
-      if (!isNaN(idx) && gVoices[idx]) {
-
-        utter.voice = gVoices[idx];
-
-        utter.lang = gVoices[idx].lang;
-
-      } else {
-
-        utter.lang = "es-MX";
-
+      let selectedVoice = null;
+      if (gVoiceUri) {
+        selectedVoice = gVoices.find((v) => v.voiceURI === gVoiceUri) || null;
       }
-
-
+      if (!selectedVoice && !isNaN(idx) && gVoices[idx]) {
+        selectedVoice = gVoices[idx];
+      }
+      if (selectedVoice) {
+        utter.voice = selectedVoice;
+        utter.lang = selectedVoice.lang;
+      } else {
+        utter.lang = "es-MX";
+      }
 
       utter.rate = parseFloat(document.getElementById("rateR").value);
 
@@ -2964,20 +2968,13 @@
 
 
       utter.onerror = (e) => {
-
-        console.error("Speech error:", e);
-
-        if (e.error !== "interrupted" && e.error !== "canceled") {
-
-          showToast("❌ Error de voz: " + e.error, "err");
-
+        if (e.error === "interrupted" || e.error === "canceled") {
+          if (gSpeaking && !gPaused) setTimeout(speakNextChunk, 80);
+          return;
         }
-
+        showToast("❌ Error de voz: " + e.error, "err");
         vReset();
-
       };
-
-
 
       synth.speak(utter);
 
@@ -3116,8 +3113,10 @@
 
       // Aplicar cambios en tiempo real si está hablando
       const restartIfSpeaking = () => {
+        const sel = document.getElementById("voiceSel");
+        const selectedIdx = parseInt(sel.value, 10);
+        gVoiceUri = (!isNaN(selectedIdx) && gVoices[selectedIdx]) ? gVoices[selectedIdx].voiceURI : gVoiceUri;
         if (gSpeaking && !gPaused && window.speechSynthesis.speaking) {
-          // Decrementar índice para repetir el bloque actual con la nueva configuración
           gChunkIndex = Math.max(0, gChunkIndex - 1);
           window.speechSynthesis.cancel();
         }
