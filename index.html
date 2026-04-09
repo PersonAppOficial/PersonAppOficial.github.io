@@ -1634,6 +1634,7 @@
 
     let gPaused = false;
     let gHardPaused = false;
+    let gIgnoreInterrupted = false;
 
     let gChunks = [];
 
@@ -2979,6 +2980,10 @@
 
       utter.onerror = (e) => {
         if (e.error === "interrupted" || e.error === "canceled") {
+          if (gIgnoreInterrupted) {
+            gIgnoreInterrupted = false;
+            return;
+          }
           if (gSpeaking && !gPaused) setTimeout(speakNextChunk, 80);
           return;
         }
@@ -3009,8 +3014,17 @@
       if (!gPaused) {
 
         gPaused = true;
-        gHardPaused = true;
-        if (synth.speaking || synth.pending) synth.cancel();
+        gHardPaused = false;
+        if (synth.speaking) {
+          synth.pause();
+          setTimeout(() => {
+            if (gPaused && synth.speaking && !synth.paused) {
+              gHardPaused = true;
+              gIgnoreInterrupted = true;
+              synth.cancel();
+            }
+          }, 120);
+        }
 
         document.getElementById("btnPause").textContent = "▶ Continuar";
 
@@ -3023,7 +3037,7 @@
         gPaused = false;
         if (gHardPaused || (!synth.speaking && !synth.pending)) {
           gHardPaused = false;
-          speakNextChunk();
+          setTimeout(speakNextChunk, 60);
         } else {
           synth.resume();
         }
@@ -3054,6 +3068,7 @@
       gSpeaking = false;
       gPaused = false;
       gHardPaused = false;
+      gIgnoreInterrupted = false;
       gChunkIndex = 0;
       gChunks = [];
       currentUtterance = null;
@@ -3071,6 +3086,7 @@
 
       gPaused = false;
       gHardPaused = false;
+      gIgnoreInterrupted = false;
 
       document.getElementById("wave").classList.remove("on");
 
