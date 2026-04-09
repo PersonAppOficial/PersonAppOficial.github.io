@@ -1633,6 +1633,7 @@
     let gVoiceUri = "";
 
     let gPaused = false;
+    let gHardPaused = false;
 
     let gChunks = [];
 
@@ -2960,6 +2961,9 @@
 
 
       utter.onend = () => {
+        if (gPaused) {
+          return;
+        }
 
         gChunkIndex++;
 
@@ -3004,9 +3008,9 @@
 
       if (!gPaused) {
 
-        synth.pause();
-
         gPaused = true;
+        gHardPaused = true;
+        if (synth.speaking || synth.pending) synth.cancel();
 
         document.getElementById("btnPause").textContent = "▶ Continuar";
 
@@ -3016,9 +3020,13 @@
 
       } else {
 
-        synth.resume();
-
         gPaused = false;
+        if (gHardPaused || (!synth.speaking && !synth.pending)) {
+          gHardPaused = false;
+          speakNextChunk();
+        } else {
+          synth.resume();
+        }
 
         document.getElementById("btnPause").textContent = "⏸ Pausar";
 
@@ -3045,6 +3053,7 @@
     function stopSpeech(resetUI = true) {
       gSpeaking = false;
       gPaused = false;
+      gHardPaused = false;
       gChunkIndex = 0;
       gChunks = [];
       currentUtterance = null;
@@ -3061,6 +3070,7 @@
       gSpeaking = false;
 
       gPaused = false;
+      gHardPaused = false;
 
       document.getElementById("wave").classList.remove("on");
 
