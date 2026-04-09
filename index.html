@@ -2656,8 +2656,21 @@
       function fill() {
 
         const all = window.speechSynthesis.getVoices();
+        const sel = document.getElementById("voiceSel");
 
-
+        if (all.length > 0) {
+          console.log("Voces detectadas:", all.length);
+          hideAlert();
+        } else {
+          console.warn("No hay voces disponibles aún...");
+          sel.innerHTML = "<option>Sin voces disponibles</option>";
+          document.getElementById("btnPlay").disabled = true;
+          showAlert(
+            "⚠️ No hay voces disponibles. En Linux instala speech-dispatcher y espeak-ng. Si usas Firefox, activa media.webspeech.synth.enabled en about:config.",
+            "warn"
+          );
+          return;
+        }
 
         gVoices = all.filter((v) => {
 
@@ -2683,16 +2696,12 @@
 
 
 
-        const sel = document.getElementById("voiceSel");
-
-
-
         if (!gVoices.length) {
 
           sel.innerHTML = "<option>Sin voces disponibles</option>";
           document.getElementById("btnPlay").disabled = true;
           showAlert(
-            "⚠️ No hay voces instaladas en el sistema. En Linux instala speech-dispatcher y espeak/espeak-ng, luego reinicia el navegador.",
+            "⚠️ No hay voces disponibles. En Linux instala speech-dispatcher y espeak-ng. Si usas Firefox, activa media.webspeech.synth.enabled en about:config.",
             "warn"
           );
 
@@ -2744,8 +2753,13 @@
       synth.onvoiceschanged = fill;
 
       setTimeout(fill, 500);
-
       setTimeout(fill, 1500);
+      let count = 0;
+      const itv = setInterval(() => {
+        if (gVoices.length || count > 10) clearInterval(itv);
+        fill();
+        count++;
+      }, 2000);
 
     }
 
@@ -2831,14 +2845,12 @@
 
 
       if (!gVoices.length && window.speechSynthesis.getVoices().length === 0) {
-
         showToast("⚠️ No hay voces disponibles en este navegador", "err");
         showAlert(
-          "⚠️ En Linux necesitas instalar speech-dispatcher y espeak/espeak-ng para habilitar voces.",
+          "⚠️ No hay voces disponibles. En Linux instala speech-dispatcher y espeak-ng. Si usas Firefox, activa media.webspeech.synth.enabled en about:config.",
           "warn"
         );
         return;
-
       }
 
 
