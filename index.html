@@ -4,6 +4,14 @@
 
 <head>
 
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KM9PVD3R');
+  </script>
+
   <meta charset="UTF-8" />
 
   <meta
@@ -1208,6 +1216,9 @@
 
 <body>
 
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KM9PVD3R"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
   <div class="app">
 
     <section class="hero">
@@ -1600,9 +1611,13 @@
 
     // CONFIG
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
+    if (window.pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
 
-      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    }
 
 
 
@@ -2616,7 +2631,27 @@
 
 
 
+    function hasSpeech() {
+
+      return "speechSynthesis" in window;
+
+    }
+
+
+
     function loadVoices() {
+
+      if (!hasSpeech()) {
+
+        gVoices = [];
+
+        document.getElementById("voiceSel").innerHTML = "<option>Tu navegador no soporta voz</option>";
+
+        document.getElementById("btnPlay").disabled = true;
+
+        return;
+
+      }
 
       function fill() {
 
@@ -2655,6 +2690,11 @@
         if (!gVoices.length) {
 
           sel.innerHTML = "<option>Sin voces disponibles</option>";
+          document.getElementById("btnPlay").disabled = true;
+          showAlert(
+            "⚠️ No hay voces instaladas en el sistema. En Linux instala speech-dispatcher y espeak/espeak-ng, luego reinicia el navegador.",
+            "warn"
+          );
 
           return;
 
@@ -2662,11 +2702,12 @@
 
 
 
-        sel.innerHTML = gVoices
 
+        sel.innerHTML = gVoices
           .map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`)
 
           .join("");
+        document.getElementById("btnPlay").disabled = false;
 
 
 
@@ -2780,6 +2821,28 @@
 
 
 
+      if (!hasSpeech()) {
+
+        showToast("⚠️ Tu navegador no soporta síntesis de voz", "err");
+        return;
+
+      }
+
+
+
+      if (!gVoices.length && window.speechSynthesis.getVoices().length === 0) {
+
+        showToast("⚠️ No hay voces disponibles en este navegador", "err");
+        showAlert(
+          "⚠️ En Linux necesitas instalar speech-dispatcher y espeak/espeak-ng para habilitar voces.",
+          "warn"
+        );
+        return;
+
+      }
+
+
+
       if (gPaused && window.speechSynthesis.paused) {
 
         window.speechSynthesis.resume();
@@ -2832,6 +2895,15 @@
 
         vReset();
 
+        return;
+
+      }
+
+
+
+      if (!hasSpeech()) {
+
+        vReset();
         return;
 
       }
@@ -2916,6 +2988,10 @@
 
     function vPause() {
 
+      if (!hasSpeech()) return;
+
+
+
       const synth = window.speechSynthesis;
 
 
@@ -2976,7 +3052,11 @@
 
       currentUtterance = null;
 
-      window.speechSynthesis.cancel();
+      if (hasSpeech()) {
+
+        window.speechSynthesis.cancel();
+
+      }
 
       if (resetUI) vReset();
 
@@ -3066,5 +3146,4 @@
 
 </body>
 
-</html
-
+</html>
